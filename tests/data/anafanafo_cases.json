@@ -1,0 +1,182 @@
+[
+  {
+    "id": "empty-v11",
+    "text": "",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "m-v11",
+    "text": "m",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "version-v11",
+    "text": "v1.2.511",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "m-v10",
+    "text": "m",
+    "font": "10px Verdana",
+    "guess": true
+  },
+  {
+    "id": "m-v10-bold",
+    "text": "m",
+    "font": "bold 10px Verdana",
+    "guess": true
+  },
+  {
+    "id": "m-h11-bold",
+    "text": "m",
+    "font": "bold 11px Helvetica",
+    "guess": true
+  },
+  {
+    "id": "control-v11",
+    "text": "a\n\tb",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "emoji-guess-on",
+    "text": "ok✅",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "emoji-guess-off",
+    "text": "ok✅",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "latin-ext-v11",
+    "text": "Crème brûlée",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "greek-v11",
+    "text": "Δοκιμή",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "cjk-v11",
+    "text": "依赖",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "emoji-single-v11",
+    "text": "🧪",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "private-use-guess-on-v11",
+    "text": "󰀀",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "private-use-guess-off-v11",
+    "text": "󰀀",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "space-v11",
+    "text": " ",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "punct-v11",
+    "text": "[]{}()-_.",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "badge-left-v11",
+    "text": "deps",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "badge-right-v11",
+    "text": "out of date",
+    "font": "11px Verdana",
+    "guess": true
+  },
+  {
+    "id": "version-v10",
+    "text": "v1.2.511",
+    "font": "10px Verdana",
+    "guess": true
+  },
+  {
+    "id": "version-v10-bold",
+    "text": "v1.2.511",
+    "font": "bold 10px Verdana",
+    "guess": true
+  },
+  {
+    "id": "version-h11-bold",
+    "text": "v1.2.511",
+    "font": "bold 11px Helvetica",
+    "guess": true
+  },
+  {
+    "id": "ascii-guess-off-v11",
+    "text": "badge-maker-rs",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "control-del-v11",
+    "text": "ab",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "aquariums-v11",
+    "text": "This is the dawning of the Age of Aquariums",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "test-summary-v11",
+    "text": "5 passed, 2 failed, 1 skipped",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "prismic-v11",
+    "text": "[prismic \"1.1\"]",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "love-cjk-v11",
+    "text": "爱",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "stars-v11",
+    "text": "★★★½☆",
+    "font": "11px Verdana",
+    "guess": false
+  },
+  {
+    "id": "ellipsis-v11",
+    "text": "…",
+    "font": "11px Verdana",
+    "guess": false
+  }
+]
