@@ -1,0 +1,9 @@
+{
+  "name": "anafanafo-ref",
+  "module": "index.js",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "anafanafo": "2.0.0"
+  }
+}
