@@ -1,0 +1,564 @@
+[
+  {
+    "id": "flat-basic",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": []
+  },
+  {
+    "id": "flat-logo",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-logo-suffix",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "idSuffix": "1",
+    "links": []
+  },
+  {
+    "id": "flat-message-only",
+    "label": "",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "links": []
+  },
+  {
+    "id": "flat-message-only-logo",
+    "label": "",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-message-only-logo-label-color",
+    "label": "",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-links",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+  },
+  {
+    "id": "flat-light-label",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat",
+    "color": "#000",
+    "labelColor": "#f3f3f3",
+    "links": []
+  },
+  {
+    "id": "flat-light-message",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat",
+    "color": "#e2ffe1",
+    "labelColor": "#000",
+    "links": []
+  },
+  {
+    "id": "flat-square-basic",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": []
+  },
+  {
+    "id": "flat-square-logo",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-square-logo-suffix",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "idSuffix": "1",
+    "links": []
+  },
+  {
+    "id": "flat-square-message-only",
+    "label": "",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "links": []
+  },
+  {
+    "id": "flat-square-message-only-logo",
+    "label": "",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-square-message-only-logo-label-color",
+    "label": "",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-square-links",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+  },
+  {
+    "id": "flat-square-light-label",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#000",
+    "labelColor": "#f3f3f3",
+    "links": []
+  },
+  {
+    "id": "flat-square-light-message",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#e2ffe1",
+    "labelColor": "#000",
+    "links": []
+  },
+  {
+    "id": "plastic-basic",
+    "label": "cactus",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": []
+  },
+  {
+    "id": "plastic-logo",
+    "label": "cactus",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "plastic-logo-suffix",
+    "label": "cactus",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "idSuffix": "1",
+    "links": []
+  },
+  {
+    "id": "plastic-message-only",
+    "label": "",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "links": []
+  },
+  {
+    "id": "plastic-message-only-logo",
+    "label": "",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "plastic-message-only-logo-label-color",
+    "label": "",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "plastic-links",
+    "label": "cactus",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+  },
+  {
+    "id": "plastic-light-label",
+    "label": "cactus",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#000",
+    "labelColor": "#f3f3f3",
+    "links": []
+  },
+  {
+    "id": "plastic-light-message",
+    "label": "cactus",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#e2ffe1",
+    "labelColor": "#000",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-uppercase",
+    "label": "Label",
+    "message": "1 string",
+    "style": "for-the-badge",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-basic",
+    "label": "cactus",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-logo",
+    "label": "cactus",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-logo-suffix",
+    "label": "cactus",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "idSuffix": "1",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-message-only",
+    "label": "",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-message-only-logo",
+    "label": "",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-message-only-logo-label-color",
+    "label": "",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-links",
+    "label": "cactus",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+  },
+  {
+    "id": "for-the-badge-light-label",
+    "label": "cactus",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#000",
+    "labelColor": "#f3f3f3",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-light-message",
+    "label": "cactus",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#e2ffe1",
+    "labelColor": "#000",
+    "links": []
+  },
+  {
+    "id": "social-capitalized-key",
+    "label": "some-key",
+    "message": "some-value",
+    "style": "social",
+    "links": []
+  },
+  {
+    "id": "social-basic",
+    "label": "cactus",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": []
+  },
+  {
+    "id": "social-logo",
+    "label": "cactus",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "social-logo-suffix",
+    "label": "cactus",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "idSuffix": "1",
+    "links": []
+  },
+  {
+    "id": "social-message-only",
+    "label": "",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "links": []
+  },
+  {
+    "id": "social-message-only-logo",
+    "label": "",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "social-message-only-logo-label-color",
+    "label": "",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "social-links",
+    "label": "cactus",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+  },
+  {
+    "id": "default-style-with-logo",
+    "label": "label",
+    "message": "message",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-logo-only",
+    "label": "",
+    "message": "",
+    "style": "flat",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-square-logo-only",
+    "label": "",
+    "message": "",
+    "style": "flat-square",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-logo-only",
+    "label": "",
+    "message": "",
+    "style": "for-the-badge",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "social-logo-only",
+    "label": "",
+    "message": "",
+    "style": "social",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "plastic-logo-only",
+    "label": "",
+    "message": "",
+    "style": "plastic",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-trim-whitespace",
+    "label": "  build  ",
+    "message": "  passing  ",
+    "style": "flat",
+    "color": "brightgreen",
+    "links": []
+  },
+  {
+    "id": "flat-escape-special-characters",
+    "label": "<build&ship>",
+    "message": "\"ready\" & 'done'",
+    "style": "flat",
+    "color": "blue",
+    "links": []
+  },
+  {
+    "id": "flat-left-link-only",
+    "label": "docs",
+    "message": "open",
+    "style": "flat",
+    "color": "informational",
+    "links": ["https://example.com/docs"]
+  },
+  {
+    "id": "flat-right-link-only",
+    "label": "docs",
+    "message": "open",
+    "style": "flat",
+    "color": "informational",
+    "links": ["", "https://example.com/docs"]
+  },
+  {
+    "id": "flat-id-suffix-dash-underscore",
+    "label": "ci",
+    "message": "passing",
+    "style": "flat",
+    "color": "success",
+    "idSuffix": "ci_preview-1",
+    "links": []
+  },
+  {
+    "id": "flat-color-aliases-and-css-colors",
+    "label": "deps",
+    "message": "clean",
+    "style": "flat",
+    "color": "rgb(120, 200, 20)",
+    "labelColor": "inactive",
+    "links": []
+  },
+  {
+    "id": "flat-invalid-color-falls-back",
+    "label": "deps",
+    "message": "clean",
+    "style": "flat",
+    "color": "definitely-not-a-color",
+    "labelColor": "still-not-a-color",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-trim-whitespace",
+    "label": "  release  ",
+    "message": "  2026 q1  ",
+    "style": "for-the-badge",
+    "color": "important",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-left-link-only",
+    "label": "release",
+    "message": "candidate",
+    "style": "for-the-badge",
+    "color": "orange",
+    "labelColor": "grey",
+    "links": ["https://example.com/releases"]
+  },
+  {
+    "id": "social-escape-special-characters",
+    "label": "pull <request>",
+    "message": "\"merged\" & shipped",
+    "style": "social",
+    "links": []
+  },
+  {
+    "id": "social-right-link-only",
+    "label": "follow",
+    "message": "updates",
+    "style": "social",
+    "links": ["", "https://example.com/feed"]
+  },
+  {
+    "id": "social-id-suffix-dash-underscore",
+    "label": "follow",
+    "message": "updates",
+    "style": "social",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "idSuffix": "social_preview-1",
+    "links": []
+  }
+]

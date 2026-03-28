@@ -31,8 +31,6 @@ function measureCase(testCase) {
   }
 }
 
-const stdin = await Bun.stdin.text();
-const cases = JSON.parse(stdin);
-const results = cases.map(measureCase);
-
-process.stdout.write(`${JSON.stringify(results)}\n`);
+export function runAnafanafoCases(cases) {
+  return cases.map(measureCase);
+}
