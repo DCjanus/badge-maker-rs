@@ -2,8 +2,7 @@ use badge_maker_rs::{BadgeOptions, Color, Error, NamedColor, Style, make_badge};
 
 #[test]
 fn trims_and_escapes_text_input() {
-    let options = BadgeOptions::builder()
-        .message("  <passing> & ready  ")
+    let options = BadgeOptions::new("  <passing> & ready  ")
         .label("  build \"ci\"  ")
         .build();
 
@@ -16,8 +15,7 @@ fn trims_and_escapes_text_input() {
 
 #[test]
 fn invalid_id_suffix_is_rejected() {
-    let options = BadgeOptions::builder()
-        .message("passing")
+    let options = BadgeOptions::new("passing")
         .label("build")
         .id_suffix("\\")
         .build();
@@ -28,8 +26,7 @@ fn invalid_id_suffix_is_rejected() {
 
 #[test]
 fn left_and_right_links_render_in_distinct_slots() {
-    let options = BadgeOptions::builder()
-        .message("passing")
+    let options = BadgeOptions::new("passing")
         .label("build")
         .color(NamedColor::Brightgreen)
         .style(Style::Flat)
@@ -45,16 +42,14 @@ fn left_and_right_links_render_in_distinct_slots() {
 
 #[test]
 fn invalid_colors_fall_back_to_style_defaults() {
-    let invalid = BadgeOptions::builder()
-        .message("passing")
+    let invalid = BadgeOptions::new("passing")
         .label("build")
         .color(Color::literal("definitely-not-a-color"))
         .label_color(Color::literal("still-not-a-color"))
         .style(Style::Flat)
         .build();
 
-    let defaulted = BadgeOptions::builder()
-        .message("passing")
+    let defaulted = BadgeOptions::new("passing")
         .label("build")
         .style(Style::Flat)
         .build();
@@ -67,20 +62,18 @@ fn invalid_colors_fall_back_to_style_defaults() {
 
 #[test]
 fn logo_width_is_a_rust_side_override() {
-    let base = BadgeOptions::builder()
-        .message("passing")
+    let base = BadgeOptions::new("passing")
         .label("build")
         .color(NamedColor::Brightgreen)
         .style(Style::Flat)
-        .logo_base64("data:image/svg+xml;base64,PHN2ZyB4bWxu")
+        .logo_data_url("data:image/svg+xml;base64,PHN2ZyB4bWxu")
         .build();
 
-    let wide_logo = BadgeOptions::builder()
-        .message("passing")
+    let wide_logo = BadgeOptions::new("passing")
         .label("build")
         .color(NamedColor::Brightgreen)
         .style(Style::Flat)
-        .logo_base64("data:image/svg+xml;base64,PHN2ZyB4bWxu")
+        .logo_data_url("data:image/svg+xml;base64,PHN2ZyB4bWxu")
         .logo_width(28)
         .build();
 
@@ -93,10 +86,9 @@ fn logo_width_is_a_rust_side_override() {
 
 #[test]
 fn empty_label_and_message_are_allowed() {
-    let options = BadgeOptions::builder()
-        .message("")
+    let options = BadgeOptions::new("")
         .label("")
-        .logo_base64("data:image/svg+xml;base64,PHN2ZyB4bWxu")
+        .logo_data_url("data:image/svg+xml;base64,PHN2ZyB4bWxu")
         .build();
 
     let svg = make_badge(&options).expect("badge render should succeed");
@@ -107,8 +99,7 @@ fn empty_label_and_message_are_allowed() {
 
 #[test]
 fn right_link_preserves_right_only_semantics() {
-    let options = BadgeOptions::builder()
-        .message("passing")
+    let options = BadgeOptions::new("passing")
         .label("build")
         .color(NamedColor::Brightgreen)
         .style(Style::Flat)
@@ -123,8 +114,7 @@ fn right_link_preserves_right_only_semantics() {
 
 #[test]
 fn left_link_wraps_the_full_badge_body() {
-    let options = BadgeOptions::builder()
-        .message("passing")
+    let options = BadgeOptions::new("passing")
         .label("build")
         .color(NamedColor::Brightgreen)
         .style(Style::Flat)
@@ -148,8 +138,7 @@ fn semantic_color_aliases_render_successfully() {
     ];
 
     for alias in aliases {
-        let options = BadgeOptions::builder()
-            .message("passing")
+        let options = BadgeOptions::new("passing")
             .label("build")
             .color(alias)
             .style(Style::Flat)
@@ -168,8 +157,7 @@ fn semantic_color_aliases_render_successfully() {
 #[test]
 fn builder_requires_message_and_applies_defaults() {
     let svg = make_badge(
-        &BadgeOptions::builder()
-            .message("passing")
+        &BadgeOptions::new("passing")
             .label("build")
             .color(NamedColor::Brightgreen)
             .build(),
@@ -182,8 +170,7 @@ fn builder_requires_message_and_applies_defaults() {
 
 #[test]
 fn css_variable_colors_are_emitted_verbatim() {
-    let options = BadgeOptions::builder()
-        .message("token")
+    let options = BadgeOptions::new("token")
         .label("theme")
         .color(Color::css_variable("--badge-color"))
         .build();

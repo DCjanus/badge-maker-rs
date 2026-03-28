@@ -26,8 +26,7 @@ fn badge_maker_case_ids_are_unique() {
 
 #[test]
 fn badge_maker_rejects_invalid_id_suffix() {
-    let options = BadgeOptions::builder()
-        .message("passing")
+    let options = BadgeOptions::new("passing")
         .label("build")
         .id_suffix("\\")
         .build();

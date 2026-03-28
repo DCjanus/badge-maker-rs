@@ -23,8 +23,7 @@ fn preview_cases() -> [(&'static str, BadgeOptions); 5] {
 }
 
 fn preview_options(message: &str, style: Style) -> BadgeOptions {
-    BadgeOptions::builder()
-        .message(message)
+    BadgeOptions::new(message)
         .label("example")
         .color(NamedColor::Blue)
         .style(style)

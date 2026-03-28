@@ -42,7 +42,7 @@ pub(crate) fn render_svg(
     id_suffix: String,
 ) -> Result<String, Error> {
     let logo_width = options.logo_width.unwrap_or_else(|| {
-        if options.logo_base64.is_some() {
+        if options.logo_data_url.is_some() {
             DEFAULT_LOGO_HEIGHT
         } else {
             0
@@ -59,9 +59,9 @@ pub(crate) fn render_svg(
         label,
         message,
         links,
-        logo: options.logo_base64.clone(),
+        logo: options.logo_data_url.clone(),
         logo_width,
-        logo_padding: if options.logo_base64.is_some() && !options.label.trim().is_empty() {
+        logo_padding: if options.logo_data_url.is_some() && !options.label.trim().is_empty() {
             3
         } else {
             0

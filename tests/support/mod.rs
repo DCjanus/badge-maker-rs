@@ -18,7 +18,7 @@ pub struct ReferenceCase {
     pub label_color: Option<String>,
     pub style: Option<String>,
     #[serde(rename = "logoBase64")]
-    pub logo_base64: Option<String>,
+    pub logo_data_url: Option<String>,
     #[serde(rename = "logoWidth")]
     pub logo_width: Option<u32>,
     pub links: Vec<String>,
@@ -109,13 +109,12 @@ pub fn parse_style(style: Option<&str>) -> Style {
 }
 
 pub fn to_badge_options(case: &ReferenceCase) -> BadgeOptions {
-    let mut options = BadgeOptions::builder()
-        .message(case.message.clone())
+    let mut options = BadgeOptions::new(case.message.clone())
         .label(case.label.clone().unwrap_or_default())
         .style(parse_style(case.style.as_deref()))
         .build();
 
-    options.logo_base64 = case.logo_base64.clone();
+    options.logo_data_url = case.logo_data_url.clone();
     options.logo_width = case.logo_width;
     options.id_suffix = case.id_suffix.clone();
 
