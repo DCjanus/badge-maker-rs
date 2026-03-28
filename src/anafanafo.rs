@@ -8,7 +8,6 @@
 // 当前目标是先复刻上游对外行为与语义边界，而不是扩展成通用文本测量库。
 
 use core::fmt;
-use std::sync::OnceLock;
 
 /// 复刻上游 `anafanafo` 当前支持的有限字体集合。
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -76,23 +75,17 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {}
 
 /// 压缩字符宽度表的消费接口。
+///
+/// The underlying font tables are generated at build time from the JSON files
+/// in `data/anafanafo/`, so measurement does not perform runtime JSON parsing.
 #[derive(Clone, Debug)]
 pub struct CharWidthTableConsumer {
-    data: Box<[WidthTableRange]>,
+    data: &'static [WidthTableRange],
     em_width: f32,
 }
 
 impl CharWidthTableConsumer {
-    pub fn create(data: Vec<WidthTableRange>) -> Self {
-        debug_assert!(is_valid_width_table(&data));
-
-        let data = data.into_boxed_slice();
-        let em_width = data
-            .iter()
-            .find(|range| range.contains('m' as u32))
-            .map(|range| range.width)
-            .expect("anafanafo width table must contain `m`");
-
+    pub const fn new_static(data: &'static [WidthTableRange], em_width: f32) -> Self {
         Self { data, em_width }
     }
 
@@ -184,59 +177,16 @@ fn is_control_char(char_code: u32) -> bool {
     char_code <= 31 || char_code == 127
 }
 
-fn is_valid_width_table(data: &[WidthTableRange]) -> bool {
-    data.iter().enumerate().all(|(index, current)| {
-        current.lower <= current.upper
-            && if index == 0 {
-                true
-            } else {
-                let previous = data[index - 1];
-                previous.upper < current.lower
-            }
-    })
-}
-
 fn builtin_consumer(font: Font) -> &'static CharWidthTableConsumer {
     match font {
-        Font::Verdana10 => consumer_from_json(
-            &VERDANA_10_CONSUMER,
-            include_str!("../data/anafanafo/verdana-10px-normal.json"),
-        ),
-        Font::Verdana10Bold => consumer_from_json(
-            &VERDANA_10_BOLD_CONSUMER,
-            include_str!("../data/anafanafo/verdana-10px-bold.json"),
-        ),
-        Font::Verdana11 => consumer_from_json(
-            &VERDANA_11_CONSUMER,
-            include_str!("../data/anafanafo/verdana-11px-normal.json"),
-        ),
-        Font::Helvetica11Bold => consumer_from_json(
-            &HELVETICA_11_BOLD_CONSUMER,
-            include_str!("../data/anafanafo/helvetica-11px-bold.json"),
-        ),
+        Font::Verdana10 => &VERDANA_10_CONSUMER,
+        Font::Verdana10Bold => &VERDANA_10_BOLD_CONSUMER,
+        Font::Verdana11 => &VERDANA_11_CONSUMER,
+        Font::Helvetica11Bold => &HELVETICA_11_BOLD_CONSUMER,
     }
 }
 
-fn consumer_from_json(
-    slot: &'static OnceLock<CharWidthTableConsumer>,
-    raw_json: &'static str,
-) -> &'static CharWidthTableConsumer {
-    slot.get_or_init(|| CharWidthTableConsumer::create(parse_width_table(raw_json)))
-}
-
-fn parse_width_table(raw_json: &str) -> Vec<WidthTableRange> {
-    let rows: Vec<(u32, u32, f32)> =
-        serde_json::from_str(raw_json).expect("embedded anafanafo width table must be valid JSON");
-
-    rows.into_iter()
-        .map(|(lower, upper, width)| WidthTableRange::new(lower, upper, width))
-        .collect()
-}
-
-static VERDANA_10_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();
-static VERDANA_10_BOLD_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();
-static VERDANA_11_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();
-static HELVETICA_11_BOLD_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();
+include!(concat!(env!("OUT_DIR"), "/anafanafo_tables.rs"));
 
 #[cfg(test)]
 mod tests {
