@@ -28,7 +28,7 @@
 - `anafanafo` 的第一阶段复刻已经基本落地，目前以内置宽度表和 Rust 实现提供等价模块；宽度 JSON 作为源数据保留，并在构建期生成 Rust 静态表，避免运行时 JSON 解析
 - 已建立基于 Bun 运行上游 npm 包的对照测试体系，用于持续验证行为兼容性，并尽量避免在仓库内保留常驻 `node_modules`
 - `badge-maker` 当前已覆盖 5 种官方样式的核心 SVG 输出路径，并通过 SVG 逐字节对照与栅格化像素对照持续回归
-- 当前公开接口已经收敛为 Rust 风格的 `BadgeOptions` + `make_badge`，不再追求上游 JavaScript 校验层、JSON 输出路径等非目标接口的一致性
+- 当前公开接口已经收敛为 Rust 风格的 `BadgeOptions` + `make_badge`，并在 `BadgeOptions` 上提供少量面向可读性的 helper 方法；不再追求上游 JavaScript 校验层、JSON 输出路径等非目标接口的一致性
 - rustdoc 中的 style 预览 SVG 已独立落库，并由自动化测试校验与当前实现逐字节一致
 - 后续是否发布正式 crate，将根据实验结果决定
 
@@ -80,6 +80,16 @@ assert!(svg.starts_with("<svg "));
 - 会持续对照上游 `badge-maker` 的 SVG 输出与栅格化结果
 - 不提供上游 `ValidationError`、对象字段校验包装、JSON 输出或其它 Node 特定入口
 - 如 `logo_width` 这类字段，如果保留在 Rust API 中，会明确视为 Rust 侧扩展，而不是上游公开接口兼容承诺
+
+当前这层 Rust API 也有几条明确的输入语义约定：
+
+- `label` 和 `message` 会先做首尾空白裁剪，再参与布局
+- 文本内容和属性内容在输出 SVG 时会统一做 XML 转义
+- 非法 `color` / `labelColor` 不报错，而是回退到样式默认色
+- `links` 最多只使用前两个元素，多余项会被忽略
+- `set_links(left, right)` / `with_links(left, right)` 提供了更明确的双槽位入口，并保留仅左侧、仅右侧、左右同时存在三种语义
+- `color` / `label_color` 可以直接使用 Shields 语义颜色别名，如 `success`、`important`、`critical`、`informational`、`inactive`
+- `id_suffix` 是当前唯一明确会返回错误的公开输入约束
 
 ## 参考项目
 

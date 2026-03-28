@@ -6,6 +6,23 @@ struct TableSpec {
     font_name: &'static str,
 }
 
+fn assert_valid_ranges(rows: &[(u32, u32, f32)], file_name: &str) {
+    for (index, (lower, upper, _)) in rows.iter().copied().enumerate() {
+        assert!(
+            lower <= upper,
+            "invalid anafanafo range in {file_name}: lower {lower} > upper {upper}"
+        );
+
+        if index > 0 {
+            let (_, previous_upper, _) = rows[index - 1];
+            assert!(
+                previous_upper < lower,
+                "overlapping or unsorted anafanafo ranges in {file_name}: previous upper {previous_upper}, current lower {lower}"
+            );
+        }
+    }
+}
+
 fn main() {
     let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("missing manifest dir"));
     let out_dir = PathBuf::from(env::var("OUT_DIR").expect("missing OUT_DIR"));
@@ -49,6 +66,7 @@ fn main() {
         let raw = fs::read_to_string(&path).expect("failed to read anafanafo width table JSON");
         let rows: Vec<(u32, u32, f32)> =
             serde_json::from_str(&raw).expect("invalid anafanafo width table JSON");
+        assert_valid_ranges(&rows, table.file_name);
 
         let em_width = rows
             .iter()

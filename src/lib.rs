@@ -27,6 +27,8 @@
 //! - Supported: SVG rendering for the five official badge styles.
 //! - Supported: upstream-aligned layout, escaping, trimming, colors, links,
 //!   logos, and `id_suffix` behavior.
+//! - Supported: ergonomic two-link setters and upstream semantic color aliases
+//!   such as `success` and `critical`.
 //! - Not exposed: JavaScript object validation, `ValidationError`, JSON output,
 //!   raster output, or other Node-specific entry points.
 
@@ -52,6 +54,14 @@ pub enum Style {
 ///
 /// The public API intentionally models the stable rendering inputs directly
 /// instead of reproducing the upstream JavaScript validation wrapper.
+///
+/// Public input semantics:
+///
+/// - `label` and `message` are trimmed before layout.
+/// - Text and attribute content are XML-escaped during SVG generation.
+/// - `color` and `label_color` silently fall back to style defaults when the
+///   provided value is not a recognized Shields color, hex color, or CSS color.
+/// - `links` uses at most the first two elements; extra entries are ignored.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct BadgeOptions {
     /// Left-hand label text. Empty by default.
@@ -76,7 +86,8 @@ pub struct BadgeOptions {
     ///
     /// The first link targets the left/body region, and the second targets the
     /// message region. Supplying only the first link wraps the whole badge body,
-    /// matching the upstream SVG structure.
+    /// matching the upstream SVG structure. If more than two links are
+    /// supplied, only the first two are used.
     pub links: Vec<String>,
     /// Optional suffix appended to generated SVG IDs to avoid collisions on the same page.
     pub id_suffix: Option<String>,
@@ -106,6 +117,30 @@ impl BadgeOptions {
             id_suffix: None,
         }
     }
+
+    /// Replaces the raw `links` vector using explicit left/right slots.
+    ///
+    /// `left` targets the left or full badge region, while `right` targets the
+    /// message region. Passing `None` for `left` and `Some(...)` for `right`
+    /// preserves the upstream "right-only link" structure.
+    pub fn set_links(&mut self, left: Option<impl Into<String>>, right: Option<impl Into<String>>) {
+        self.links = match (left, right) {
+            (None, None) => Vec::new(),
+            (Some(left), None) => vec![left.into()],
+            (None, Some(right)) => vec![String::new(), right.into()],
+            (Some(left), Some(right)) => vec![left.into(), right.into()],
+        };
+    }
+
+    /// Builder-style variant of [`BadgeOptions::set_links`].
+    pub fn with_links(
+        mut self,
+        left: Option<impl Into<String>>,
+        right: Option<impl Into<String>>,
+    ) -> Self {
+        self.set_links(left, right);
+        self
+    }
 }
 
 /// Rendering errors returned by [`make_badge`].
@@ -129,6 +164,12 @@ pub enum Error {
 /// Input text is trimmed before layout, then XML-escaped during SVG emission.
 /// This matches the behavior we care about from the upstream `badge-maker`
 /// renderer without exposing its JavaScript-only validation layer.
+///
+/// Error behavior is intentionally narrow:
+///
+/// - Invalid `id_suffix` returns [`Error::InvalidIdSuffix`].
+/// - Unknown colors do not error; they fall back to style defaults.
+/// - Extra `links` entries are ignored rather than rejected.
 pub fn make_badge(options: &BadgeOptions) -> Result<String, Error> {
     let id_suffix = options.id_suffix.clone().unwrap_or_default();
     if !id_suffix
