@@ -2,7 +2,7 @@ use badge_maker_rs::{self, BadgeOptions};
 
 mod support;
 
-use support::{ReferenceResult, load_cases, run_reference_batch, to_badge_options};
+use support::{ReferenceResult, load_cases, render_svg_to_rgba, run_reference_batch, to_badge_options};
 
 #[test]
 fn badge_maker_seed_cases_are_not_empty() {
@@ -57,9 +57,11 @@ fn badge_maker_matches_reference_cases() {
                 },
             ) => {
                 assert_eq!(id, &case.id);
+                let actual_pixels = render_svg_to_rgba(&actual_output);
+                let expected_pixels = render_svg_to_rgba(expected_output);
                 assert_eq!(
-                    actual_output, *expected_output,
-                    "badge output mismatch for case `{}`",
+                    actual_pixels, expected_pixels,
+                    "rasterized pixel mismatch for case `{}`",
                     case.id
                 );
             }

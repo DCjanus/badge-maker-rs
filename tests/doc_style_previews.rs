@@ -45,20 +45,6 @@ fn tracked_preview_svg(name: &str) -> String {
 }
 
 #[test]
-fn style_preview_markdown_references_all_tracked_svgs() {
-    let markdown = fs::read_to_string(repo_root().join("docs/style-previews.md"))
-        .expect("failed to read style preview markdown");
-
-    for (name, _) in preview_cases() {
-        let expected = format!("../docs/style-previews/{name}.svg");
-        assert!(
-            markdown.contains(&expected),
-            "missing markdown preview reference for `{name}`"
-        );
-    }
-}
-
-#[test]
 fn tracked_style_preview_svgs_match_current_renderer_output() {
     for (name, options) in preview_cases() {
         let actual = make_badge(&options).expect("failed to render preview badge");

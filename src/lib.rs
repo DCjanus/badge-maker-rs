@@ -32,7 +32,7 @@ pub use badge_color::{Color, NamedColor, ParseColorError};
 use thiserror::Error;
 
 /// Badge visual style.
-#[doc = include_str!("../docs/style-previews.md")]
+#[doc = include_str!(concat!(env!("OUT_DIR"), "/style-previews.md"))]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Style {
     Plastic,

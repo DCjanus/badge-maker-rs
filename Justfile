@@ -7,5 +7,3 @@ test:
 
 doc:
     cargo doc --no-deps
-    mkdir -p target/doc/docs/style-previews
-    cp docs/style-previews/*.svg target/doc/docs/style-previews/

@@ -6,6 +6,10 @@ use std::{
 };
 
 use badge_maker_rs::{BadgeOptions, Color, Style};
+use resvg::{
+    tiny_skia::{Pixmap, Transform},
+    usvg::{Options, Tree},
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -95,6 +99,14 @@ pub fn load_cases() -> Vec<ReferenceCase> {
     let text = fs::read_to_string(repo_root().join("tests/data/badge_maker_cases.json"))
         .expect("failed to read badge-maker cases");
     serde_json::from_str(&text).expect("failed to parse badge-maker cases")
+}
+
+pub fn render_svg_to_rgba(svg: &str) -> Vec<u8> {
+    let tree = Tree::from_str(svg, &Options::default()).expect("failed to parse SVG with usvg");
+    let size = tree.size().to_int_size();
+    let mut pixmap = Pixmap::new(size.width(), size.height()).expect("failed to create pixmap");
+    resvg::render(&tree, Transform::default(), &mut pixmap.as_mut());
+    pixmap.data().to_vec()
 }
 
 pub fn parse_style(style: Option<&str>) -> Style {

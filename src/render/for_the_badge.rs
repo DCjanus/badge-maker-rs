@@ -4,8 +4,8 @@ use crate::anafanafo::Font as WidthFont;
 use super::color::colors_for_background;
 use super::{
     FONT_FAMILY, FONT_SCALE_DOWN_VALUE, FONT_SCALE_UP_FACTOR, RenderParams, attr,
-    create_accessible_text, element, has_links, logo_element, measured_width_floor, render_badge,
-    should_wrap_body_with_link, text,
+    create_accessible_text, element, has_links, js_utf16_len, logo_element,
+    measured_width_floor, render_badge, should_wrap_body_with_link, text,
 };
 
 pub(super) fn render_for_the_badge(params: &RenderParams) -> Result<String, Error> {
@@ -16,8 +16,8 @@ pub(super) fn render_for_the_badge(params: &RenderParams) -> Result<String, Erro
     const LOGO_TEXT_GUTTER: f64 = 6.0;
     const LETTER_SPACING: f64 = 1.25;
 
-    let label = params.label.to_ascii_uppercase();
-    let message = params.message.to_ascii_uppercase();
+    let label = params.label.to_uppercase();
+    let message = params.message.to_uppercase();
     let [left_link, right_link] = &params.links;
     let (_, has_left_link, has_right_link) = has_links(&params.links);
 
@@ -30,13 +30,14 @@ pub(super) fn render_for_the_badge(params: &RenderParams) -> Result<String, Erro
     let label_text_width = if label.is_empty() {
         0.0
     } else {
-        measured_width_floor(&label, WidthFont::Verdana10)? + LETTER_SPACING * label.len() as f64
+        measured_width_floor(&label, WidthFont::Verdana10)?
+            + LETTER_SPACING * js_utf16_len(&label) as f64
     };
     let message_text_width = if message.is_empty() {
         0.0
     } else {
         measured_width_floor(&message, WidthFont::Verdana10Bold)?
-            + LETTER_SPACING * message.len() as f64
+            + LETTER_SPACING * js_utf16_len(&message) as f64
     };
 
     let has_label = !label.is_empty();

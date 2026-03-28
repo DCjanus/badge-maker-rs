@@ -1,15 +1,16 @@
-// 对 `anafanafo` 的 Rust 侧复刻入口。
+// Rust-side compatibility entry point for `anafanafo`.
 //
-// 参考来源：
+// Reference sources:
 // - `metabolize/anafanafo`
 // - `metabolize/anafanafo/packages/anafanafo`
 // - `metabolize/anafanafo/packages/char-width-table-consumer`
 //
-// 当前目标是先复刻上游对外行为与语义边界，而不是扩展成通用文本测量库。
+// The goal is to reproduce upstream behavior and boundaries first, not to turn
+// this module into a general-purpose text measurement library.
 
 use core::fmt;
 
-/// 复刻上游 `anafanafo` 当前支持的有限字体集合。
+/// Limited font set currently supported by upstream `anafanafo`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Font {
     Verdana10,
@@ -19,7 +20,7 @@ pub enum Font {
 }
 
 impl Font {
-    /// 返回上游 Node.js 侧使用的字体描述字符串。
+    /// Returns the font descriptor string used by the upstream Node.js package.
     #[allow(dead_code)]
     pub const fn as_str(self) -> &'static str {
         match self {
@@ -31,7 +32,7 @@ impl Font {
     }
 }
 
-/// 文本测量的输入选项。
+/// Input options for text measurement.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct MeasureOptions {
     pub font: Font,
@@ -56,7 +57,7 @@ impl Default for MeasureOptions {
     }
 }
 
-/// `anafanafo` 兼容层返回的错误。
+/// Error returned by the `anafanafo` compatibility layer.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Error {
     MissingWidth { char_code: u32 },
@@ -74,7 +75,7 @@ impl fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
-/// 压缩字符宽度表的消费接口。
+/// Consumer for compressed character-width tables.
 ///
 /// The underlying font tables are generated at build time from the JSON files
 /// in `data/anafanafo/`, so measurement does not perform runtime JSON parsing.
@@ -115,7 +116,7 @@ impl CharWidthTableConsumer {
     }
 }
 
-/// `width_of()` 的可选参数。
+/// Optional parameters for `width_of()`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WidthOfOptions {
     pub guess: bool,
@@ -139,7 +140,7 @@ impl Default for WidthOfOptions {
     }
 }
 
-/// 压缩宽度表中的单个区间。
+/// One range entry in a compressed width table.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct WidthTableRange {
     pub lower: u32,
@@ -161,9 +162,10 @@ impl WidthTableRange {
     }
 }
 
-/// 测量文本宽度。
+/// Measures text width.
 ///
-/// 这是对上游 `anafanafo(text, { font, guess })` 的 Rust 风格包装。
+/// This is the Rust-side wrapper around upstream
+/// `anafanafo(text, { font, guess })`.
 pub fn measure(text: &str, options: MeasureOptions) -> Result<f32, Error> {
     builtin_consumer(options.font).width_of(
         text,

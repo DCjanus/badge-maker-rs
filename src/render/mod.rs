@@ -297,9 +297,17 @@ fn create_accessible_text(label: &str, message: &str) -> String {
     }
 }
 
+fn js_utf16_len(input: &str) -> usize {
+    input.encode_utf16().count()
+}
+
 fn capitalize(input: &str) -> String {
     let mut chars = input.chars();
     match chars.next() {
+        // badge-maker uses `charAt(0).toUpperCase() + slice(1)`, which operates
+        // on UTF-16 code units. When the first scalar spans two code units, the
+        // JavaScript path leaves the string unchanged.
+        Some(first) if first.len_utf16() > 1 => input.to_owned(),
         Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
         None => String::new(),
     }
