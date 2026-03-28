@@ -166,7 +166,7 @@ fn semantic_color_aliases_render_successfully() {
 }
 
 #[test]
-fn typed_builder_requires_message_and_applies_defaults() {
+fn builder_requires_message_and_applies_defaults() {
     let svg = make_badge(
         &BadgeOptions::builder()
             .message("passing")

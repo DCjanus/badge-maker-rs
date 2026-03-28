@@ -23,6 +23,7 @@
 //! final rendered badge image: pixel-equivalent output matters more than SVG
 //! source parity, and JavaScript-specific API shape is out of scope.
 
+use bon::Builder;
 mod anafanafo;
 mod badge_color;
 mod render;
@@ -30,7 +31,6 @@ mod render;
 pub use badge_color::{Color, NamedColor, ParseColorError};
 
 use thiserror::Error;
-use typed_builder::TypedBuilder;
 
 /// Badge visual style.
 #[doc = include_str!("../docs/style-previews.md")]
@@ -53,44 +53,43 @@ pub enum Style {
 /// - `left_link` only: wraps the full badge body
 /// - `right_link` only: links only the right half
 /// - both present: links left and right halves independently
-#[derive(Clone, Debug, Eq, PartialEq, TypedBuilder)]
+#[derive(Clone, Debug, Eq, PartialEq, Builder)]
 pub struct BadgeOptions {
     /// Left-hand label text. Empty by default.
-    #[builder(default, setter(into))]
+    #[builder(default, into)]
     pub label: String,
     /// Right-hand message text.
-    #[builder(setter(into))]
+    #[builder(into)]
     pub message: String,
     /// Message-side color override.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(into)]
     pub color: Option<Color>,
     /// Label-side color override.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(into)]
     pub label_color: Option<Color>,
     /// Badge visual style.
     #[builder(default = Style::Flat)]
     pub style: Style,
     /// Optional logo data URL embedded as an SVG `<image>`.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(into)]
     pub logo_base64: Option<String>,
     /// Explicit logo width in pixels.
     ///
     /// This is a Rust-side convenience override, not an upstream JavaScript API.
-    #[builder(default, setter(strip_option))]
     pub logo_width: Option<u32>,
     /// Optional link for the left slot.
     ///
     /// When this is the only link provided, the full badge body is wrapped by
     /// one anchor to match upstream behavior.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(into)]
     pub left_link: Option<String>,
     /// Optional link for the right slot.
     ///
     /// When only `right_link` is set, only the right half is linked.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(into)]
     pub right_link: Option<String>,
     /// Optional suffix appended to generated SVG IDs to avoid collisions on the same page.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(into)]
     pub id_suffix: Option<String>,
 }
 
