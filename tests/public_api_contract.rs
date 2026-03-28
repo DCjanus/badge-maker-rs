@@ -169,18 +169,6 @@ fn builder_requires_message_and_applies_defaults() {
 }
 
 #[test]
-fn css_variable_colors_are_emitted_verbatim() {
-    let options = BadgeOptions::new("token")
-        .label("theme")
-        .color(Color::css_variable("--badge-color"))
-        .build();
-
-    let svg = make_badge(&options).expect("badge render should succeed");
-
-    assert!(svg.contains("fill=\"var(--badge-color)\""));
-}
-
-#[test]
 fn color_parsing_prefers_strict_typed_paths() {
     let named = "success"
         .parse::<Color>()
@@ -189,14 +177,12 @@ fn color_parsing_prefers_strict_typed_paths() {
     let css = "papayawhip"
         .parse::<Color>()
         .expect("css color should parse");
-    let var = "--badge-color"
-        .parse::<Color>()
-        .expect("css variable should parse");
 
     assert_eq!(named, Color::from(NamedColor::Success));
     assert!(matches!(hex, Color::Hex(value) if value == "#4c1"));
     assert!(matches!(css, Color::Css(value) if value == "papayawhip"));
-    assert_eq!(var, Color::css_variable("--badge-color"));
+    assert!("--badge-color".parse::<Color>().is_err());
+    assert!("var(--badge-color)".parse::<Color>().is_err());
     assert!("definitely-not-a-color".parse::<Color>().is_err());
 }
 
@@ -208,6 +194,6 @@ fn invalid_color_parse_error_is_actionable() {
 
     assert_eq!(
         error.to_string(),
-        "invalid badge color: expected a named color, #rgb/#rrggbb, a CSS color, or a CSS variable"
+        "invalid badge color: expected a named color, #rgb/#rrggbb, or a CSS color"
     );
 }

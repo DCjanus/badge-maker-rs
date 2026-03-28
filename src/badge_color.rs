@@ -14,24 +14,11 @@ pub enum Color {
     Hex(String),
     /// A CSS color literal such as `rgb(...)`, `hsl(...)`, or `papayawhip`.
     Css(String),
-    /// A CSS variable reference such as `var(--badge-color)`.
-    CssVariable(String),
     /// Low-level escape hatch for raw color input compatibility.
     Literal(String),
 }
 
 impl Color {
-    /// Creates a CSS variable reference.
-    pub fn css_variable(value: impl Into<String>) -> Self {
-        let value = value.into();
-        let trimmed = value.trim();
-        if trimmed.starts_with("var(") {
-            Self::CssVariable(trimmed.to_owned())
-        } else {
-            Self::CssVariable(format!("var({trimmed})"))
-        }
-    }
-
     /// Creates a low-level raw color literal.
     pub fn literal(value: impl Into<String>) -> Self {
         Self::Literal(value.into())
@@ -42,7 +29,6 @@ impl Color {
             Self::Named(named) => Some(named.to_svg_color().to_owned()),
             Self::Hex(value) => normalize_hex_color(value),
             Self::Css(value) => normalize_css_color(value),
-            Self::CssVariable(value) => normalize_css_variable(value),
             Self::Literal(value) => normalize_literal_color(value),
         }
     }
@@ -57,9 +43,6 @@ impl FromStr for Color {
         }
         if is_hex_color(value) {
             return Ok(Self::Hex(value.trim().to_owned()));
-        }
-        if normalize_css_variable(value).is_some() {
-            return Ok(Self::css_variable(value));
         }
         if normalize_css_color(value).is_some() {
             return Ok(Self::Css(value.trim().to_owned()));
@@ -80,9 +63,7 @@ pub struct ParseColorError;
 
 impl fmt::Display for ParseColorError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(
-            "invalid badge color: expected a named color, #rgb/#rrggbb, a CSS color, or a CSS variable",
-        )
+        f.write_str("invalid badge color: expected a named color, #rgb/#rrggbb, or a CSS color")
     }
 }
 
@@ -183,17 +164,6 @@ fn normalize_css_color(value: &str) -> Option<String> {
     let trimmed = value.trim();
     if trimmed.parse::<CssColor>().is_ok() {
         Some(trimmed.to_ascii_lowercase())
-    } else {
-        None
-    }
-}
-
-fn normalize_css_variable(value: &str) -> Option<String> {
-    let trimmed = value.trim();
-    if trimmed.starts_with("var(") && trimmed.ends_with(')') {
-        Some(trimmed.to_owned())
-    } else if trimmed.starts_with("--") {
-        Some(format!("var({trimmed})"))
     } else {
         None
     }
