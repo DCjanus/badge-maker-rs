@@ -1,5 +1,10 @@
 // Internal SVG rendering implementation for the public crate-root API.
 //
+// Compatibility target:
+// - Match the upstream rendered badge image as closely as possible.
+// - Pixel parity in our raster comparison pipeline is more important than
+//   byte-for-byte SVG source parity.
+//
 // Reference sources:
 // - `badges/shields`
 // - `badges/shields/badge-maker`
@@ -43,9 +48,12 @@ pub(crate) fn render_svg(
             0
         }
     });
-    let color = to_svg_color(options.color.as_deref());
-    let label_color = to_svg_color(options.label_color.as_deref());
-    let links = normalize_links(&options.links);
+    let color = to_svg_color(options.color.as_ref());
+    let label_color = to_svg_color(options.label_color.as_ref());
+    let links = [
+        options.left_link.clone().unwrap_or_default(),
+        options.right_link.clone().unwrap_or_default(),
+    ];
 
     let params = RenderParams {
         label,
@@ -327,11 +335,4 @@ fn measured_width_floor(text: &str, font: WidthFont) -> Result<f64, Error> {
 
 fn round_up_to_odd(value: u32) -> u32 {
     if value % 2 == 0 { value + 1 } else { value }
-}
-
-fn normalize_links(links: &[String]) -> [String; 2] {
-    [
-        links.first().cloned().unwrap_or_default(),
-        links.get(1).cloned().unwrap_or_default(),
-    ]
 }

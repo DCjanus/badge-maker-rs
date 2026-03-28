@@ -1,17 +1,11 @@
-use badge_maker_rs::{BadgeOptions, Error, Style, make_badge};
-
-fn base_options() -> BadgeOptions {
-    let mut options = BadgeOptions::new("passing");
-    options.label = "build".to_owned();
-    options.color = Some("brightgreen".to_owned());
-    options.style = Style::Flat;
-    options
-}
+use badge_maker_rs::{BadgeOptions, Color, Error, NamedColor, Style, make_badge};
 
 #[test]
 fn trims_and_escapes_text_input() {
-    let mut options = BadgeOptions::new("  <passing> & ready  ");
-    options.label = "  build \"ci\"  ".to_owned();
+    let options = BadgeOptions::builder()
+        .message("  <passing> & ready  ")
+        .label("  build \"ci\"  ")
+        .build();
 
     let svg = make_badge(&options).expect("badge render should succeed");
 
@@ -22,38 +16,48 @@ fn trims_and_escapes_text_input() {
 
 #[test]
 fn invalid_id_suffix_is_rejected() {
-    let mut options = base_options();
-    options.id_suffix = Some("\\".to_owned());
+    let options = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .id_suffix("\\")
+        .build();
 
     let error = make_badge(&options).expect_err("expected invalid id suffix to fail");
     assert_eq!(error, Error::InvalidIdSuffix);
 }
 
 #[test]
-fn only_first_two_links_are_used() {
-    let mut options = base_options();
-    options.links = vec![
-        "https://example.com/left".to_owned(),
-        "https://example.com/right".to_owned(),
-        "https://example.com/ignored".to_owned(),
-    ];
+fn left_and_right_links_render_in_distinct_slots() {
+    let options = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .color(NamedColor::Brightgreen)
+        .style(Style::Flat)
+        .left_link("https://example.com/left")
+        .right_link("https://example.com/right")
+        .build();
 
     let svg = make_badge(&options).expect("badge render should succeed");
 
     assert!(svg.contains("https://example.com/left"));
     assert!(svg.contains("https://example.com/right"));
-    assert!(!svg.contains("https://example.com/ignored"));
 }
 
 #[test]
 fn invalid_colors_fall_back_to_style_defaults() {
-    let mut invalid = base_options();
-    invalid.color = Some("definitely-not-a-color".to_owned());
-    invalid.label_color = Some("still-not-a-color".to_owned());
+    let invalid = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .color(Color::literal("definitely-not-a-color"))
+        .label_color(Color::literal("still-not-a-color"))
+        .style(Style::Flat)
+        .build();
 
-    let mut defaulted = base_options();
-    defaulted.color = None;
-    defaulted.label_color = None;
+    let defaulted = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .style(Style::Flat)
+        .build();
 
     let invalid_svg = make_badge(&invalid).expect("badge render should succeed");
     let default_svg = make_badge(&defaulted).expect("badge render should succeed");
@@ -63,11 +67,22 @@ fn invalid_colors_fall_back_to_style_defaults() {
 
 #[test]
 fn logo_width_is_a_rust_side_override() {
-    let mut base = base_options();
-    base.logo_base64 = Some("data:image/svg+xml;base64,PHN2ZyB4bWxu".to_owned());
+    let base = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .color(NamedColor::Brightgreen)
+        .style(Style::Flat)
+        .logo_base64("data:image/svg+xml;base64,PHN2ZyB4bWxu")
+        .build();
 
-    let mut wide_logo = base.clone();
-    wide_logo.logo_width = Some(28);
+    let wide_logo = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .color(NamedColor::Brightgreen)
+        .style(Style::Flat)
+        .logo_base64("data:image/svg+xml;base64,PHN2ZyB4bWxu")
+        .logo_width(28)
+        .build();
 
     let base_svg = make_badge(&base).expect("badge render should succeed");
     let wide_svg = make_badge(&wide_logo).expect("badge render should succeed");
@@ -78,9 +93,11 @@ fn logo_width_is_a_rust_side_override() {
 
 #[test]
 fn empty_label_and_message_are_allowed() {
-    let mut options = BadgeOptions::new("");
-    options.label = String::new();
-    options.logo_base64 = Some("data:image/svg+xml;base64,PHN2ZyB4bWxu".to_owned());
+    let options = BadgeOptions::builder()
+        .message("")
+        .label("")
+        .logo_base64("data:image/svg+xml;base64,PHN2ZyB4bWxu")
+        .build();
 
     let svg = make_badge(&options).expect("badge render should succeed");
 
@@ -89,8 +106,14 @@ fn empty_label_and_message_are_allowed() {
 }
 
 #[test]
-fn typed_links_preserve_right_only_semantics() {
-    let options = base_options().with_links(None::<String>, Some("https://example.com/right-only"));
+fn right_link_preserves_right_only_semantics() {
+    let options = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .color(NamedColor::Brightgreen)
+        .style(Style::Flat)
+        .right_link("https://example.com/right-only")
+        .build();
 
     let svg = make_badge(&options).expect("badge render should succeed");
 
@@ -99,37 +122,105 @@ fn typed_links_preserve_right_only_semantics() {
 }
 
 #[test]
-fn set_links_overwrites_existing_vector_links() {
-    let mut options = base_options();
-    options.links = vec![
-        "https://example.com/left".to_owned(),
-        "https://example.com/right".to_owned(),
-    ];
-
-    options.set_links(Some("https://example.com/replaced"), None::<String>);
+fn left_link_wraps_the_full_badge_body() {
+    let options = BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .color(NamedColor::Brightgreen)
+        .style(Style::Flat)
+        .left_link("https://example.com/replaced")
+        .build();
 
     let svg = make_badge(&options).expect("badge render should succeed");
 
     assert!(svg.contains("https://example.com/replaced"));
-    assert!(!svg.contains("https://example.com/right"));
+    assert!(svg.contains("<a target=\"_blank\" href=\"https://example.com/replaced\">"));
 }
 
 #[test]
 fn semantic_color_aliases_render_successfully() {
     let aliases = [
-        "success",
-        "important",
-        "critical",
-        "informational",
-        "inactive",
+        NamedColor::Success,
+        NamedColor::Important,
+        NamedColor::Critical,
+        NamedColor::Informational,
+        NamedColor::Inactive,
     ];
 
     for alias in aliases {
-        let mut options = base_options();
-        options.color = Some(alias.to_owned());
+        let options = BadgeOptions::builder()
+            .message("passing")
+            .label("build")
+            .color(alias)
+            .style(Style::Flat)
+            .build();
 
         let svg = make_badge(&options).expect("badge render should succeed");
 
-        assert!(svg.starts_with("<svg "), "alias `{alias}` did not render");
+        assert!(
+            svg.starts_with("<svg "),
+            "alias `{}` did not render",
+            alias.as_str()
+        );
     }
+}
+
+#[test]
+fn typed_builder_requires_message_and_applies_defaults() {
+    let svg = make_badge(
+        &BadgeOptions::builder()
+            .message("passing")
+            .label("build")
+            .color(NamedColor::Brightgreen)
+            .build(),
+    )
+    .expect("badge render should succeed");
+
+    assert!(svg.contains("aria-label=\"build: passing\""));
+    assert!(svg.contains("#4c1"));
+}
+
+#[test]
+fn css_variable_colors_are_emitted_verbatim() {
+    let options = BadgeOptions::builder()
+        .message("token")
+        .label("theme")
+        .color(Color::css_variable("--badge-color"))
+        .build();
+
+    let svg = make_badge(&options).expect("badge render should succeed");
+
+    assert!(svg.contains("fill=\"var(--badge-color)\""));
+}
+
+#[test]
+fn color_parsing_prefers_strict_typed_paths() {
+    let named = "success"
+        .parse::<Color>()
+        .expect("named color should parse");
+    let hex = "#4c1".parse::<Color>().expect("hex color should parse");
+    let css = "papayawhip"
+        .parse::<Color>()
+        .expect("css color should parse");
+    let var = "--badge-color"
+        .parse::<Color>()
+        .expect("css variable should parse");
+
+    assert_eq!(named, Color::from(NamedColor::Success));
+    assert!(matches!(hex, Color::Hex(value) if value == "#4c1"));
+    assert!(matches!(css, Color::Css(value) if value == "papayawhip"));
+    assert_eq!(var, Color::css_variable("--badge-color"));
+    assert!("definitely-not-a-color".parse::<Color>().is_err());
+}
+
+#[test]
+fn invalid_color_parse_error_is_actionable() {
+    let error = "definitely-not-a-color"
+        .parse::<Color>()
+        .expect_err("invalid color should fail parsing");
+
+    assert_eq!(
+        error.to_string(),
+        "invalid badge color: expected a named color, #rgb/#rrggbb, a CSS color, or a CSS variable"
+    );
 }

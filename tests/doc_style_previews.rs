@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use badge_maker_rs::{BadgeOptions, Style, make_badge};
+use badge_maker_rs::{BadgeOptions, NamedColor, Style, make_badge};
 
 fn repo_root() -> &'static Path {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -23,11 +23,12 @@ fn preview_cases() -> [(&'static str, BadgeOptions); 5] {
 }
 
 fn preview_options(message: &str, style: Style) -> BadgeOptions {
-    let mut options = BadgeOptions::new(message);
-    options.label = "example".to_owned();
-    options.color = Some("blue".to_owned());
-    options.style = style;
-    options
+    BadgeOptions::builder()
+        .message(message)
+        .label("example")
+        .color(NamedColor::Blue)
+        .style(style)
+        .build()
 }
 
 fn tracked_preview_svg(name: &str) -> String {

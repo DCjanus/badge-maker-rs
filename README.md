@@ -1,34 +1,21 @@
 # badge-maker-rs
 
-`badge-maker-rs` 是一个实验性 Rust 项目，目标是尽可能复刻 [Shields.io `badge-maker`](https://github.com/badges/shields/tree/master/badge-maker) 的核心行为，并最终作为一个可独立发布的 Rust crate 使用。
+`badge-maker-rs` 是一个实验性 Rust 项目，目标是尽可能兼容 [Shields.io `badge-maker`](https://github.com/badges/shields/tree/master/badge-maker) 的最终视觉输出，并最终沉淀成一个可独立使用的 Rust crate。
 
-当前已经不只是“底层验证”阶段：仓库内已有一个可运行的 Rust 渲染实现，覆盖上游 `badge-maker` 的 5 种官方样式，并通过对照测试持续验证 SVG 输出和栅格化结果。
+它当前已经具备可运行的 Rust 渲染实现，覆盖上游 `badge-maker` 的 5 种官方样式，并通过上游对照测试持续校验 SVG 输出与栅格化结果。
 
-创建这个仓库的直接动机，是为了解决 [deps.rs issue #245](https://github.com/deps-rs/deps.rs/issues/245) 中关于 badge 样式兼容性的需求。更具体地说，我们希望让 deps.rs 能够生成尽可能兼容 Shields.io 风格与行为的 badge，而不是继续维护一套独立且差异逐渐扩大的实现。
-
-选择复刻 Shields.io `badge-maker` 的原因也很直接：在今天的开源生态里，Shields.io 已经几乎是 badge 的事实标准。遵循它的风格和行为，有几个很实际的好处：
-
-- 可以降低 deps.rs 使用者的心智负担，因为大多数用户已经熟悉 Shields 风格的 badge
-- 可以让 deps.rs badge 更自然地和其他服务生成的 badge 保持一致
-- 可以避免在同一个 README 中出现过多彼此不协调的 badge 视觉风格
-
-## 当前阶段目标
-
-- 继续扩展并稳固 `anafanafo` 等价模块的行为覆盖
-- 继续吸收上游 `badge-maker` 测试素材，扩大高价值边界 case 集
-- 维持 SVG 字符串、栅格化结果、文档预览三条校验链的一致性
-- 在不牺牲架构清晰度的前提下，逐步逼近上游视觉与行为结果
+创建这个仓库的直接动机，是为了解决 [deps.rs issue #245](https://github.com/deps-rs/deps.rs/issues/245) 中关于 badge 样式兼容性的需求。我们希望 deps.rs 生成的 badge 在最终渲染结果上尽可能兼容 Shields.io，而不是继续维护一套逐渐分叉的自定义实现。
 
 ## 项目状态
 
-项目仍处于实验阶段，但核心渲染链路已经成形。
+项目仍处于实验阶段，但核心渲染链路已经成形：
 
 - README 暂时以中文维护
-- 目标优先级为“视觉一致”，不是一开始就追求字节一致
+- 目标优先级是最终渲染结果的像素级一致，而不是 SVG 文本的字节一致
 - `anafanafo` 的第一阶段复刻已经基本落地，目前以内置宽度表和 Rust 实现提供等价模块；宽度 JSON 作为源数据保留，并在构建期生成 Rust 静态表，避免运行时 JSON 解析
-- 已建立基于 Bun 运行上游 npm 包的对照测试体系，用于持续验证行为兼容性，并尽量避免在仓库内保留常驻 `node_modules`
-- `badge-maker` 当前已覆盖 5 种官方样式的核心 SVG 输出路径，并通过 SVG 逐字节对照与栅格化像素对照持续回归
-- 当前公开接口已经收敛为 Rust 风格的 `BadgeOptions` + `make_badge`，并在 `BadgeOptions` 上提供少量面向可读性的 helper 方法；不再追求上游 JavaScript 校验层、JSON 输出路径等非目标接口的一致性
+- 已建立基于 Bun 运行上游 npm 包的对照测试体系，用于持续验证视觉兼容性，并尽量避免在仓库内保留常驻 `node_modules`
+- `badge-maker` 当前已覆盖 5 种官方样式的核心输出路径，并通过 SVG 对照与栅格化像素对照持续回归
+- 当前公开接口已经收敛为 Rust 风格的 `BadgeOptions::builder()` + `make_badge`；不再追求上游 JavaScript 校验层、JSON 输出路径等非目标接口的一致性
 - rustdoc 中的 style 预览 SVG 已独立落库，并由自动化测试校验与当前实现逐字节一致
 - 后续是否发布正式 crate，将根据实验结果决定
 
@@ -38,11 +25,11 @@
 
 当前主要有三层校验：
 
-- 基于 Bun 调用上游 `badge-maker`，逐字节对照 SVG 输出
+- 基于 Bun 调用上游 `badge-maker`，对照 SVG 输出
 - 使用 `resvg` 栅格化上游 SVG 和 Rust SVG，逐像素对照渲染结果
 - 校验文档中引用的 style preview SVG 与当前 Rust 实现重新生成的结果逐字节一致
 
-这几层组合的目的，是尽量用高覆盖率集成测试确保我们关心的公开行为与视觉结果稳定贴近上游。
+这几层组合的目的，是尽量用高覆盖率集成测试确保我们关心的公开行为与最终视觉结果稳定兼容上游。其中栅格化后的像素结果是更高优先级的真相来源，SVG 文本对照主要用于快速定位偏差。
 
 对于 `anafanafo` 这类稳定数据驱动模块，当前也尽量避免把运行时成本留到线上路径：
 
@@ -52,9 +39,11 @@
 
 ## 当前公开 API
 
-当前 crate 根只暴露这几个与渲染直接相关的类型和函数：
+crate 根目前只暴露与渲染直接相关的类型和函数：
 
 - `BadgeOptions`
+- `Color`
+- `NamedColor`
 - `Style`
 - `Error`
 - `make_badge`
@@ -62,34 +51,42 @@
 最小使用方式如下：
 
 ```rust
-use badge_maker_rs::{BadgeOptions, Style, make_badge};
+use badge_maker_rs::{BadgeOptions, Color, Style, make_badge};
 
-let mut options = BadgeOptions::new("passing");
-options.label = "build".to_owned();
-options.color = Some("brightgreen".to_owned());
-options.style = Style::Flat;
-
-let svg = make_badge(&options)?;
+let svg = make_badge(
+    &BadgeOptions::builder()
+        .message("passing")
+        .label("build")
+        .color("brightgreen".parse()?)
+        .style(Style::Flat)
+        .build(),
+)?;
 assert!(svg.starts_with("<svg "));
-# Ok::<(), badge_maker_rs::Error>(())
+# Ok::<(), Box<dyn std::error::Error>>(())
 ```
 
-当前兼容边界也已经比较明确：
+当前兼容边界比较明确：
 
-- 我们对齐的是 SVG 行为与视觉结果，而不是 Node.js 包的全部外部接口
-- 会持续对照上游 `badge-maker` 的 SVG 输出与栅格化结果
+- 我们对齐的是最终渲染效果，而不是 Node.js 包的全部外部接口
+- 会持续对照上游 `badge-maker` 的 SVG 输出与栅格化结果，其中像素一致性优先级更高
 - 不提供上游 `ValidationError`、对象字段校验包装、JSON 输出或其它 Node 特定入口
 - 如 `logo_width` 这类字段，如果保留在 Rust API 中，会明确视为 Rust 侧扩展，而不是上游公开接口兼容承诺
 
-当前这层 Rust API 也有几条明确的输入语义约定：
+输入语义目前约定如下：
 
 - `label` 和 `message` 会先做首尾空白裁剪，再参与布局
 - 文本内容和属性内容在输出 SVG 时会统一做 XML 转义
-- 非法 `color` / `labelColor` 不报错，而是回退到样式默认色
-- `links` 最多只使用前两个元素，多余项会被忽略
-- `set_links(left, right)` / `with_links(left, right)` 提供了更明确的双槽位入口，并保留仅左侧、仅右侧、左右同时存在三种语义
-- `color` / `label_color` 可以直接使用 Shields 语义颜色别名，如 `success`、`important`、`critical`、`informational`、`inactive`
+- 日常调用优先推荐 `"brightgreen".parse::<Color>()`
+- `color` / `label_color` 未提供时沿用 Shields 默认色
+- `Color::literal(...)` 在非法时不报错，而是回退到样式默认色
+- `left_link` / `right_link` 直接表达链接结构：
+  仅 `left_link` 时会包住整块 badge body；仅 `right_link` 时只给右半边加链接；两者同时存在时则左右各自独立链接
 - `id_suffix` 是当前唯一明确会返回错误的公开输入约束
+
+## Breaking Changes
+
+- `BadgeOptions.links` 已移除，改为 `left_link` / `right_link`
+- `BadgeOptions::set_links(...)` 已移除，改为直接设置 `left_link` / `right_link`
 
 ## 参考项目
 
