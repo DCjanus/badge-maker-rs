@@ -1,24 +1,22 @@
 # badge-maker-rs
 
-`badge-maker-rs` is a Rust badge renderer that targets Shields-compatible badge
-output.
+`badge-maker-rs` is a Rust badge renderer designed to match
+[Shields.io](https://shields.io) badge output.
 
-The crate focuses on the thing that matters most in practice: the final badge
-image. Its compatibility target is the rendered result of the upstream
+It follows the rendered output of the upstream
 [`badge-maker`](https://github.com/badges/shields/tree/master/badge-maker)
-implementation, validated by upstream-backed reference tests.
+implementation and validates compatibility with upstream-backed reference
+tests.
 
 ## Features
 
 - Covers all five official `badge-maker` styles: `plastic`, `flat`,
   `flat-square`, `for-the-badge`, and `social`
-- Uses upstream-backed regression tests to compare Rust output against the
-  upstream JavaScript renderer
-- Prioritizes final raster parity over byte-for-byte SVG source parity
+- Includes upstream-backed regression tests against the JavaScript renderer
+- Treats final raster parity as a higher priority than byte-for-byte SVG parity
 - Compiles upstream `anafanafo` width-table data into Rust static tables at
-  build time, with no runtime JSON parsing
-- Exposes a compact Rust-first API instead of mirroring the JavaScript package
-  surface
+  build time
+- Exposes a Rust-first API instead of mirroring the JavaScript package surface
 
 ## Installation
 
@@ -49,10 +47,10 @@ To write an SVG file from the example program:
 cargo run --example render_svg > badge.svg
 ```
 
-## API Notes
+## API
 
-- The public API is intentionally Rust-first and targets rendered badge output
-  compatibility, not full JavaScript package API parity.
+- The public API is intentionally Rust-first and does not aim to reproduce the
+  full JavaScript package surface.
 - `message` is required through `BadgeOptions::new(message)`. `label` and
   `message` are trimmed before layout, and emitted text is XML-escaped.
 - Omitted `color` and `label_color` follow Shields defaults. Invalid
@@ -72,9 +70,9 @@ Run the full local suite with:
 just test
 ```
 
-The test suite is upstream-driven and prioritizes final rendered output, with
-pixel parity used as the main compatibility gate. For contributor workflow and
-test layout details, see [CONTRIBUTING.md](CONTRIBUTING.md).
+The test suite is upstream-driven and uses final rendered output as the main
+compatibility gate. Contributor workflow and test layout details are documented
+in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
 
