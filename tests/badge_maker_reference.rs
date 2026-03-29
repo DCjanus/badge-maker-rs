@@ -1,5 +1,3 @@
-use badge_maker_rs;
-
 mod support;
 
 use support::{
