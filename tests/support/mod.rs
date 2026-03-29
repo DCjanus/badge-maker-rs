@@ -95,6 +95,40 @@ pub fn run_reference_batch(cases: &[ReferenceCase]) -> Vec<ReferenceResult> {
     serde_json::from_slice(&output.stdout).expect("failed to parse badge-maker runner output")
 }
 
+#[allow(dead_code)]
+pub fn reference_svg_for_case(case: &ReferenceCase) -> String {
+    let reference_results = run_reference_batch(std::slice::from_ref(case));
+    match &reference_results[0] {
+        ReferenceResult {
+            id,
+            ok: true,
+            output: Some(output),
+            error: None,
+        } => {
+            assert_eq!(id, &case.id);
+            output.clone()
+        }
+        other => panic!("unexpected reference result for case `{}`: {other:?}", case.id),
+    }
+}
+
+#[allow(dead_code)]
+pub fn reference_error_for_case(case: &ReferenceCase) -> String {
+    let reference_results = run_reference_batch(std::slice::from_ref(case));
+    match &reference_results[0] {
+        ReferenceResult {
+            id,
+            ok: false,
+            output: None,
+            error: Some(error),
+        } => {
+            assert_eq!(id, &case.id);
+            error.clone()
+        }
+        other => panic!("unexpected reference result for case `{}`: {other:?}", case.id),
+    }
+}
+
 pub fn load_cases() -> Vec<ReferenceCase> {
     let text = fs::read_to_string(repo_root().join("tests/data/badge_maker_cases.json"))
         .expect("failed to read badge-maker cases");

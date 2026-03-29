@@ -30,6 +30,16 @@
     "links": []
   },
   {
+    "id": "flat-empty-logo-is-absent",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "",
+    "links": []
+  },
+  {
     "id": "flat-message-only",
     "label": "",
     "message": "grown",
@@ -114,6 +124,16 @@
     "links": []
   },
   {
+    "id": "flat-square-empty-logo-is-absent",
+    "label": "cactus",
+    "message": "grown",
+    "style": "flat-square",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "",
+    "links": []
+  },
+  {
     "id": "flat-square-message-only",
     "label": "",
     "message": "grown",
@@ -195,6 +215,16 @@
     "labelColor": "#0f0",
     "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
     "idSuffix": "1",
+    "links": []
+  },
+  {
+    "id": "plastic-empty-logo-is-absent",
+    "label": "cactus",
+    "message": "grown",
+    "style": "plastic",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "",
     "links": []
   },
   {
@@ -289,6 +319,16 @@
     "links": []
   },
   {
+    "id": "for-the-badge-empty-logo-is-absent",
+    "label": "cactus",
+    "message": "grown",
+    "style": "for-the-badge",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "",
+    "links": []
+  },
+  {
     "id": "for-the-badge-message-only",
     "label": "",
     "message": "grown",
@@ -380,6 +420,16 @@
     "links": []
   },
   {
+    "id": "social-empty-logo-is-absent",
+    "label": "cactus",
+    "message": "grown",
+    "style": "social",
+    "color": "#b3e",
+    "labelColor": "#0f0",
+    "logoBase64": "",
+    "links": []
+  },
+  {
     "id": "social-message-only",
     "label": "",
     "message": "grown",
@@ -420,6 +470,12 @@
     "label": "label",
     "message": "message",
     "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "default-style-basic",
+    "label": "label",
+    "message": "message",
     "links": []
   },
   {
@@ -527,6 +583,15 @@
     "message": "  2026 q1  ",
     "style": "for-the-badge",
     "color": "important",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-unicode-spacing",
+    "label": "éé",
+    "message": "中",
+    "style": "for-the-badge",
+    "color": "#4c1",
+    "labelColor": "#555",
     "links": []
   },
   {

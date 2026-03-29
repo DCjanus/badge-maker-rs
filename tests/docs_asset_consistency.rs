@@ -45,7 +45,7 @@ fn tracked_preview_svg(name: &str) -> String {
 }
 
 #[test]
-fn tracked_style_preview_svgs_match_current_renderer_output() {
+fn tracked_style_preview_svgs_match_docs_assets() {
     for (name, options) in preview_cases() {
         let actual = make_badge(&options).expect("failed to render preview badge");
         let expected = tracked_preview_svg(name);

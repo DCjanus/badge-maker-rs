@@ -45,17 +45,23 @@ than centered on fine-grained unit tests.
 
 The current checks are:
 
-- Reference execution through the upstream `badge-maker` npm package via Bun.
-- Pixel-by-pixel raster comparison between upstream SVG output and Rust SVG
-  output.
-- Regression tests for public Rust API semantics.
+- Data-driven upstream reference execution through the `badge-maker` npm
+  package via Bun, with pixel-by-pixel raster comparison between upstream SVG
+  output and Rust SVG output.
+- Reference tests that compare exact SVG text when pixel comparison would lose
+  important semantics.
+- Reference tests that align Rust error behavior with upstream `badge-maker`
+  error semantics where that comparison is still valuable.
+- Regression tests for public Rust API semantics that are intentionally
+  Rust-specific or not well protected by raster comparison alone.
 - Verification that tracked rustdoc style preview SVGs still match the current
   renderer output.
 
 This combination is meant to keep the main truth source aligned with the
 project's goal: final rendered image compatibility. Pixel comparison is the
-primary gate; SVG source inspection is used only where it is still useful for
-diagnostics or public API coverage.
+primary gate; exact SVG source inspection and error-semantic checks are kept in
+separate focused test files instead of being mixed into the data-driven pixel
+suite.
 
 For stable data-driven modules such as `anafanafo`, the repository also avoids
 leaving unnecessary cost in the runtime path:

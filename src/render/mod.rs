@@ -41,13 +41,17 @@ pub(crate) fn render_svg(
     message: String,
     id_suffix: String,
 ) -> Result<String, Error> {
-    let logo_width = options.logo_width.unwrap_or_else(|| {
-        if options.logo_data_url.is_some() {
-            DEFAULT_LOGO_HEIGHT
-        } else {
-            0
-        }
-    });
+    let logo = options
+        .logo_data_url
+        .as_ref()
+        .filter(|logo| !logo.is_empty())
+        .cloned();
+    let has_logo = logo.is_some();
+    let logo_width = if has_logo {
+        options.logo_width.unwrap_or(DEFAULT_LOGO_HEIGHT)
+    } else {
+        0
+    };
     let color = to_svg_color(options.color.as_ref());
     let label_color = to_svg_color(options.label_color.as_ref());
     let links = [
@@ -59,9 +63,9 @@ pub(crate) fn render_svg(
         label,
         message,
         links,
-        logo: options.logo_data_url.clone(),
+        logo,
         logo_width,
-        logo_padding: if options.logo_data_url.is_some() && !options.label.trim().is_empty() {
+        logo_padding: if has_logo && !options.label.trim().is_empty() {
             3
         } else {
             0

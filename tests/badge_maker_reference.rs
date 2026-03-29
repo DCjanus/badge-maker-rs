@@ -1,4 +1,4 @@
-use badge_maker_rs::{self, BadgeOptions};
+use badge_maker_rs;
 
 mod support;
 
@@ -22,20 +22,6 @@ fn badge_maker_case_ids_are_unique() {
             case.id
         );
     }
-}
-
-#[test]
-fn badge_maker_rejects_invalid_id_suffix() {
-    let options = BadgeOptions::new("passing")
-        .label("build")
-        .id_suffix("\\")
-        .build();
-
-    let error = badge_maker_rs::make_badge(&options).expect_err("expected invalid idSuffix");
-    assert_eq!(
-        error.to_string(),
-        "Field `idSuffix` must contain only numbers, letters, -, and _"
-    );
 }
 
 #[test]

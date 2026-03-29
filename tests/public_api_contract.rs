@@ -1,9 +1,9 @@
 use badge_maker_rs::{BadgeOptions, Color, Error, NamedColor, Style, make_badge};
 
 #[test]
-fn trims_and_escapes_text_input() {
-    let options = BadgeOptions::new("  <passing> & ready  ")
-        .label("  build \"ci\"  ")
+fn escapes_text_input_for_svg_and_accessibility() {
+    let options = BadgeOptions::new("<passing> & ready")
+        .label("build \"ci\"")
         .build();
 
     let svg = make_badge(&options).expect("badge render should succeed");
@@ -41,26 +41,6 @@ fn left_and_right_links_render_in_distinct_slots() {
 }
 
 #[test]
-fn invalid_colors_fall_back_to_style_defaults() {
-    let invalid = BadgeOptions::new("passing")
-        .label("build")
-        .color(Color::literal("definitely-not-a-color"))
-        .label_color(Color::literal("still-not-a-color"))
-        .style(Style::Flat)
-        .build();
-
-    let defaulted = BadgeOptions::new("passing")
-        .label("build")
-        .style(Style::Flat)
-        .build();
-
-    let invalid_svg = make_badge(&invalid).expect("badge render should succeed");
-    let default_svg = make_badge(&defaulted).expect("badge render should succeed");
-
-    assert_eq!(invalid_svg, default_svg);
-}
-
-#[test]
 fn logo_width_is_a_rust_side_override() {
     let base = BadgeOptions::new("passing")
         .label("build")
@@ -85,16 +65,25 @@ fn logo_width_is_a_rust_side_override() {
 }
 
 #[test]
-fn empty_label_and_message_are_allowed() {
-    let options = BadgeOptions::new("")
-        .label("")
-        .logo_data_url("data:image/svg+xml;base64,PHN2ZyB4bWxu")
+fn logo_width_without_logo_does_not_affect_output() {
+    let base = BadgeOptions::new("passing")
+        .label("build")
+        .color(NamedColor::Brightgreen)
+        .style(Style::Flat)
         .build();
 
-    let svg = make_badge(&options).expect("badge render should succeed");
+    let ignored_logo_width = BadgeOptions::new("passing")
+        .label("build")
+        .color(NamedColor::Brightgreen)
+        .style(Style::Flat)
+        .logo_width(28)
+        .build();
 
-    assert!(svg.starts_with("<svg "));
-    assert!(svg.contains("<image "));
+    let base_svg = make_badge(&base).expect("badge render should succeed");
+    let ignored_svg = make_badge(&ignored_logo_width).expect("badge render should succeed");
+
+    assert_eq!(ignored_svg, base_svg);
+    assert!(!ignored_svg.contains("<image "));
 }
 
 #[test]
@@ -128,44 +117,11 @@ fn left_link_wraps_the_full_badge_body() {
 }
 
 #[test]
-fn semantic_color_aliases_render_successfully() {
-    let aliases = [
-        NamedColor::Success,
-        NamedColor::Important,
-        NamedColor::Critical,
-        NamedColor::Informational,
-        NamedColor::Inactive,
-    ];
-
-    for alias in aliases {
-        let options = BadgeOptions::new("passing")
-            .label("build")
-            .color(alias)
-            .style(Style::Flat)
-            .build();
-
-        let svg = make_badge(&options).expect("badge render should succeed");
-
-        assert!(
-            svg.starts_with("<svg "),
-            "alias `{}` did not render",
-            alias.as_str()
-        );
-    }
-}
-
-#[test]
-fn builder_requires_message_and_applies_defaults() {
-    let svg = make_badge(
-        &BadgeOptions::new("passing")
-            .label("build")
-            .color(NamedColor::Brightgreen)
-            .build(),
-    )
-    .expect("badge render should succeed");
+fn builder_applies_default_accessible_text() {
+    let svg = make_badge(&BadgeOptions::new("passing").label("build").build())
+        .expect("badge render should succeed");
 
     assert!(svg.contains("aria-label=\"build: passing\""));
-    assert!(svg.contains("#4c1"));
 }
 
 #[test]
