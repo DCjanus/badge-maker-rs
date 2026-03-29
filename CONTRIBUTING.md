@@ -76,6 +76,9 @@ layers instead of many implementation-coupled unit tests.
   Actions OIDC instead of a long-lived API token.
 - Trusted Publishing on crates.io requires one manual publish before it can be
   enabled for this repository.
+- `badge-maker-rs` `0.0.0` was published as a one-time placeholder release to
+  unlock Trusted Publishing setup. After the first real automated release
+  succeeds, yank that placeholder version.
 - Before relying on automated publishing, configure the repository as a trusted
   publisher in crates.io settings and verify that the workflow has permission
   to request OIDC tokens.
