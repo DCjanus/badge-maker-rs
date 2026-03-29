@@ -65,3 +65,17 @@ layers instead of many implementation-coupled unit tests.
 - The repository may use local clones under `.references/` for upstream
   research. Treat those checkouts as local reference material, not versioned
   project content.
+
+## Releases
+
+- Stable releases are published from tags in the `vX.Y.Z` form.
+- The release workflow verifies that the tag version matches the crate version
+  in [Cargo.toml](Cargo.toml), runs the full test suite, publishes to
+  crates.io, and then creates a GitHub Release.
+- crates.io publishing is intended to use Trusted Publishing with GitHub
+  Actions OIDC instead of a long-lived API token.
+- Trusted Publishing on crates.io requires one manual publish before it can be
+  enabled for this repository.
+- Before relying on automated publishing, configure the repository as a trusted
+  publisher in crates.io settings and verify that the workflow has permission
+  to request OIDC tokens.
