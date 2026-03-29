@@ -1,0 +1,6 @@
+<!--
+Generated from the upstream `badge-maker` 5.0.2 reference output via
+`tools/js-ref/index.js badge-maker` with:
+{ "label": "example", "message": "for-the-badge", "color": "blue", "style": "for-the-badge" }
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="212" height="28" role="img" aria-label="EXAMPLE: FOR-THE-BADGE"><title>EXAMPLE: FOR-THE-BADGE</title><g shape-rendering="crispEdges"><rect width="78.75" height="28" fill="#555"/><rect x="78.75" width="133.25" height="28" fill="#007ec6"/></g><g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="100"><text transform="scale(.1)" x="393.75" y="175" textLength="547.5" fill="#fff">EXAMPLE</text><text transform="scale(.1)" x="1453.75" y="175" textLength="1092.5" fill="#fff" font-weight="bold">FOR-THE-BADGE</text></g></svg>

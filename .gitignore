@@ -1,0 +1,8 @@
+.references/
+/target/
+
+# Local environment noise
+.DS_Store
+
+# JavaScript test tooling
+tools/js-ref/node_modules/
