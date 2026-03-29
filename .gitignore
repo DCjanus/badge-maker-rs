@@ -6,6 +6,3 @@
 
 # JavaScript test tooling
 tools/js-ref/node_modules/
-
-# Local example output
-example-output.svg

@@ -1,15 +1,26 @@
 # Contributing
 
+## Prerequisites
+
+- Rust stable with Cargo
+- `just`
+- `cargo-nextest`
+- Bun
+
+If you prefer not to install `just`, run the commands from [Justfile](Justfile)
+directly.
+
 ## Development Workflow
 
-- Run the full local test suite with `just test`.
-- Prefer repository-level conventions over ad hoc local setup.
-- Keep changes aligned with the project's main compatibility target: final
+- Keep changes aligned with the crate's main compatibility target: final
   rendered badge output.
+- Run the full local suite with `just test`.
+- Prefer repository-level conventions over ad hoc local setup.
+- Keep user-facing documentation, comments, and release-facing text in English.
 
 ## Test Layout
 
-The repository intentionally uses a small number of integration-style test
+This repository intentionally uses a small number of integration-style test
 layers instead of many implementation-coupled unit tests.
 
 - `tests/badge_maker_reference.rs`
@@ -34,19 +45,23 @@ layers instead of many implementation-coupled unit tests.
 
 ## Where New Tests Should Go
 
-- If the case can be compared against upstream `badge-maker` by final rendered
+- If a case can be compared against upstream `badge-maker` by final rendered
   output, add it to `tests/data/badge_maker_cases.json`.
-- If the case needs exact SVG source comparison, keep it in a dedicated
-  reference test file rather than forcing it into the data-driven pixel suite.
-- If the case is about Rust-only API behavior, typed parsing, or link/error
+- If a case needs exact SVG source comparison, keep it in a dedicated
+  reference test file instead of forcing it into the data-driven pixel suite.
+- If a case is about Rust-only API behavior, typed parsing, or link and error
   semantics that upstream reference rendering does not cover well, put it in
   `tests/public_api_contract.rs`.
-- If the case is about tracked docs artifacts, keep it in
+- If a case is about tracked rustdoc assets, keep it in
   `tests/docs_asset_consistency.rs`.
 
 ## Reference Runner Notes
 
-- Upstream reference execution is routed through Bun in `tools/js-ref`.
+- Upstream reference execution is routed through Bun in
+  [tools/js-ref](tools/js-ref/README.md).
 - Reference fixtures should describe behavior, not checked-in generated output.
-- For rendering compatibility, prefer pixel parity over byte-for-byte SVG parity
-  unless the test is explicitly about SVG text semantics.
+- For rendering compatibility, prefer pixel parity over byte-for-byte SVG
+  parity unless the test is explicitly about SVG text semantics.
+- The repository may use local clones under `.references/` for upstream
+  research. Treat those checkouts as local reference material, not versioned
+  project content.

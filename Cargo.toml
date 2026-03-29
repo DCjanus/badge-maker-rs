@@ -2,6 +2,20 @@
 name = "badge-maker-rs"
 version = "0.1.0"
 edition = "2024"
+description = "Rust badge renderer targeting Shields-compatible badge output"
+license = "MIT"
+repository = "https://github.com/DCjanus/badge-maker-rs"
+keywords = ["badge", "svg", "shields", "rendering"]
+rust-version = "1.85"
+include = [
+    "/LICENSE",
+    "/build.rs",
+    "/data/anafanafo/*.json",
+    "/data/anafanafo/README.md",
+    "/docs/style-previews/*.svg",
+    "/examples/write_svg.rs",
+    "/src/**",
+]
 
 [dependencies]
 bon = "3.9.1"

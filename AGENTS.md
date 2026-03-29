@@ -1,38 +1,56 @@
-## 分支策略
+## Branch Policy
 
-- 除非用户当次明确说明，否则调研阶段和实验阶段的所有 PR 都应指向长期开发分支，而不是 `master`。
-- 长期开发分支暂定为 `develop`。如果后续用户指定了新的分支名，以用户指定为准。
-- 实验阶段的开发流程默认是：
-  - 每个阶段从长期开发分支切出一个短期功能分支，例如 `feat/anafanafo-phase1`
-  - 阶段完成后先合并回长期开发分支
-  - 在整体实验接近完成之前，不直接合并到 `master`
-- 在准备把长期开发分支收尾合并到 `master` 前，需要先清理所有中文内容，并将对外文档、注释和面向发布的内容统一调整为英文。
+- Unless the user explicitly says otherwise, pull requests for ongoing
+  development should target `develop`, not `master`.
+- The long-lived development branch is currently `develop`. If the user names a
+  different branch later, follow the user instruction.
+- The default feature workflow is:
+  - branch from `develop`
+  - merge back into `develop`
+  - avoid merging directly into `master` until the release line is ready
+- Before merging release-ready work from the development branch into `master`,
+  remove remaining Chinese user-facing content and keep public documentation,
+  comments, and release-facing text in English.
 
-## 外部参考仓库
+## External References
 
-- 所有为了阅读、对照、调研而拉取的外部项目，都统一 clone 到仓库根目录下的 `.references/`。
-- `.references/` 只用于本地参考，不应纳入 Git 版本管理。
-- 需要参考外部项目时，优先复用 `.references/` 里已有的副本，避免重复 clone。
-- 任何引入仓库内的外部文件、外部数据或外部派生内容，都必须在相邻文档、注释或其它明确位置声明来源，以满足法律合规和对上游项目的基本尊重。
+- Clone third-party repositories used for reading or comparison into
+  `.references/` at the repository root.
+- `.references/` is for local research only and must not be committed.
+- Reuse existing checkouts in `.references/` before cloning again.
+- If upstream files, data, or derived content are brought into this repository,
+  record the source nearby in documentation, comments, or another explicit
+  location.
 
-## 测试策略
+## Testing Strategy
 
-- 测试默认尽量以集成测试为主，避免编写过多会锁定内部实现细节的单元测试。
-- 优先通过高覆盖率的集成测试验证对外行为，并尽量与参考 Node.js 库的最终视觉结果保持一致。
-- 对于能够稳定产出 SVG、且可以与上游 `badge-maker` 对照的行为，默认优先放入 reference 套件，用上游结果约束兼容性。
-- `public_api_contract` 一类契约测试默认优先覆盖两类场景：Rust 侧特有 API 语义，和那些即使能产出 SVG 也不适合仅靠栅格对照验证的文本/链接/错误语义；不能生成 SVG 的失败场景也优先放在这一层。
-- 数据驱动的 `badge_maker_reference` 用例默认以最终渲染结果对照为主；如果某个场景需要精确比对 SVG 文本本身，而不是最终像素结果，则应保留在单独的测试文件中，不并入 `tests/data/badge_maker_cases.json`。
-- 运行全量测试时，默认优先使用 `just test` 作为统一入口，并尽量让本地与 CI 共享同一套测试逻辑。
-- JS 侧参考实现默认通过批量调用 Bun 脚本并经由 `stdin/stdout` 交换 JSON 的方式接入测试。
-- 对照测试不提交生成结果文件；测试运行时应基于锁定版本的 Bun 依赖即时生成参考结果。
-- 最终渲染结果是当前阶段的最高优先级兼容目标；能稳定验证时，应优先相信栅格化后的像素对照，而不是 SVG 文本本身。
+- Prefer integration-style tests over a large number of implementation-coupled
+  unit tests.
+- Use upstream reference coverage whenever the behavior can be compared against
+  `badge-maker`.
+- `public_api_contract` should focus on Rust-specific API semantics and on text,
+  link, or error behavior that raster comparison does not protect well.
+- Keep cases that require exact SVG text comparison in dedicated test files
+  instead of forcing them into `tests/data/badge_maker_cases.json`.
+- Use `just test` as the default full-suite entry point, and keep local and CI
+  behavior aligned.
+- JavaScript reference execution should continue to use Bun with JSON exchanged
+  over `stdin` and `stdout`.
+- Do not commit generated comparison outputs. Generate reference results at test
+  time from locked JavaScript dependencies.
+- When verification is stable, trust rasterized output parity over raw SVG text
+  parity.
 
-## 工程取向
+## Engineering Direction
 
-- 所有开发默认以最好的效果、最好的长期可维护性和架构清晰性为目标，一般可忽略短期开发成本。
-- 不要为了尽快接通功能引入难以扩展的 hack、脆弱的特判，或会把复杂度下沉到底层的临时设计。
-- 如果现有架构已经明显妨碍需求自然落地，应优先重构抽象层，让需求通过结构成立，而不是继续堆叠上层例外规则。
-- 对已经确认值得投入的一组相关需求，默认应在同一轮内尽量推进到当前架构下难以继续推进为止，而不是只做浅层占位。
-- 优先选择小而明确的仓库级约定，而不是依赖隐式的本机环境配置。
-- 随着项目推进，应及时更新 `README.md`，确保其内容始终跟得上项目当前状态与阶段目标。
-- 不要为了追求与上游 JavaScript 库的接口完全一致而保留不服务于本项目目标的兼容层；对照测试应优先约束我们真正关心的公开行为与最终视觉结果，而不是机械覆盖上游所有内部接口或次要 API 形状。
+- Prefer maintainability, clarity, and long-term architecture over short-term
+  speed.
+- Do not introduce hacks, brittle special cases, or designs that push
+  complexity downward just to land a quick fix.
+- If the current architecture blocks a natural implementation, refactor the
+  abstraction rather than stacking more exceptions on top.
+- Prefer small, explicit repository conventions over hidden machine-local
+  configuration.
+- Keep [README.md](README.md) up to date as the project evolves.
+- Do not preserve compatibility layers that only exist to mirror the upstream
+  JavaScript package shape when they do not serve this crate's goals.
