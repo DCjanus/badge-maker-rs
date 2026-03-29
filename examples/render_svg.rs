@@ -1,4 +1,4 @@
-use std::{fs, path::PathBuf};
+use std::io::{self, Write};
 
 use badge_maker_rs::{BadgeOptions, NamedColor, Style, make_badge};
 
@@ -11,9 +11,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .build(),
     )?;
 
-    let output_path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("example-output.svg");
-    fs::write(&output_path, svg)?;
-
-    println!("Wrote {}", output_path.display());
+    io::stdout().write_all(svg.as_bytes())?;
     Ok(())
 }

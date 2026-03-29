@@ -1,8 +1,8 @@
-use badge_maker_rs;
-
 mod support;
 
-use support::{ReferenceResult, load_cases, render_svg_to_rgba, run_reference_batch, to_badge_options};
+use support::{
+    ReferenceResult, load_cases, render_svg_to_rgba, run_reference_batch, to_badge_options,
+};
 
 #[test]
 fn badge_maker_seed_cases_are_not_empty() {

@@ -75,7 +75,10 @@ fn generate_style_preview_docs(manifest_dir: &Path) -> String {
         println!("cargo:rerun-if-changed={}", path.display());
 
         let svg = fs::read(&path).unwrap_or_else(|_| {
-            panic!("failed to read tracked style preview SVG {}", path.display())
+            panic!(
+                "failed to read tracked style preview SVG {}",
+                path.display()
+            )
         });
         let data_url = format!(
             "data:image/svg+xml;base64,{}",

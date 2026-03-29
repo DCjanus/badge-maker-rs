@@ -108,7 +108,10 @@ pub fn reference_svg_for_case(case: &ReferenceCase) -> String {
             assert_eq!(id, &case.id);
             output.clone()
         }
-        other => panic!("unexpected reference result for case `{}`: {other:?}", case.id),
+        other => panic!(
+            "unexpected reference result for case `{}`: {other:?}",
+            case.id
+        ),
     }
 }
 
@@ -125,7 +128,10 @@ pub fn reference_error_for_case(case: &ReferenceCase) -> String {
             assert_eq!(id, &case.id);
             error.clone()
         }
-        other => panic!("unexpected reference result for case `{}`: {other:?}", case.id),
+        other => panic!(
+            "unexpected reference result for case `{}`: {other:?}",
+            case.id
+        ),
     }
 }
 

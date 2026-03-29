@@ -180,15 +180,24 @@ fn is_control_char(char_code: u32) -> bool {
 }
 
 fn builtin_consumer(font: Font) -> &'static CharWidthTableConsumer {
-    match font {
-        Font::Verdana10 => &VERDANA_10_CONSUMER,
-        Font::Verdana10Bold => &VERDANA_10_BOLD_CONSUMER,
-        Font::Verdana11 => &VERDANA_11_CONSUMER,
-        Font::Helvetica11Bold => &HELVETICA_11_BOLD_CONSUMER,
-    }
+    generated_tables::consumer(font)
 }
 
-include!(concat!(env!("OUT_DIR"), "/anafanafo_tables.rs"));
+#[allow(clippy::approx_constant)]
+mod generated_tables {
+    use super::{CharWidthTableConsumer, Font, WidthTableRange};
+
+    include!(concat!(env!("OUT_DIR"), "/anafanafo_tables.rs"));
+
+    pub(super) fn consumer(font: Font) -> &'static CharWidthTableConsumer {
+        match font {
+            Font::Verdana10 => &VERDANA_10_CONSUMER,
+            Font::Verdana10Bold => &VERDANA_10_BOLD_CONSUMER,
+            Font::Verdana11 => &VERDANA_11_CONSUMER,
+            Font::Helvetica11Bold => &HELVETICA_11_BOLD_CONSUMER,
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {

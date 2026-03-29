@@ -4,8 +4,8 @@ use crate::anafanafo::Font as WidthFont;
 use super::color::colors_for_background;
 use super::{
     FONT_FAMILY, FONT_SCALE_DOWN_VALUE, FONT_SCALE_UP_FACTOR, RenderParams, attr,
-    create_accessible_text, element, has_links, js_utf16_len, logo_element,
-    measured_width_floor, render_badge, should_wrap_body_with_link, text,
+    create_accessible_text, element, has_links, js_utf16_len, logo_element, measured_width_floor,
+    render_badge, should_wrap_body_with_link, text,
 };
 
 pub(super) fn render_for_the_badge(params: &RenderParams) -> Result<String, Error> {
