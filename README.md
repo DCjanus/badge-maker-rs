@@ -46,33 +46,20 @@ assert!(svg.starts_with("<svg "));
 To write an SVG file from the example program:
 
 ```sh
-cargo run --example write_svg > badge.svg
+cargo run --example render_svg > badge.svg
 ```
 
-## Scope
+## API Notes
 
-The public API is intentionally Rust-first.
-
-- The compatibility target is the rendered badge output, not full JavaScript
-  package API parity.
-- Upstream `badge-maker` remains the rendering reference.
-- Node-specific entry points such as validation wrappers or JSON-oriented
-  helpers are intentionally out of scope.
-- Rust-side inputs such as `logo_width` are exposed as crate conveniences, not
-  as promises to match the upstream package shape exactly.
-
-Current input semantics:
-
-- `message` is required and is provided through `BadgeOptions::new(message)`.
-- `label` and `message` are trimmed before layout.
-- Text and attribute content are XML-escaped before SVG emission.
-- Omitted `color` and `label_color` follow Shields defaults.
-- Invalid `Color::literal(...)` input falls back to style defaults instead of
+- The public API is intentionally Rust-first and targets rendered badge output
+  compatibility, not full JavaScript package API parity.
+- `message` is required through `BadgeOptions::new(message)`. `label` and
+  `message` are trimmed before layout, and emitted text is XML-escaped.
+- Omitted `color` and `label_color` follow Shields defaults. Invalid
+  `Color::literal(...)` input falls back to style defaults instead of
   returning an error.
-- `left_link` and `right_link` model the badge link structure directly:
-  `left_link` alone wraps the full badge body, `right_link` alone links only
-  the right half, and both together create independent left and right links.
-- `logo_data_url`, `logo_width`, and `id_suffix` correspond to the upstream
+- `left_link` and `right_link` model link structure directly, while
+  `logo_data_url`, `logo_width`, and `id_suffix` map to the upstream
   `logoBase64`, `logoWidth`, and `idSuffix` concepts.
 - `id_suffix` is currently the only public input that returns a dedicated
   validation error.
@@ -85,19 +72,9 @@ Run the full local suite with:
 just test
 ```
 
-The repository uses integration-heavy, upstream-driven tests rather than a
-large number of implementation-coupled unit tests.
-
-The main layers are:
-
-- Data-driven upstream reference tests with pixel-by-pixel raster comparison
-- Focused reference tests for exact SVG text semantics
-- Focused reference tests for useful upstream error semantics
-- Rust API contract tests for Rust-specific behavior
-- Consistency checks for tracked rustdoc preview assets
-
-Upstream JavaScript reference execution is routed through Bun in
-[tools/js-ref](tools/js-ref/README.md).
+The test suite is upstream-driven and prioritizes final rendered output, with
+pixel parity used as the main compatibility gate. For contributor workflow and
+test layout details, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
 

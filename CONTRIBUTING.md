@@ -12,10 +12,7 @@ directly.
 
 ## Development Workflow
 
-- Keep changes aligned with the crate's main compatibility target: final
-  rendered badge output.
 - Run the full local suite with `just test`.
-- Prefer repository-level conventions over ad hoc local setup.
 - Keep user-facing documentation, comments, and release-facing text in English.
 
 ## Test Layout
@@ -60,11 +57,8 @@ layers instead of many implementation-coupled unit tests.
 - Upstream reference execution is routed through Bun in
   [tools/js-ref](tools/js-ref/README.md).
 - Reference fixtures should describe behavior, not checked-in generated output.
-- For rendering compatibility, prefer pixel parity over byte-for-byte SVG
-  parity unless the test is explicitly about SVG text semantics.
-- The repository may use local clones under `.references/` for upstream
-  research. Treat those checkouts as local reference material, not versioned
-  project content.
+- Prefer pixel parity over byte-for-byte SVG parity unless the test is
+  explicitly about SVG text semantics.
 
 ## Releases
 

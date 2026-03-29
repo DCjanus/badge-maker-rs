@@ -22,24 +22,15 @@
   record the source nearby in documentation, comments, or another explicit
   location.
 
-## Testing Strategy
+## Agent Notes
 
-- Prefer integration-style tests over a large number of implementation-coupled
-  unit tests.
-- Use upstream reference coverage whenever the behavior can be compared against
-  `badge-maker`.
-- `public_api_contract` should focus on Rust-specific API semantics and on text,
-  link, or error behavior that raster comparison does not protect well.
-- Keep cases that require exact SVG text comparison in dedicated test files
-  instead of forcing them into `tests/data/badge_maker_cases.json`.
-- Use `just test` as the default full-suite entry point, and keep local and CI
-  behavior aligned.
-- JavaScript reference execution should continue to use Bun with JSON exchanged
-  over `stdin` and `stdout`.
-- Do not commit generated comparison outputs. Generate reference results at test
-  time from locked JavaScript dependencies.
-- When verification is stable, trust rasterized output parity over raw SVG text
-  parity.
+- Prefer the repository's integration-heavy, upstream-driven testing style over
+  implementation-coupled unit tests.
+- Use `just test` as the default full-suite entry point unless there is a clear
+  reason to run something narrower first.
+- Keep generated comparison artifacts out of version control.
+- Put contributor-facing workflow and release details in
+  [CONTRIBUTING.md](CONTRIBUTING.md), not here.
 
 ## Engineering Direction
 

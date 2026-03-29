@@ -13,7 +13,7 @@ include = [
     "/data/anafanafo/*.json",
     "/data/anafanafo/README.md",
     "/docs/style-previews/*.svg",
-    "/examples/write_svg.rs",
+    "/examples/render_svg.rs",
     "/src/**",
 ]
 
