@@ -145,8 +145,8 @@ impl FromStr for NamedColor {
 fn normalize_literal_color(value: &str) -> Option<String> {
     normalize_named_color(value)
         .map(|named| named.to_svg_color().to_owned())
-        .or_else(|| normalize_hex_color(value))
-        .or_else(|| normalize_css_color(value))
+        .or_else(|| normalize_literal_hex_color(value))
+        .or_else(|| normalize_literal_css_color(value))
 }
 
 fn normalize_hex_color(value: &str) -> Option<String> {
@@ -160,10 +160,38 @@ fn normalize_hex_color(value: &str) -> Option<String> {
     }
 }
 
+fn normalize_literal_hex_color(value: &str) -> Option<String> {
+    if is_literal_hex_color(value) {
+        Some(format!(
+            "#{}",
+            value.trim_start_matches('#').to_ascii_lowercase()
+        ))
+    } else {
+        None
+    }
+}
+
 fn normalize_css_color(value: &str) -> Option<String> {
     let trimmed = value.trim();
     if trimmed.parse::<CssColor>().is_ok() {
         Some(trimmed.to_ascii_lowercase())
+    } else {
+        None
+    }
+}
+
+fn normalize_literal_css_color(value: &str) -> Option<String> {
+    let trimmed = value.trim();
+
+    if trimmed.eq_ignore_ascii_case("transparent") {
+        return None;
+    }
+    if trimmed != trimmed.to_ascii_lowercase() {
+        return None;
+    }
+
+    if trimmed.parse::<CssColor>().is_ok() {
+        Some(trimmed.to_owned())
     } else {
         None
     }
@@ -194,4 +222,11 @@ fn normalize_named_color(value: &str) -> Option<NamedColor> {
 fn is_hex_color(input: &str) -> bool {
     let raw = input.trim().trim_start_matches('#');
     matches!(raw.len(), 3 | 6) && raw.bytes().all(|byte| byte.is_ascii_hexdigit())
+}
+
+fn is_literal_hex_color(input: &str) -> bool {
+    let raw = input.strip_prefix('#').unwrap_or(input);
+    matches!(raw.len(), 3 | 6)
+        && !raw.starts_with('#')
+        && raw.bytes().all(|byte| byte.is_ascii_hexdigit())
 }

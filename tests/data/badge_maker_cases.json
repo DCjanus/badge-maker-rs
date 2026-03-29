@@ -710,6 +710,24 @@
     "links": []
   },
   {
+    "id": "flat-invalid-hex-like-colors-fall-back",
+    "label": "color",
+    "message": "invalid-hex",
+    "style": "flat",
+    "color": "##abc",
+    "labelColor": " #abc ",
+    "links": []
+  },
+  {
+    "id": "flat-rejected-css-colors-fall-back",
+    "label": "color",
+    "message": "rejected-css",
+    "style": "flat",
+    "color": "RGB(1,2,3)",
+    "labelColor": "transparent",
+    "links": []
+  },
+  {
     "id": "flat-css-named-color",
     "label": "color",
     "message": "papayawhip",
