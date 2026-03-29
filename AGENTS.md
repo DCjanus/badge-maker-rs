@@ -1,18 +1,22 @@
-## Branch Policy
+# Agent Guide
 
-- Unless the user explicitly says otherwise, pull requests for ongoing
-  development should target `develop`, not `master`.
-- The long-lived development branch is currently `develop`. If the user names a
-  different branch later, follow the user instruction.
-- The default feature workflow is:
-  - branch from `develop`
-  - merge back into `develop`
-  - avoid merging directly into `master` until the release line is ready
-- Before merging release-ready work from the development branch into `master`,
-  remove remaining Chinese user-facing content and keep public documentation,
-  comments, and release-facing text in English.
+## Compatibility
 
-## External References
+- Treat upstream `badge-maker` as the compatibility reference.
+- Prefer final rendered output parity over source-level SVG parity unless the
+  task is explicitly about SVG text semantics.
+- Do not add compatibility surface that only exists to mirror the JavaScript
+  package shape when it does not improve this crate.
+
+## Testing
+
+- Use `just test` as the default full-suite entry point unless there is a clear
+  reason to run something narrower first.
+- Prefer upstream-driven integration tests over implementation-coupled unit
+  tests.
+- Keep generated comparison artifacts out of version control.
+
+## External Sources
 
 - Clone third-party repositories used for reading or comparison into
   `.references/` at the repository root.
@@ -21,27 +25,3 @@
 - If upstream files, data, or derived content are brought into this repository,
   record the source nearby in documentation, comments, or another explicit
   location.
-
-## Agent Notes
-
-- Prefer the repository's integration-heavy, upstream-driven testing style over
-  implementation-coupled unit tests.
-- Use `just test` as the default full-suite entry point unless there is a clear
-  reason to run something narrower first.
-- Keep generated comparison artifacts out of version control.
-- Put contributor-facing workflow and release details in
-  [CONTRIBUTING.md](CONTRIBUTING.md), not here.
-
-## Engineering Direction
-
-- Prefer maintainability, clarity, and long-term architecture over short-term
-  speed.
-- Do not introduce hacks, brittle special cases, or designs that push
-  complexity downward just to land a quick fix.
-- If the current architecture blocks a natural implementation, refactor the
-  abstraction rather than stacking more exceptions on top.
-- Prefer small, explicit repository conventions over hidden machine-local
-  configuration.
-- Keep [README.md](README.md) up to date as the project evolves.
-- Do not preserve compatibility layers that only exist to mirror the upstream
-  JavaScript package shape when they do not serve this crate's goals.
