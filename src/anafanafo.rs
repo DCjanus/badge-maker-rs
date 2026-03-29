@@ -1,16 +1,16 @@
-//! 对 `anafanafo` 的 Rust 侧复刻入口。
-//!
-//! 参考来源：
-//! - `metabolize/anafanafo`
-//! - `metabolize/anafanafo/packages/anafanafo`
-//! - `metabolize/anafanafo/packages/char-width-table-consumer`
-//!
-//! 当前目标是先复刻上游对外行为与语义边界，而不是扩展成通用文本测量库。
+// Rust-side compatibility entry point for `anafanafo`.
+//
+// Reference sources:
+// - `metabolize/anafanafo`
+// - `metabolize/anafanafo/packages/anafanafo`
+// - `metabolize/anafanafo/packages/char-width-table-consumer`
+//
+// The goal is to reproduce upstream behavior and boundaries first, not to turn
+// this module into a general-purpose text measurement library.
 
 use core::fmt;
-use std::sync::OnceLock;
 
-/// 复刻上游 `anafanafo` 当前支持的有限字体集合。
+/// Limited font set currently supported by upstream `anafanafo`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Font {
     Verdana10,
@@ -20,7 +20,8 @@ pub enum Font {
 }
 
 impl Font {
-    /// 返回上游 Node.js 侧使用的字体描述字符串。
+    /// Returns the font descriptor string used by the upstream Node.js package.
+    #[allow(dead_code)]
     pub const fn as_str(self) -> &'static str {
         match self {
             Self::Verdana10 => "10px Verdana",
@@ -31,7 +32,7 @@ impl Font {
     }
 }
 
-/// 文本测量的输入选项。
+/// Input options for text measurement.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct MeasureOptions {
     pub font: Font,
@@ -43,6 +44,7 @@ impl MeasureOptions {
         Self { font, guess: true }
     }
 
+    #[allow(dead_code)]
     pub const fn with_guess(mut self, guess: bool) -> Self {
         self.guess = guess;
         self
@@ -55,7 +57,7 @@ impl Default for MeasureOptions {
     }
 }
 
-/// `anafanafo` 兼容层返回的错误。
+/// Error returned by the `anafanafo` compatibility layer.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Error {
     MissingWidth { char_code: u32 },
@@ -73,24 +75,18 @@ impl fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
-/// 压缩字符宽度表的消费接口。
+/// Consumer for compressed character-width tables.
+///
+/// The underlying font tables are generated at build time from the JSON files
+/// in `data/anafanafo/`, so measurement does not perform runtime JSON parsing.
 #[derive(Clone, Debug)]
 pub struct CharWidthTableConsumer {
-    data: Box<[WidthTableRange]>,
+    data: &'static [WidthTableRange],
     em_width: f32,
 }
 
 impl CharWidthTableConsumer {
-    pub fn create(data: Vec<WidthTableRange>) -> Self {
-        debug_assert!(is_valid_width_table(&data));
-
-        let data = data.into_boxed_slice();
-        let em_width = data
-            .iter()
-            .find(|range| range.contains('m' as u32))
-            .map(|range| range.width)
-            .expect("anafanafo width table must contain `m`");
-
+    pub const fn new_static(data: &'static [WidthTableRange], em_width: f32) -> Self {
         Self { data, em_width }
     }
 
@@ -120,7 +116,7 @@ impl CharWidthTableConsumer {
     }
 }
 
-/// `width_of()` 的可选参数。
+/// Optional parameters for `width_of()`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WidthOfOptions {
     pub guess: bool,
@@ -131,6 +127,7 @@ impl WidthOfOptions {
         Self { guess: true }
     }
 
+    #[allow(dead_code)]
     pub const fn with_guess(mut self, guess: bool) -> Self {
         self.guess = guess;
         self
@@ -143,7 +140,7 @@ impl Default for WidthOfOptions {
     }
 }
 
-/// 压缩宽度表中的单个区间。
+/// One range entry in a compressed width table.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct WidthTableRange {
     pub lower: u32,
@@ -165,9 +162,10 @@ impl WidthTableRange {
     }
 }
 
-/// 测量文本宽度。
+/// Measures text width.
 ///
-/// 这是对上游 `anafanafo(text, { font, guess })` 的 Rust 风格包装。
+/// This is the Rust-side wrapper around upstream
+/// `anafanafo(text, { font, guess })`.
 pub fn measure(text: &str, options: MeasureOptions) -> Result<f32, Error> {
     builtin_consumer(options.font).width_of(
         text,
@@ -181,56 +179,268 @@ fn is_control_char(char_code: u32) -> bool {
     char_code <= 31 || char_code == 127
 }
 
-fn is_valid_width_table(data: &[WidthTableRange]) -> bool {
-    data.iter().enumerate().all(|(index, current)| {
-        current.lower <= current.upper
-            && if index == 0 {
-                true
-            } else {
-                let previous = data[index - 1];
-                previous.upper < current.lower
-            }
-    })
-}
-
 fn builtin_consumer(font: Font) -> &'static CharWidthTableConsumer {
     match font {
-        Font::Verdana10 => consumer_from_json(
-            &VERDANA_10_CONSUMER,
-            include_str!("../data/anafanafo/verdana-10px-normal.json"),
-        ),
-        Font::Verdana10Bold => consumer_from_json(
-            &VERDANA_10_BOLD_CONSUMER,
-            include_str!("../data/anafanafo/verdana-10px-bold.json"),
-        ),
-        Font::Verdana11 => consumer_from_json(
-            &VERDANA_11_CONSUMER,
-            include_str!("../data/anafanafo/verdana-11px-normal.json"),
-        ),
-        Font::Helvetica11Bold => consumer_from_json(
-            &HELVETICA_11_BOLD_CONSUMER,
-            include_str!("../data/anafanafo/helvetica-11px-bold.json"),
-        ),
+        Font::Verdana10 => &VERDANA_10_CONSUMER,
+        Font::Verdana10Bold => &VERDANA_10_BOLD_CONSUMER,
+        Font::Verdana11 => &VERDANA_11_CONSUMER,
+        Font::Helvetica11Bold => &HELVETICA_11_BOLD_CONSUMER,
     }
 }
 
-fn consumer_from_json(
-    slot: &'static OnceLock<CharWidthTableConsumer>,
-    raw_json: &'static str,
-) -> &'static CharWidthTableConsumer {
-    slot.get_or_init(|| CharWidthTableConsumer::create(parse_width_table(raw_json)))
+include!(concat!(env!("OUT_DIR"), "/anafanafo_tables.rs"));
+
+#[cfg(test)]
+mod tests {
+    use std::{
+        env, fs,
+        io::Write,
+        path::{Path, PathBuf},
+        process::{Command, Stdio},
+    };
+
+    use serde::{Deserialize, Serialize};
+
+    use super::{Font, MeasureOptions};
+
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    struct ReferenceCase {
+        id: String,
+        text: String,
+        font: String,
+        #[serde(default = "default_guess")]
+        guess: bool,
+    }
+
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    struct ReferenceResult {
+        id: String,
+        ok: bool,
+        width: Option<f32>,
+        error: Option<String>,
+    }
+
+    fn default_guess() -> bool {
+        true
+    }
+
+    fn repo_root() -> &'static Path {
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+    }
+
+    fn bun_tool_dir() -> PathBuf {
+        repo_root().join("tools/js-ref")
+    }
+
+    fn bun_bin() -> PathBuf {
+        if let Some(value) = env::var_os("BUN_BIN") {
+            return PathBuf::from(value);
+        }
+
+        if let Some(home) = env::var_os("HOME") {
+            let candidate = PathBuf::from(home).join(".bun/bin/bun");
+            if candidate.exists() {
+                return candidate;
+            }
+        }
+
+        PathBuf::from("bun")
+    }
+
+    fn run_reference_batch(cases: &[ReferenceCase]) -> Vec<ReferenceResult> {
+        let mut child = Command::new(bun_bin())
+            .arg("--cwd")
+            .arg(bun_tool_dir())
+            .arg("--silent")
+            .arg("--install=fallback")
+            .arg("./index.js")
+            .arg("anafanafo")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()
+            .expect("failed to spawn Bun reference runner");
+
+        let stdin = child.stdin.as_mut().expect("child stdin is unavailable");
+        let payload = serde_json::to_vec(cases).expect("failed to serialize reference cases");
+        stdin
+            .write_all(&payload)
+            .expect("failed to write reference batch to Bun stdin");
+        drop(child.stdin.take());
+
+        let output = child
+            .wait_with_output()
+            .expect("failed to wait for Bun reference runner");
+
+        assert!(
+            output.status.success(),
+            "reference runner failed\nstdout:\n{}\nstderr:\n{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+
+        serde_json::from_slice(&output.stdout).expect("failed to parse reference runner output")
+    }
+
+    fn load_cases() -> Vec<ReferenceCase> {
+        let path = repo_root().join("tests/data/anafanafo_cases.json");
+        let text = fs::read_to_string(path).expect("failed to read test case file");
+        serde_json::from_str(&text).expect("failed to parse test case file")
+    }
+
+    fn parse_font(font: &str) -> Font {
+        match font {
+            "10px Verdana" => Font::Verdana10,
+            "bold 10px Verdana" => Font::Verdana10Bold,
+            "11px Verdana" => Font::Verdana11,
+            "bold 11px Helvetica" => Font::Helvetica11Bold,
+            other => panic!("unsupported font in test case: {other}"),
+        }
+    }
+
+    #[test]
+    fn reference_runner_supports_empty_batches() {
+        let results = run_reference_batch(&[]);
+        assert!(results.is_empty());
+    }
+
+    #[test]
+    fn reference_runner_returns_widths_for_known_inputs() {
+        let cases = vec![ReferenceCase {
+            id: "smoke-known-width".to_owned(),
+            text: "m".to_owned(),
+            font: "11px Verdana".to_owned(),
+            guess: true,
+        }];
+
+        let results = run_reference_batch(&cases);
+        assert_eq!(results.len(), 1);
+
+        match &results[0] {
+            ReferenceResult {
+                id,
+                ok: true,
+                width: Some(width),
+                error: None,
+            } => {
+                assert_eq!(id, "smoke-known-width");
+                assert!((*width - 10.7).abs() <= 0.0001);
+            }
+            other => panic!("unexpected runner result: {other:?}"),
+        }
+    }
+
+    #[test]
+    fn seed_cases_are_not_empty() {
+        let cases = load_cases();
+        assert!(
+            !cases.is_empty(),
+            "anafanafo reference cases must not be empty"
+        );
+    }
+
+    #[test]
+    fn seed_case_ids_are_unique() {
+        use std::collections::BTreeSet;
+
+        let cases = load_cases();
+        let mut seen = BTreeSet::new();
+
+        for case in cases {
+            assert!(
+                seen.insert(case.id.clone()),
+                "duplicate case id: {}",
+                case.id
+            );
+        }
+    }
+
+    #[test]
+    fn anafanafo_matches_reference_cases() {
+        let cases = load_cases();
+        let reference_results = run_reference_batch(&cases);
+
+        assert_eq!(
+            cases.len(),
+            reference_results.len(),
+            "reference runner result count does not match input count"
+        );
+
+        for (case, reference) in cases.iter().zip(reference_results.iter()) {
+            let actual = super::measure(
+                &case.text,
+                MeasureOptions::new(parse_font(&case.font)).with_guess(case.guess),
+            );
+
+            match (actual, reference) {
+                (
+                    Ok(width),
+                    ReferenceResult {
+                        id,
+                        ok: true,
+                        width: Some(expected_width),
+                        error: None,
+                    },
+                ) => {
+                    assert_eq!(id, &case.id);
+                    assert!(
+                        (width - expected_width).abs() <= 0.0001,
+                        "width mismatch for case `{}`: actual={}, expected={}",
+                        case.id,
+                        width,
+                        expected_width
+                    );
+                }
+                (
+                    Err(error),
+                    ReferenceResult {
+                        id,
+                        ok: false,
+                        width: None,
+                        error: Some(expected_error),
+                    },
+                ) => {
+                    assert_eq!(id, &case.id);
+                    assert_eq!(
+                        error.to_string(),
+                        *expected_error,
+                        "error mismatch for case `{}`",
+                        case.id
+                    );
+                }
+                (
+                    Ok(width),
+                    ReferenceResult {
+                        id,
+                        ok: false,
+                        width: None,
+                        error: Some(error),
+                    },
+                ) => {
+                    panic!(
+                        "case `{}` ({id}) unexpectedly succeeded with width {} but reference errored: {}",
+                        case.id, width, error
+                    );
+                }
+                (
+                    Err(error),
+                    ReferenceResult {
+                        id,
+                        ok: true,
+                        width: Some(width),
+                        error: None,
+                    },
+                ) => {
+                    panic!(
+                        "case `{}` ({id}) unexpectedly errored with {} but reference returned width {}",
+                        case.id, error, width
+                    );
+                }
+                (_, other) => panic!(
+                    "unexpected reference result for case `{}`: {other:?}",
+                    case.id
+                ),
+            }
+        }
+    }
 }
-
-fn parse_width_table(raw_json: &str) -> Vec<WidthTableRange> {
-    let rows: Vec<(u32, u32, f32)> =
-        serde_json::from_str(raw_json).expect("embedded anafanafo width table must be valid JSON");
-
-    rows.into_iter()
-        .map(|(lower, upper, width)| WidthTableRange::new(lower, upper, width))
-        .collect()
-}
-
-static VERDANA_10_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();
-static VERDANA_10_BOLD_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();
-static VERDANA_11_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();
-static HELVETICA_11_BOLD_CONSUMER: OnceLock<CharWidthTableConsumer> = OnceLock::new();

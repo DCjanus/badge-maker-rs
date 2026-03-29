@@ -1,9 +1,10 @@
 {
-  "name": "anafanafo-ref",
+  "name": "js-ref",
   "module": "index.js",
   "type": "module",
   "private": true,
   "dependencies": {
-    "anafanafo": "2.0.0"
+    "anafanafo": "2.0.0",
+    "badge-maker": "5.0.2"
   }
 }

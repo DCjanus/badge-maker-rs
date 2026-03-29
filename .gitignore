@@ -5,4 +5,7 @@
 .DS_Store
 
 # JavaScript test tooling
-tools/anafanafo-ref/node_modules/
+tools/js-ref/node_modules/
+
+# Local example output
+example-output.svg
