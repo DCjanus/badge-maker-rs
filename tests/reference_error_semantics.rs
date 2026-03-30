@@ -1,6 +1,6 @@
 use badge_maker_rs::{BadgeOptions, make_badge};
 
-#[allow(dead_code)]
+#[path = "support/error_case.rs"]
 mod support;
 
 use support::{ReferenceCase, reference_error_for_case};

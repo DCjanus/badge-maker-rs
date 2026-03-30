@@ -19,19 +19,6 @@ pub enum Font {
     Helvetica11Bold,
 }
 
-impl Font {
-    /// Returns the font descriptor string used by the upstream Node.js package.
-    #[allow(dead_code)]
-    pub const fn as_str(self) -> &'static str {
-        match self {
-            Self::Verdana10 => "10px Verdana",
-            Self::Verdana10Bold => "bold 10px Verdana",
-            Self::Verdana11 => "11px Verdana",
-            Self::Helvetica11Bold => "bold 11px Helvetica",
-        }
-    }
-}
-
 /// Input options for text measurement.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct MeasureOptions {
@@ -42,18 +29,6 @@ pub struct MeasureOptions {
 impl MeasureOptions {
     pub const fn new(font: Font) -> Self {
         Self { font, guess: true }
-    }
-
-    #[allow(dead_code)]
-    pub const fn with_guess(mut self, guess: bool) -> Self {
-        self.guess = guess;
-        self
-    }
-}
-
-impl Default for MeasureOptions {
-    fn default() -> Self {
-        Self::new(Font::Verdana11)
     }
 }
 
@@ -125,12 +100,6 @@ pub struct WidthOfOptions {
 impl WidthOfOptions {
     pub const fn new() -> Self {
         Self { guess: true }
-    }
-
-    #[allow(dead_code)]
-    pub const fn with_guess(mut self, guess: bool) -> Self {
-        self.guess = guess;
-        self
     }
 }
 
@@ -378,7 +347,10 @@ mod tests {
         for (case, reference) in cases.iter().zip(reference_results.iter()) {
             let actual = super::measure(
                 &case.text,
-                MeasureOptions::new(parse_font(&case.font)).with_guess(case.guess),
+                MeasureOptions {
+                    font: parse_font(&case.font),
+                    guess: case.guess,
+                },
             );
 
             match (actual, reference) {

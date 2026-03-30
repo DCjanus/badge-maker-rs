@@ -1,3 +1,4 @@
+#[path = "support/batch_cases.rs"]
 mod support;
 
 use support::{
