@@ -193,10 +193,8 @@ fn named_colors_round_trip_and_render_like_documented_svg_colors() {
         assert_eq!(public_name.parse::<NamedColor>().unwrap(), named);
 
         let named_svg = render_flat_badge_with_colors(Some(Color::from(named)), None);
-        let literal_svg = render_flat_badge_with_colors(
-            Some(expected_svg_color.parse::<Color>().unwrap()),
-            None,
-        );
+        let literal_svg =
+            render_flat_badge_with_colors(Some(expected_svg_color.parse::<Color>().unwrap()), None);
 
         assert_eq!(
             named_svg, literal_svg,
@@ -208,7 +206,10 @@ fn named_colors_round_trip_and_render_like_documented_svg_colors() {
 #[test]
 fn literal_colors_match_their_typed_public_equivalents() {
     let cases = [
-        (Color::literal("success"), "success".parse::<Color>().unwrap()),
+        (
+            Color::literal("success"),
+            "success".parse::<Color>().unwrap(),
+        ),
         (Color::literal("ABC123"), "ABC123".parse::<Color>().unwrap()),
         (
             Color::literal("papayawhip"),
@@ -226,10 +227,8 @@ fn literal_colors_match_their_typed_public_equivalents() {
 #[test]
 fn invalid_explicit_hex_variant_falls_back_to_default_badge_color() {
     let base_svg = render_flat_badge_with_colors(None, None);
-    let invalid_hex_svg = render_flat_badge_with_colors(
-        Some(Color::Hex("not-hex".to_owned())),
-        None,
-    );
+    let invalid_hex_svg =
+        render_flat_badge_with_colors(Some(Color::Hex("not-hex".to_owned())), None);
 
     assert_eq!(invalid_hex_svg, base_svg);
 }
