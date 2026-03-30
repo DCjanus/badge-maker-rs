@@ -14,6 +14,9 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v6
@@ -50,6 +53,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
+          use_oidc: true
           files: target/llvm-cov/lcov.info
           disable_search: true
           fail_ci_if_error: true
