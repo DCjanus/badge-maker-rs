@@ -1,5 +1,17 @@
 use badge_maker_rs::{BadgeOptions, Color, Error, NamedColor, Style, make_badge};
 
+fn render_flat_badge_with_colors(color: Option<Color>, label_color: Option<Color>) -> String {
+    make_badge(
+        &BadgeOptions::new("passing")
+            .label("build")
+            .style(Style::Flat)
+            .maybe_color(color)
+            .maybe_label_color(label_color)
+            .build(),
+    )
+    .expect("badge render should succeed")
+}
+
 #[test]
 fn escapes_text_input_for_svg_and_accessibility() {
     let options = BadgeOptions::new("<passing> & ready")
@@ -152,4 +164,72 @@ fn invalid_color_parse_error_is_actionable() {
         error.to_string(),
         "invalid badge color: expected a named color, #rgb/#rrggbb, or a CSS color"
     );
+}
+
+#[test]
+fn named_colors_round_trip_and_render_like_documented_svg_colors() {
+    let cases = [
+        (NamedColor::Brightgreen, "brightgreen", "#4c1"),
+        (NamedColor::Green, "green", "#97ca00"),
+        (NamedColor::Yellow, "yellow", "#dfb317"),
+        (NamedColor::Yellowgreen, "yellowgreen", "#a4a61d"),
+        (NamedColor::Orange, "orange", "#fe7d37"),
+        (NamedColor::Red, "red", "#e05d44"),
+        (NamedColor::Blue, "blue", "#007ec6"),
+        (NamedColor::Grey, "grey", "#555"),
+        (NamedColor::Gray, "gray", "#555"),
+        (NamedColor::Lightgrey, "lightgrey", "#9f9f9f"),
+        (NamedColor::Lightgray, "lightgray", "#9f9f9f"),
+        (NamedColor::Success, "success", "#4c1"),
+        (NamedColor::Important, "important", "#fe7d37"),
+        (NamedColor::Critical, "critical", "#e05d44"),
+        (NamedColor::Informational, "informational", "#007ec6"),
+        (NamedColor::Inactive, "inactive", "#9f9f9f"),
+    ];
+
+    for (named, public_name, expected_svg_color) in cases {
+        assert_eq!(named.as_str(), public_name);
+        assert_eq!(named.to_string(), public_name);
+        assert_eq!(public_name.parse::<NamedColor>().unwrap(), named);
+
+        let named_svg = render_flat_badge_with_colors(Some(Color::from(named)), None);
+        let literal_svg = render_flat_badge_with_colors(
+            Some(expected_svg_color.parse::<Color>().unwrap()),
+            None,
+        );
+
+        assert_eq!(
+            named_svg, literal_svg,
+            "named color `{public_name}` should render like `{expected_svg_color}`"
+        );
+    }
+}
+
+#[test]
+fn literal_colors_match_their_typed_public_equivalents() {
+    let cases = [
+        (Color::literal("success"), "success".parse::<Color>().unwrap()),
+        (Color::literal("ABC123"), "ABC123".parse::<Color>().unwrap()),
+        (
+            Color::literal("papayawhip"),
+            "papayawhip".parse::<Color>().unwrap(),
+        ),
+    ];
+
+    for (literal, typed) in cases {
+        let literal_svg = render_flat_badge_with_colors(Some(literal.clone()), None);
+        let typed_svg = render_flat_badge_with_colors(Some(typed), None);
+        assert_eq!(literal_svg, typed_svg);
+    }
+}
+
+#[test]
+fn invalid_explicit_hex_variant_falls_back_to_default_badge_color() {
+    let base_svg = render_flat_badge_with_colors(None, None);
+    let invalid_hex_svg = render_flat_badge_with_colors(
+        Some(Color::Hex("not-hex".to_owned())),
+        None,
+    );
+
+    assert_eq!(invalid_hex_svg, base_svg);
 }
