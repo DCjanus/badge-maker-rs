@@ -38,6 +38,9 @@ jobs:
       - name: Run Clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
 
+      - name: Create coverage output directory
+        run: mkdir -p target/llvm-cov
+
       - name: Run test suite with coverage
         run: cargo llvm-cov nextest --config-file .config/nextest.toml --cargo-quiet --status-level fail --final-status-level fail --failure-output final --success-output never --show-progress none --no-tests pass --lcov --output-path target/llvm-cov/lcov.info
 
