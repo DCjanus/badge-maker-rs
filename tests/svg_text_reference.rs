@@ -1,6 +1,5 @@
 use badge_maker_rs::make_badge;
 
-#[path = "support/svg_case.rs"]
 mod support;
 
 use support::{ReferenceCase, reference_svg_for_case, to_badge_options};
