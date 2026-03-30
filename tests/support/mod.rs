@@ -95,7 +95,6 @@ pub fn run_reference_batch(cases: &[ReferenceCase]) -> Vec<ReferenceResult> {
     serde_json::from_slice(&output.stdout).expect("failed to parse badge-maker runner output")
 }
 
-#[allow(dead_code)]
 pub fn reference_svg_for_case(case: &ReferenceCase) -> String {
     let reference_results = run_reference_batch(std::slice::from_ref(case));
     match &reference_results[0] {
@@ -115,7 +114,6 @@ pub fn reference_svg_for_case(case: &ReferenceCase) -> String {
     }
 }
 
-#[allow(dead_code)]
 pub fn reference_error_for_case(case: &ReferenceCase) -> String {
     let reference_results = run_reference_batch(std::slice::from_ref(case));
     match &reference_results[0] {
@@ -149,7 +147,7 @@ pub fn render_svg_to_rgba(svg: &str) -> Vec<u8> {
     pixmap.data().to_vec()
 }
 
-pub fn parse_style(style: Option<&str>) -> Style {
+fn parse_style(style: Option<&str>) -> Style {
     match style.unwrap_or("flat") {
         "plastic" => Style::Plastic,
         "flat" => Style::Flat,

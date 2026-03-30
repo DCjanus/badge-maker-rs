@@ -1,6 +1,4 @@
-mod support;
-
-use support::{
+use crate::support::{
     ReferenceResult, load_cases, render_svg_to_rgba, run_reference_batch, to_badge_options,
 };
 
