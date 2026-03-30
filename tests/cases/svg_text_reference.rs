@@ -1,8 +1,6 @@
 use badge_maker_rs::make_badge;
 
-mod support;
-
-use support::{ReferenceCase, reference_svg_for_case, to_badge_options};
+use crate::support::{ReferenceCase, reference_svg_for_case, to_badge_options};
 
 #[test]
 fn raw_css_variable_input_falls_back_like_badge_maker() {

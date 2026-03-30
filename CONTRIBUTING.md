@@ -20,23 +20,26 @@ directly.
 This repository intentionally uses a small number of integration-style test
 layers instead of many implementation-coupled unit tests.
 
-- `tests/badge_maker_reference.rs`
+- `tests/integration.rs`
+  Single integration-test crate entry point. Shared helpers live in
+  `tests/support/mod.rs`, and test modules are grouped under `tests/cases/`.
+- `tests/cases/badge_maker_reference.rs`
   Data-driven upstream reference tests. Cases from
   `tests/data/badge_maker_cases.json` are rendered by both Rust and the
   upstream `badge-maker` package, then compared by rasterized pixels. This is
   the default home for cases that can be validated by final rendered output.
-- `tests/svg_text_reference.rs`
+- `tests/cases/svg_text_reference.rs`
   Focused upstream reference tests for cases where exact SVG text matters more
   than pixel output, such as escaping or source-level fallback behavior.
-- `tests/reference_error_semantics.rs`
+- `tests/cases/reference_error_semantics.rs`
   Focused upstream reference tests for cases where Rust should match useful
   upstream error semantics.
-- `tests/public_api_contract.rs`
+- `tests/cases/public_api_contract.rs`
   Rust API contract tests. Use this file for Rust-specific behavior that cannot
   be validated through upstream reference execution, and for semantics that are
   not well protected by pixel comparison alone, such as link structure or
   Rust-only option handling.
-- `tests/docs_asset_consistency.rs`
+- `tests/cases/docs_asset_consistency.rs`
   Verifies that tracked documentation preview assets still match the current
   renderer output.
 
@@ -48,9 +51,9 @@ layers instead of many implementation-coupled unit tests.
   reference test file instead of forcing it into the data-driven pixel suite.
 - If a case is about Rust-only API behavior, typed parsing, or link and error
   semantics that upstream reference rendering does not cover well, put it in
-  `tests/public_api_contract.rs`.
+  `tests/cases/public_api_contract.rs`.
 - If a case is about tracked rustdoc assets, keep it in
-  `tests/docs_asset_consistency.rs`.
+  `tests/cases/docs_asset_consistency.rs`.
 
 ## Reference Runner Notes
 
