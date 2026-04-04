@@ -1,21 +1,24 @@
 use crate::css_named_color::parse_named_color;
 
-pub(crate) fn normalize_css_color(value: &str) -> Option<String> {
-    let normalized = value.trim().to_ascii_lowercase();
-    parse_css_color_rgba(&normalized).map(|_| normalized)
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct ParsedCssColor {
+    pub(crate) normalized: String,
+    pub(crate) rgba: [u8; 4],
 }
 
-pub(crate) fn parse_css_color_rgba(value: &str) -> Option<[u8; 4]> {
+pub(crate) fn parse_css_color(value: &str) -> Option<ParsedCssColor> {
     let trimmed = value.trim();
     if trimmed.is_empty() {
         return None;
     }
 
     let normalized = trimmed.to_ascii_lowercase();
-    parse_named_color(&normalized)
+    let rgba = parse_named_color(&normalized)
         .or_else(|| parse_css_hex_color(&normalized))
         .or_else(|| parse_rgb_like_function(&normalized))
-        .or_else(|| parse_hsl_like_function(&normalized))
+        .or_else(|| parse_hsl_like_function(&normalized))?;
+
+    Some(ParsedCssColor { normalized, rgba })
 }
 
 fn parse_css_hex_color(value: &str) -> Option<[u8; 4]> {
