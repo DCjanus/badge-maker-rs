@@ -1,6 +1,6 @@
 use std::{fmt, str::FromStr};
 
-use csscolorparser::Color as CssColor;
+use crate::css_color::normalize_css_color as normalize_local_css_color;
 
 /// Strongly-typed badge color input.
 ///
@@ -172,12 +172,7 @@ fn normalize_literal_hex_color(value: &str) -> Option<String> {
 }
 
 fn normalize_css_color(value: &str) -> Option<String> {
-    let trimmed = value.trim();
-    if trimmed.parse::<CssColor>().is_ok() {
-        Some(trimmed.to_ascii_lowercase())
-    } else {
-        None
-    }
+    normalize_local_css_color(value)
 }
 
 fn normalize_literal_css_color(value: &str) -> Option<String> {
@@ -190,7 +185,7 @@ fn normalize_literal_css_color(value: &str) -> Option<String> {
         return None;
     }
 
-    if trimmed.parse::<CssColor>().is_ok() {
+    if normalize_local_css_color(trimmed).is_some() {
         Some(trimmed.to_owned())
     } else {
         None

@@ -19,7 +19,6 @@ include = [
 
 [dependencies]
 bon = "3.9.1"
-csscolorparser = "0.8.3"
 thiserror = "2.0.18"
 
 [dev-dependencies]
