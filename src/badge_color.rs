@@ -181,6 +181,9 @@ fn normalize_literal_css_color(value: &str) -> Option<String> {
     if trimmed.eq_ignore_ascii_case("transparent") {
         return None;
     }
+    if trimmed.starts_with('#') {
+        return normalize_local_css_color(trimmed);
+    }
     if trimmed != trimmed.to_ascii_lowercase() {
         return None;
     }

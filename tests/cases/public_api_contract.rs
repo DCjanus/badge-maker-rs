@@ -155,49 +155,6 @@ fn color_parsing_prefers_strict_typed_paths() {
 }
 
 #[test]
-fn css_color_subset_matches_upstream_contract_examples() {
-    for valid in [
-        "papayawhip",
-        "purple",
-        "#fffe",
-        "#fffeffff",
-        "#FFFE",
-        "#ABCDEF12",
-        "rgb(100%, 200%, 222%)",
-        "rgb(122, 200, 222)",
-        "rgb(122, 200, 222, 1)",
-        "rgba(100, 20, 111, 1)",
-        "hsl(122, 200%, 222%)",
-        "hsla(122, 200%, 222%, 1)",
-        "hsl(0, 0%, 60%)",
-        "hsl(300, 50%, 50%)",
-        "RGB(220,128,255,0.5)",
-        "Hsl(360,50%,50%,0.5)",
-    ] {
-        valid
-            .parse::<Color>()
-            .unwrap_or_else(|_| panic!("expected `{valid}` to parse"));
-    }
-
-    for invalid in [
-        "#12",
-        "rgb(-100, 20, 111)",
-        "rgb(1, 2)",
-        "rgb(100%, 200, 222)",
-        "rgba(-100, 20, 111, 1.1)",
-        "hsl(122, 200%)",
-        "hsl(122, 200, 222, 1)",
-        "hsl(122, 200, 222)",
-        "hsl(122, 200, 222%)",
-    ] {
-        assert!(
-            invalid.parse::<Color>().is_err(),
-            "expected `{invalid}` to be rejected"
-        );
-    }
-}
-
-#[test]
 fn invalid_color_parse_error_is_actionable() {
     let error = "definitely-not-a-color"
         .parse::<Color>()

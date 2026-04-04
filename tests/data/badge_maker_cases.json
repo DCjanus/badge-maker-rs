@@ -734,5 +734,125 @@
     "style": "flat",
     "color": "papayawhip",
     "links": []
+  },
+  {
+    "id": "flat-css-named-color-purple",
+    "label": "color",
+    "message": "purple",
+    "style": "flat",
+    "color": "purple",
+    "links": []
+  },
+  {
+    "id": "flat-color-css-hex-short-alpha-uppercase",
+    "label": "color",
+    "message": "hex4",
+    "style": "flat",
+    "color": "#FFFE",
+    "links": []
+  },
+  {
+    "id": "flat-color-css-hex-long-alpha-uppercase",
+    "label": "color",
+    "message": "hex8",
+    "style": "flat",
+    "color": "#ABCDEF12",
+    "links": []
+  },
+  {
+    "id": "flat-color-rgb-percentages",
+    "label": "color",
+    "message": "rgb-percent",
+    "style": "flat",
+    "color": "rgb(100%, 200%, 222%)",
+    "links": []
+  },
+  {
+    "id": "flat-color-rgba-legacy-rgb-name",
+    "label": "color",
+    "message": "rgba-legacy",
+    "style": "flat",
+    "color": "rgb(122, 200, 222, 1)",
+    "links": []
+  },
+  {
+    "id": "flat-color-rgba-function",
+    "label": "color",
+    "message": "rgba",
+    "style": "flat",
+    "color": "rgba(100, 20, 111, 1)",
+    "links": []
+  },
+  {
+    "id": "flat-color-hsl-grayscale",
+    "label": "color",
+    "message": "gray-hsl",
+    "style": "flat",
+    "color": "hsl(0, 0%, 60%)",
+    "links": []
+  },
+  {
+    "id": "flat-color-hsl-magenta",
+    "label": "color",
+    "message": "magenta-hsl",
+    "style": "flat",
+    "color": "hsl(300, 50%, 50%)",
+    "links": []
+  },
+  {
+    "id": "flat-color-uppercase-rgb-function",
+    "label": "color",
+    "message": "uppercase-rgb",
+    "style": "flat",
+    "color": "RGB(220,128,255,0.5)",
+    "links": []
+  },
+  {
+    "id": "flat-color-uppercase-hsl-function",
+    "label": "color",
+    "message": "uppercase-hsl",
+    "style": "flat",
+    "color": "Hsl(360,50%,50%,0.5)",
+    "links": []
+  },
+  {
+    "id": "flat-invalid-short-css-hex-falls-back",
+    "label": "color",
+    "message": "short-css-hex",
+    "style": "flat",
+    "color": "#12",
+    "links": []
+  },
+  {
+    "id": "flat-invalid-rgb-arity-falls-back",
+    "label": "color",
+    "message": "rgb-arity",
+    "style": "flat",
+    "color": "rgb(1, 2)",
+    "links": []
+  },
+  {
+    "id": "flat-invalid-rgb-mixed-units-falls-back",
+    "label": "color",
+    "message": "rgb-mixed-units",
+    "style": "flat",
+    "color": "rgb(100%, 200, 222)",
+    "links": []
+  },
+  {
+    "id": "flat-invalid-hsl-arity-falls-back",
+    "label": "color",
+    "message": "hsl-arity",
+    "style": "flat",
+    "color": "hsl(122, 200%)",
+    "links": []
+  },
+  {
+    "id": "flat-invalid-hsl-missing-percent-falls-back",
+    "label": "color",
+    "message": "hsl-missing-percent",
+    "style": "flat",
+    "color": "hsl(122, 200, 222%)",
+    "links": []
   }
 ]
