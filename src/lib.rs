@@ -25,6 +25,8 @@
 use bon::Builder;
 mod anafanafo;
 mod badge_color;
+mod css_color;
+mod css_named_color;
 mod render;
 
 pub use badge_color::{Color, NamedColor, ParseColorError};

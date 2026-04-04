@@ -64,7 +64,7 @@ pub fn run_reference_batch(cases: &[ReferenceCase]) -> Vec<ReferenceResult> {
         .arg("--cwd")
         .arg(bun_tool_dir())
         .arg("--silent")
-        .arg("--install=fallback")
+        .arg("--no-install")
         .arg("./index.js")
         .arg("badge-maker")
         .stdin(Stdio::piped())

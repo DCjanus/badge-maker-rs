@@ -230,7 +230,7 @@ mod tests {
             .arg("--cwd")
             .arg(bun_tool_dir())
             .arg("--silent")
-            .arg("--install=fallback")
+            .arg("--no-install")
             .arg("./index.js")
             .arg("anafanafo")
             .stdin(Stdio::piped())

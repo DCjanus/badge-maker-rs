@@ -1,7 +1,5 @@
 use std::{fmt, str::FromStr};
 
-use csscolorparser::Color as CssColor;
-
 /// Strongly-typed badge color input.
 ///
 /// The common path is `"brightgreen".parse::<Color>()`. [`Color::Literal`]
@@ -28,7 +26,7 @@ impl Color {
         match self {
             Self::Named(named) => Some(named.to_svg_color().to_owned()),
             Self::Hex(value) => normalize_hex_color(value),
-            Self::Css(value) => normalize_css_color(value),
+            Self::Css(value) => crate::css_color::normalize_css_color(value),
             Self::Literal(value) => normalize_literal_color(value),
         }
     }
@@ -44,7 +42,7 @@ impl FromStr for Color {
         if is_hex_color(value) {
             return Ok(Self::Hex(value.trim().to_owned()));
         }
-        if normalize_css_color(value).is_some() {
+        if crate::css_color::normalize_css_color(value).is_some() {
             return Ok(Self::Css(value.trim().to_owned()));
         }
         Err(ParseColorError)
@@ -171,26 +169,20 @@ fn normalize_literal_hex_color(value: &str) -> Option<String> {
     }
 }
 
-fn normalize_css_color(value: &str) -> Option<String> {
-    let trimmed = value.trim();
-    if trimmed.parse::<CssColor>().is_ok() {
-        Some(trimmed.to_ascii_lowercase())
-    } else {
-        None
-    }
-}
-
 fn normalize_literal_css_color(value: &str) -> Option<String> {
     let trimmed = value.trim();
 
     if trimmed.eq_ignore_ascii_case("transparent") {
         return None;
     }
+    if trimmed.starts_with('#') {
+        return crate::css_color::normalize_css_color(trimmed);
+    }
     if trimmed != trimmed.to_ascii_lowercase() {
         return None;
     }
 
-    if trimmed.parse::<CssColor>().is_ok() {
+    if crate::css_color::normalize_css_color(trimmed).is_some() {
         Some(trimmed.to_owned())
     } else {
         None
