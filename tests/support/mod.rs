@@ -59,20 +59,12 @@ fn bun_tool_dir() -> PathBuf {
     repo_root().join("tools/js-ref")
 }
 
-fn bun_install_mode() -> &'static str {
-    if env::var_os("CI").is_some() {
-        "--no-install"
-    } else {
-        "--install=fallback"
-    }
-}
-
 pub fn run_reference_batch(cases: &[ReferenceCase]) -> Vec<ReferenceResult> {
     let mut child = Command::new(bun_bin())
         .arg("--cwd")
         .arg(bun_tool_dir())
         .arg("--silent")
-        .arg(bun_install_mode())
+        .arg("--no-install")
         .arg("./index.js")
         .arg("badge-maker")
         .stdin(Stdio::piped())
