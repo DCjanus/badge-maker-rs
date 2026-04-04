@@ -257,7 +257,7 @@ fn function_arguments<'a>(value: &'a str, names: &[&str]) -> Option<Vec<&'a str>
     let open = value.find('(')?;
     let close = value.strip_suffix(')')?;
     let name = value[..open].trim_end();
-    if !names.iter().any(|candidate| *candidate == name) {
+    if !names.contains(&name) {
         return None;
     }
 
@@ -279,10 +279,10 @@ fn parse_hex_nibbles<const N: usize>(value: &str) -> Option<[u8; N]> {
 fn parse_hex_pairs<const N: usize>(value: &str) -> Option<[u8; N]> {
     let mut out = [0_u8; N];
     let bytes = value.as_bytes();
-    for index in 0..N {
+    for (index, component) in out.iter_mut().enumerate() {
         let hi = hex_value(*bytes.get(index * 2)?)?;
         let lo = hex_value(*bytes.get(index * 2 + 1)?)?;
-        out[index] = (hi << 4) | lo;
+        *component = (hi << 4) | lo;
     }
     Some(out)
 }
