@@ -161,12 +161,16 @@ fn css_color_subset_matches_upstream_contract_examples() {
         "purple",
         "#fffe",
         "#fffeffff",
+        "#FFFE",
+        "#ABCDEF12",
         "rgb(100%, 200%, 222%)",
         "rgb(122, 200, 222)",
         "rgb(122, 200, 222, 1)",
         "rgba(100, 20, 111, 1)",
         "hsl(122, 200%, 222%)",
         "hsla(122, 200%, 222%, 1)",
+        "hsl(0, 0%, 60%)",
+        "hsl(300, 50%, 50%)",
         "RGB(220,128,255,0.5)",
         "Hsl(360,50%,50%,0.5)",
     ] {
@@ -176,9 +180,12 @@ fn css_color_subset_matches_upstream_contract_examples() {
     }
 
     for invalid in [
+        "#12",
         "rgb(-100, 20, 111)",
+        "rgb(1, 2)",
         "rgb(100%, 200, 222)",
         "rgba(-100, 20, 111, 1.1)",
+        "hsl(122, 200%)",
         "hsl(122, 200, 222, 1)",
         "hsl(122, 200, 222)",
         "hsl(122, 200, 222%)",

@@ -32,3 +32,16 @@ fn brightness(color: &str) -> f64 {
         (f64::from(r) * 299.0 + f64::from(g) * 587.0 + f64::from(b) * 114.0) / 255000.0;
     (brightness * 100.0).round() / 100.0
 }
+
+#[cfg(test)]
+mod tests {
+    use super::colors_for_background;
+
+    #[test]
+    fn invalid_background_color_uses_dark_fallback_contrast() {
+        let colors = colors_for_background("definitely-not-a-color");
+
+        assert_eq!(colors.text_color, "#fff");
+        assert_eq!(colors.shadow_color, "#010101");
+    }
+}
