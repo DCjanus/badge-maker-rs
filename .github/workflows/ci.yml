@@ -35,6 +35,9 @@ jobs:
         with:
           tool: just,cargo-nextest,cargo-llvm-cov
 
+      - name: Install js-ref dependencies
+        run: bun install --cwd tools/js-ref --frozen-lockfile
+
       - name: Check formatting
         run: cargo fmt --check
 
