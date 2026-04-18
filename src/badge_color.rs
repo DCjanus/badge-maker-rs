@@ -26,9 +26,8 @@ impl Color {
         match self {
             Self::Named(named) => Some(named.to_svg_color().to_owned()),
             Self::Hex(value) => normalize_hex_color(value),
-            Self::Css(value) => {
-                crate::css_color::parse_css_color(value).map(|parsed| parsed.normalized)
-            }
+            Self::Css(value) => crate::css_color::parse_css_color(value)
+                .map(|parsed| parsed.normalized.into_owned()),
             Self::Literal(value) => normalize_literal_color(value),
         }
     }
@@ -178,7 +177,8 @@ fn normalize_literal_css_color(value: &str) -> Option<String> {
         return None;
     }
     if trimmed.starts_with('#') {
-        return crate::css_color::parse_css_color(trimmed).map(|parsed| parsed.normalized);
+        return crate::css_color::parse_css_color(trimmed)
+            .map(|parsed| parsed.normalized.into_owned());
     }
     if trimmed != trimmed.to_ascii_lowercase() {
         return None;

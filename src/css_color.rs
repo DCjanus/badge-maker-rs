@@ -1,22 +1,28 @@
+use std::borrow::Cow;
+
 use crate::css_named_color::parse_named_color;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub(crate) struct ParsedCssColor {
-    pub(crate) normalized: String,
+pub(crate) struct ParsedCssColor<'a> {
+    pub(crate) normalized: Cow<'a, str>,
     pub(crate) rgba: [u8; 4],
 }
 
-pub(crate) fn parse_css_color(value: &str) -> Option<ParsedCssColor> {
+pub(crate) fn parse_css_color(value: &str) -> Option<ParsedCssColor<'_>> {
     let trimmed = value.trim();
     if trimmed.is_empty() {
         return None;
     }
 
-    let normalized = trimmed.to_ascii_lowercase();
-    let rgba = parse_named_color(&normalized)
-        .or_else(|| parse_css_hex_color(&normalized))
-        .or_else(|| parse_rgb_like_function(&normalized))
-        .or_else(|| parse_hsl_like_function(&normalized))?;
+    let normalized = if trimmed.bytes().any(|byte| byte.is_ascii_uppercase()) {
+        Cow::Owned(trimmed.to_ascii_lowercase())
+    } else {
+        Cow::Borrowed(trimmed)
+    };
+    let rgba = parse_named_color(normalized.as_ref())
+        .or_else(|| parse_css_hex_color(normalized.as_ref()))
+        .or_else(|| parse_rgb_like_function(normalized.as_ref()))
+        .or_else(|| parse_hsl_like_function(normalized.as_ref()))?;
 
     Some(ParsedCssColor { normalized, rgba })
 }
@@ -216,5 +222,26 @@ fn hue_to_rgb(p: f64, q: f64, mut t: f64) -> f64 {
         p + (q - p) * (2.0 / 3.0 - t) * 6.0
     } else {
         p
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::parse_css_color;
+
+    #[test]
+    fn parse_css_color_keeps_normalized_and_rgba_in_sync() {
+        let parsed = parse_css_color("  PaPaYaWhIp  ").expect("css color should parse");
+
+        assert_eq!(parsed.normalized.as_ref(), "papayawhip");
+        assert_eq!(parsed.rgba, [255, 239, 213, 255]);
+    }
+
+    #[test]
+    fn parse_css_color_preserves_already_normalized_literals() {
+        let parsed = parse_css_color(" #4c1 ").expect("css hex should parse");
+
+        assert_eq!(parsed.normalized.as_ref(), "#4c1");
+        assert_eq!(parsed.rgba, [68, 204, 17, 255]);
     }
 }
