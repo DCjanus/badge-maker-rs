@@ -54,7 +54,7 @@ jobs:
         run: cargo test --doc --quiet
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           use_oidc: true
           files: target/llvm-cov/lcov.info
@@ -121,7 +121,7 @@ jobs:
         run: cargo publish --locked
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           generate_release_notes: true
           make_latest: ${{ steps.verify_tag.outputs.is_stable }}
