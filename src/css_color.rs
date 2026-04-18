@@ -2,37 +2,35 @@ use std::borrow::Cow;
 
 use crate::css_named_color::parse_named_color;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-struct ParsedCssColor<'a> {
-    normalized: Cow<'a, str>,
-    rgba: [u8; 4],
-}
-
 pub(crate) fn normalize_css_color(value: &str) -> Option<String> {
-    parse_css_color_parts(value).map(|parsed| parsed.normalized.into_owned())
+    let normalized = normalize_css_color_input(value)?;
+    parse_css_color_rgba_impl(normalized.as_ref())?;
+    Some(normalized.into_owned())
 }
 
 pub(crate) fn parse_css_color_rgba(value: &str) -> Option<[u8; 4]> {
-    parse_css_color_parts(value).map(|parsed| parsed.rgba)
+    let normalized = normalize_css_color_input(value)?;
+    parse_css_color_rgba_impl(normalized.as_ref())
 }
 
-fn parse_css_color_parts(value: &str) -> Option<ParsedCssColor<'_>> {
+fn normalize_css_color_input(value: &str) -> Option<Cow<'_, str>> {
     let trimmed = value.trim();
     if trimmed.is_empty() {
         return None;
     }
 
-    let normalized = if trimmed.bytes().any(|byte| byte.is_ascii_uppercase()) {
+    Some(if trimmed.bytes().any(|byte| byte.is_ascii_uppercase()) {
         Cow::Owned(trimmed.to_ascii_lowercase())
     } else {
         Cow::Borrowed(trimmed)
-    };
-    let rgba = parse_named_color(normalized.as_ref())
-        .or_else(|| parse_css_hex_color(normalized.as_ref()))
-        .or_else(|| parse_rgb_like_function(normalized.as_ref()))
-        .or_else(|| parse_hsl_like_function(normalized.as_ref()))?;
+    })
+}
 
-    Some(ParsedCssColor { normalized, rgba })
+fn parse_css_color_rgba_impl(value: &str) -> Option<[u8; 4]> {
+    parse_named_color(value)
+        .or_else(|| parse_css_hex_color(value))
+        .or_else(|| parse_rgb_like_function(value))
+        .or_else(|| parse_hsl_like_function(value))
 }
 
 fn parse_css_hex_color(value: &str) -> Option<[u8; 4]> {
