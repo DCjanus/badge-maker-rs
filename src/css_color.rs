@@ -1,21 +1,37 @@
+use std::borrow::Cow;
+
 use crate::css_named_color::parse_named_color;
 
+/// Returns a normalized CSS color string, or `None` if the input is unsupported.
 pub(crate) fn normalize_css_color(value: &str) -> Option<String> {
-    let normalized = value.trim().to_ascii_lowercase();
-    parse_css_color_rgba(&normalized).map(|_| normalized)
+    let normalized = normalize_css_color_input(value)?;
+    parse_css_color_rgba_impl(normalized.as_ref())?;
+    Some(normalized.into_owned())
 }
 
 pub(crate) fn parse_css_color_rgba(value: &str) -> Option<[u8; 4]> {
+    let normalized = normalize_css_color_input(value)?;
+    parse_css_color_rgba_impl(normalized.as_ref())
+}
+
+fn normalize_css_color_input(value: &str) -> Option<Cow<'_, str>> {
     let trimmed = value.trim();
     if trimmed.is_empty() {
         return None;
     }
 
-    let normalized = trimmed.to_ascii_lowercase();
-    parse_named_color(&normalized)
-        .or_else(|| parse_css_hex_color(&normalized))
-        .or_else(|| parse_rgb_like_function(&normalized))
-        .or_else(|| parse_hsl_like_function(&normalized))
+    Some(if trimmed.bytes().any(|byte| byte.is_ascii_uppercase()) {
+        Cow::Owned(trimmed.to_ascii_lowercase())
+    } else {
+        Cow::Borrowed(trimmed)
+    })
+}
+
+fn parse_css_color_rgba_impl(value: &str) -> Option<[u8; 4]> {
+    parse_named_color(value)
+        .or_else(|| parse_css_hex_color(value))
+        .or_else(|| parse_rgb_like_function(value))
+        .or_else(|| parse_hsl_like_function(value))
 }
 
 fn parse_css_hex_color(value: &str) -> Option<[u8; 4]> {
@@ -213,5 +229,28 @@ fn hue_to_rgb(p: f64, q: f64, mut t: f64) -> f64 {
         p + (q - p) * (2.0 / 3.0 - t) * 6.0
     } else {
         p
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{normalize_css_color, parse_css_color_rgba};
+
+    #[test]
+    fn css_color_helpers_share_the_same_parse_core() {
+        let normalized = normalize_css_color("  PaPaYaWhIp  ").expect("css color should normalize");
+        let rgba = parse_css_color_rgba("  PaPaYaWhIp  ").expect("css color should parse");
+
+        assert_eq!(normalized, "papayawhip");
+        assert_eq!(rgba, [255, 239, 213, 255]);
+    }
+
+    #[test]
+    fn normalize_css_color_preserves_already_normalized_literals() {
+        let normalized = normalize_css_color(" #4c1 ").expect("css hex should normalize");
+        let rgba = parse_css_color_rgba(" #4c1 ").expect("css hex should parse");
+
+        assert_eq!(normalized, "#4c1");
+        assert_eq!(rgba, [68, 204, 17, 255]);
     }
 }
