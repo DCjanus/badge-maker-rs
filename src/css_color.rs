@@ -2,6 +2,7 @@ use std::borrow::Cow;
 
 use crate::css_named_color::parse_named_color;
 
+/// Returns a normalized CSS color string, or `None` if the input is unsupported.
 pub(crate) fn normalize_css_color(value: &str) -> Option<String> {
     let normalized = normalize_css_color_input(value)?;
     parse_css_color_rgba_impl(normalized.as_ref())?;
