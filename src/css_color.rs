@@ -3,12 +3,20 @@ use std::borrow::Cow;
 use crate::css_named_color::parse_named_color;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub(crate) struct ParsedCssColor<'a> {
-    pub(crate) normalized: Cow<'a, str>,
-    pub(crate) rgba: [u8; 4],
+struct ParsedCssColor<'a> {
+    normalized: Cow<'a, str>,
+    rgba: [u8; 4],
 }
 
-pub(crate) fn parse_css_color(value: &str) -> Option<ParsedCssColor<'_>> {
+pub(crate) fn normalize_css_color(value: &str) -> Option<String> {
+    parse_css_color_parts(value).map(|parsed| parsed.normalized.into_owned())
+}
+
+pub(crate) fn parse_css_color_rgba(value: &str) -> Option<[u8; 4]> {
+    parse_css_color_parts(value).map(|parsed| parsed.rgba)
+}
+
+fn parse_css_color_parts(value: &str) -> Option<ParsedCssColor<'_>> {
     let trimmed = value.trim();
     if trimmed.is_empty() {
         return None;
@@ -227,21 +235,23 @@ fn hue_to_rgb(p: f64, q: f64, mut t: f64) -> f64 {
 
 #[cfg(test)]
 mod tests {
-    use super::parse_css_color;
+    use super::{normalize_css_color, parse_css_color_rgba};
 
     #[test]
-    fn parse_css_color_keeps_normalized_and_rgba_in_sync() {
-        let parsed = parse_css_color("  PaPaYaWhIp  ").expect("css color should parse");
+    fn css_color_helpers_share_the_same_parse_core() {
+        let normalized = normalize_css_color("  PaPaYaWhIp  ").expect("css color should normalize");
+        let rgba = parse_css_color_rgba("  PaPaYaWhIp  ").expect("css color should parse");
 
-        assert_eq!(parsed.normalized.as_ref(), "papayawhip");
-        assert_eq!(parsed.rgba, [255, 239, 213, 255]);
+        assert_eq!(normalized, "papayawhip");
+        assert_eq!(rgba, [255, 239, 213, 255]);
     }
 
     #[test]
-    fn parse_css_color_preserves_already_normalized_literals() {
-        let parsed = parse_css_color(" #4c1 ").expect("css hex should parse");
+    fn normalize_css_color_preserves_already_normalized_literals() {
+        let normalized = normalize_css_color(" #4c1 ").expect("css hex should normalize");
+        let rgba = parse_css_color_rgba(" #4c1 ").expect("css hex should parse");
 
-        assert_eq!(parsed.normalized.as_ref(), "#4c1");
-        assert_eq!(parsed.rgba, [68, 204, 17, 255]);
+        assert_eq!(normalized, "#4c1");
+        assert_eq!(rgba, [68, 204, 17, 255]);
     }
 }

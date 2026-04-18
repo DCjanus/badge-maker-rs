@@ -1,4 +1,4 @@
-use crate::{Color, css_color::parse_css_color};
+use crate::{Color, css_color::parse_css_color_rgba};
 
 #[derive(Clone, Debug)]
 pub(super) struct ColorsForBackground {
@@ -25,10 +25,9 @@ pub(super) fn to_svg_color(color: Option<&Color>) -> Option<String> {
 }
 
 fn brightness(color: &str) -> f64 {
-    let Some(parsed) = parse_css_color(color) else {
+    let Some([r, g, b, _]) = parse_css_color_rgba(color) else {
         return 0.0;
     };
-    let [r, g, b, _] = parsed.rgba;
     let brightness =
         (f64::from(r) * 299.0 + f64::from(g) * 587.0 + f64::from(b) * 114.0) / 255000.0;
     (brightness * 100.0).round() / 100.0
