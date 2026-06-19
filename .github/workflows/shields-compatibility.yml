@@ -1,0 +1,122 @@
+name: Shields Compatibility
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  group: shields-compatibility-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: astral-sh/setup-uv@v8
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just,cargo-nextest
+
+      - name: Run reference suite
+        id: reference_suite
+        continue-on-error: true
+        run: just test
+
+      - name: Compare live Shields.io smoke badge
+        id: live_smoke
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p target/shields-compat
+
+          cargo run --quiet --example render_svg > target/shields-compat/local-flat-brightgreen.svg
+          curl --fail --silent --show-error --location \
+            "https://img.shields.io/badge/example-passing-brightgreen.svg?style=flat" \
+            --output target/shields-compat/live-flat-brightgreen.svg
+
+          cmp --silent \
+            target/shields-compat/local-flat-brightgreen.svg \
+            target/shields-compat/live-flat-brightgreen.svg
+
+      - name: Build compatibility report
+        id: build_report
+        shell: bash
+        env:
+          REFERENCE_OUTCOME: ${{ steps.reference_suite.outcome }}
+          LIVE_SMOKE_OUTCOME: ${{ steps.live_smoke.outcome }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p target/shields-compat
+
+          if [[ "${REFERENCE_OUTCOME}" == "success" && "${LIVE_SMOKE_OUTCOME}" == "success" ]]; then
+            overall="passing"
+          else
+            overall="failing"
+          fi
+
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          report_path="target/shields-compat/report.md"
+
+          {
+            echo "# Shields.io compatibility report"
+            echo
+            echo "**Status:** ${overall}"
+            echo
+            echo "| Check | Result |"
+            echo "| --- | --- |"
+            echo "| Upstream package reference suite | ${REFERENCE_OUTCOME} |"
+            echo "| Live Shields.io flat/brightgreen smoke badge | ${LIVE_SMOKE_OUTCOME} |"
+            echo
+            echo "Last run: [${GITHUB_RUN_ID}](${run_url})"
+            echo
+            echo "This issue is managed by the weekly Shields compatibility workflow."
+          } > "${report_path}"
+
+          cat "${report_path}" >> "${GITHUB_STEP_SUMMARY}"
+          echo "overall=${overall}" >> "${GITHUB_OUTPUT}"
+          echo "report_path=${report_path}" >> "${GITHUB_OUTPUT}"
+
+      - name: Upload compatibility artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: shields-compatibility-report
+          path: target/shields-compat/
+          if-no-files-found: error
+
+      - name: Update compatibility report issue
+        id: update_issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          scripts/update_compat_report_issue.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --label "automation:shields-compat-report" \
+            --title "Shields.io compatibility report" \
+            --body-file "${{ steps.build_report.outputs.report_path }}"
+
+      - name: Fail on compatibility mismatch
+        if: steps.build_report.outputs.overall != 'passing'
+        run: exit 1
