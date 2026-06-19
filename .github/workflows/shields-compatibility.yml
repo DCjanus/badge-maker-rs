@@ -31,8 +31,6 @@ jobs:
         with:
           bun-version: latest
 
-      - uses: astral-sh/setup-uv@v8
-
       - uses: taiki-e/install-action@v2
         with:
           tool: just,cargo-nextest
@@ -111,7 +109,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          scripts/update_compat_report_issue.py \
+          bun run scripts/update_compat_report_issue.js \
             --repo "${GITHUB_REPOSITORY}" \
             --label "automation:shields-compat-report" \
             --title "Shields.io compatibility report" \
