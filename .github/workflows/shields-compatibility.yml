@@ -106,14 +106,13 @@ jobs:
 
       - name: Update compatibility report issue
         id: update_issue
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          bun run scripts/update_compat_report_issue.js \
-            --repo "${GITHUB_REPOSITORY}" \
-            --label "automation:shields-compat-report" \
-            --title "Shields.io compatibility report" \
-            --body-file "${{ steps.build_report.outputs.report_path }}"
+        uses: ./.github/actions/update-compat-report-issue
+        with:
+          repo: ${{ github.repository }}
+          label: automation:shields-compat-report
+          title: Shields.io compatibility report
+          body-file: ${{ steps.build_report.outputs.report_path }}
+          github-token: ${{ github.token }}
 
       - name: Fail on compatibility mismatch
         if: steps.build_report.outputs.overall != 'passing'

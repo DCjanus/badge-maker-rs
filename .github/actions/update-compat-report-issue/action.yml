@@ -1,0 +1,27 @@
+name: Update Compatibility Report Issue
+description: Create or update the managed Shields.io compatibility report issue.
+
+inputs:
+  repo:
+    description: GitHub repository in owner/name format.
+    required: true
+  label:
+    description: Dedicated tracking label.
+    required: true
+  title:
+    description: Issue title to use when creating the tracking issue.
+    required: true
+  body-file:
+    description: Markdown report body file.
+    required: true
+  github-token:
+    description: GitHub token used by gh.
+    required: true
+
+outputs:
+  issue-url:
+    description: URL of the created or updated tracking issue.
+
+runs:
+  using: node24
+  main: index.js

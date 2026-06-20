@@ -1,49 +1,27 @@
-#!/usr/bin/env bun
+const { appendFileSync, existsSync, readFileSync } = require("node:fs");
+const { spawnSync } = require("node:child_process");
 
-import { appendFileSync, existsSync, readFileSync } from "node:fs";
-import { spawnSync } from "node:child_process";
-
-function usage() {
-  return "usage: update_compat_report_issue.js --repo <owner/repo> --label <label> --title <title> --body-file <path>";
+function input(name) {
+  return process.env[`INPUT_${name.toUpperCase().replaceAll("-", "_")}`] || "";
 }
 
-function parseArgs(argv) {
-  if (argv.includes("--help") || argv.includes("-h")) {
-    console.log(usage());
-    process.exit(0);
-  }
-
-  const args = {};
-  for (let index = 0; index < argv.length; index += 2) {
-    const key = argv[index];
-    const value = argv[index + 1];
-    if (!key?.startsWith("--") || value === undefined) {
-      throw new Error(usage());
-    }
-    args[key.slice(2)] = value;
-  }
-
-  for (const required of ["repo", "label", "title", "body-file"]) {
-    if (!args[required]) {
-      throw new Error(usage());
-    }
-  }
-  return args;
+function warn(message) {
+  console.error(`::warning::${message}`);
 }
 
 function runGh(args) {
   return spawnSync("gh", args, {
     encoding: "utf8",
+    env: {
+      ...process.env,
+      GH_TOKEN: process.env.GH_TOKEN || input("github-token"),
+    },
     stdio: ["ignore", "pipe", "pipe"],
   });
 }
 
 function commandMessage(result) {
   return result.stderr.trim() || result.stdout.trim();
-}
-
-function warn(message) {
-  console.error(`::warning::${message}`);
 }
 
 function ensureLabel(repo, label) {
@@ -153,43 +131,47 @@ function updateIssue(repo, number, bodyFile) {
   return issueUrl(repo, number);
 }
 
-function writeOutput(name, value) {
-  const githubOutput = process.env.GITHUB_OUTPUT;
-  if (!githubOutput) {
+function setOutput(name, value) {
+  if (!process.env.GITHUB_OUTPUT) {
     return;
   }
-  appendFileSync(githubOutput, `${name}=${value}\n`, "utf8");
+  appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`, "utf8");
 }
 
-function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const bodyFile = args["body-file"];
+function run() {
+  const repo = input("repo");
+  const label = input("label");
+  const title = input("title");
+  const bodyFile = input("body-file");
+
   if (!existsSync(bodyFile)) {
-    throw new Error(`report body does not exist: ${bodyFile}`);
-  }
-
-  // Touch the body file early so missing permissions or bad paths fail before gh calls.
-  readFileSync(bodyFile, "utf8");
-
-  if (!ensureLabel(args.repo, args.label)) {
+    warn(`compatibility report body does not exist: ${bodyFile}`);
     return;
   }
 
-  const number = findIssue(args.repo, args.label);
+  // Touch the body file early so bad paths or permissions fail before gh calls.
+  readFileSync(bodyFile, "utf8");
+
+  if (!ensureLabel(repo, label)) {
+    return;
+  }
+
+  const number = findIssue(repo, label);
   const url =
     number === undefined
-      ? createIssue(args.repo, args.label, args.title, bodyFile)
-      : updateIssue(args.repo, number, bodyFile);
+      ? createIssue(repo, label, title, bodyFile)
+      : updateIssue(repo, number, bodyFile);
 
-  if (url) {
-    console.log(`compatibility report issue: ${url}`);
-    writeOutput("issue_url", url);
+  if (!url) {
+    return;
   }
+
+  console.log(`compatibility report issue: ${url}`);
+  setOutput("issue-url", url);
 }
 
 try {
-  main();
+  run();
 } catch (error) {
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exit(1);
+  warn(error instanceof Error ? error.message : String(error));
 }
