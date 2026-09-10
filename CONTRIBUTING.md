@@ -14,6 +14,7 @@ directly.
 
 - Run the full local suite with `just test`.
 - Keep user-facing documentation, comments, and release-facing text in English.
+- Follow [`RELEASING.md`](RELEASING.md) when preparing or publishing a release.
 
 ## Minimum Supported Rust Version
 
