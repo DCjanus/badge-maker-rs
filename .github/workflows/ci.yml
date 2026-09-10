@@ -118,6 +118,16 @@ jobs:
             exit 1
           fi
 
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" origin/master; then
+            echo "release tag ${GITHUB_REF_NAME} must point to a commit on master" >&2
+            exit 1
+          fi
+
+          if ! grep -Fq "## [${tag_version}] - " CHANGELOG.md; then
+            echo "CHANGELOG.md must contain a dated ${tag_version} release heading" >&2
+            exit 1
+          fi
+
           if [[ "${GITHUB_REF_NAME}" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
             echo "is_stable=true" >> "${GITHUB_OUTPUT}"
           else
