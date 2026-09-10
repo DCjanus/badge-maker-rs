@@ -37,7 +37,7 @@ fn invalid_id_suffix_is_rejected() {
 }
 
 #[test]
-fn id_suffix_applies_to_all_flat_and_plastic_svg_ids() {
+fn id_suffix_applies_to_flat_and_plastic_blur_filter_ids() {
     for style in [Style::Flat, Style::Plastic] {
         let options = BadgeOptions::new("passing")
             .label("build")
