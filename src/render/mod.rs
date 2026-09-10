@@ -359,5 +359,9 @@ fn measured_width_floor(text: &str, font: WidthFont) -> Result<f64, Error> {
 }
 
 fn round_up_to_odd(value: u32) -> u32 {
-    if value % 2 == 0 { value + 1 } else { value }
+    if value.is_multiple_of(2) {
+        value + 1
+    } else {
+        value
+    }
 }
