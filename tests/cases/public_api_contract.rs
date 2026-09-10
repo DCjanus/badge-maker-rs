@@ -37,6 +37,23 @@ fn invalid_id_suffix_is_rejected() {
 }
 
 #[test]
+fn id_suffix_applies_to_all_flat_and_plastic_svg_ids() {
+    for style in [Style::Flat, Style::Plastic] {
+        let options = BadgeOptions::new("passing")
+            .label("build")
+            .style(style)
+            .id_suffix("ci")
+            .build();
+
+        let svg = make_badge(&options).expect("badge render should succeed");
+
+        assert!(svg.contains("id=\"blurci\""));
+        assert!(svg.contains("filter=\"url(#blurci)\""));
+        assert!(!svg.contains("id=\"blur\""));
+    }
+}
+
+#[test]
 fn left_and_right_links_render_in_distinct_slots() {
     let options = BadgeOptions::new("passing")
         .label("build")

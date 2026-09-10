@@ -262,7 +262,7 @@ impl BadgeLayout {
                             attr("x", x),
                             attr("y", shadow_y),
                             attr("fill-opacity", ".8"),
-                            attr("filter", "url(#blur)"),
+                            attr("filter", format!("url(#blur{})", self.id_suffix)),
                             attr("textLength", text_length),
                         ],
                         vec![text(content)],

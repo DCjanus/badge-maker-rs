@@ -116,7 +116,7 @@ trait BadgeStyleImpl {
         if Self::SHADOW {
             content.push(element(
                 "filter",
-                vec![attr("id", "blur")],
+                vec![attr("id", format!("blur{}", badge.id_suffix))],
                 vec![element(
                     "feGaussianBlur",
                     vec![attr("stdDeviation", "16")],
