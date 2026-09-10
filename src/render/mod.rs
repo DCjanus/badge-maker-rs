@@ -13,6 +13,8 @@
 // - `badges/shields/badge-maker/lib/badge-renderers.js`
 // - `badges/shields/badge-maker/lib/color.js`
 // - `badges/shields/badge-maker/lib/xml.js`
+//
+// Current baseline: `badges/shields@b6dd9db77a37580d6c0f65dc6d88fe2080032cc1`.
 
 mod color;
 mod for_the_badge;
@@ -111,6 +113,17 @@ trait BadgeStyleImpl {
         let badge = BadgeLayout::new(params, Self::HEIGHT)?;
         let mut content = Vec::new();
 
+        if Self::SHADOW {
+            content.push(element(
+                "filter",
+                vec![attr("id", format!("blur{}", badge.id_suffix))],
+                vec![element(
+                    "feGaussianBlur",
+                    vec![attr("stdDeviation", "16")],
+                    vec![],
+                )],
+            ));
+        }
         if let Some(gradient) = Self::gradient(&badge.id_suffix) {
             content.push(gradient);
         }
@@ -346,5 +359,9 @@ fn measured_width_floor(text: &str, font: WidthFont) -> Result<f64, Error> {
 }
 
 fn round_up_to_odd(value: u32) -> u32 {
-    if value % 2 == 0 { value + 1 } else { value }
+    if value.is_multiple_of(2) {
+        value + 1
+    } else {
+        value
+    }
 }

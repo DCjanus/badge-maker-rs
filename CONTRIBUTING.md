@@ -15,6 +15,14 @@ directly.
 - Run the full local suite with `just test`.
 - Keep user-facing documentation, comments, and release-facing text in English.
 
+## Minimum Supported Rust Version
+
+Dependency refreshes also roll the minimum supported Rust version forward to
+the latest stable release that was available one year before the update date.
+This keeps an approximately one-year compatibility window without permanently
+pinning the crate to an old compiler. Update `package.rust-version` and the MSRV
+CI toolchain together.
+
 ## Test Layout
 
 This repository intentionally uses a small number of integration-style test

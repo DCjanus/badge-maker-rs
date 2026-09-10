@@ -1,11 +1,54 @@
 version: 2
 updates:
-  - package-ecosystem: "cargo"
+  - package-ecosystem: cargo
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: daily
+      time: "09:00"
+      timezone: Asia/Shanghai
+    groups:
+      patch-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - patch
+    assignees:
+      - DCjanus
+    open-pull-requests-limit: 5
 
-  - package-ecosystem: "bun"
+  - package-ecosystem: bun
     directory: "/tools/js-ref"
     schedule:
-      interval: "weekly"
+      interval: daily
+      time: "09:00"
+      timezone: Asia/Shanghai
+    groups:
+      patch-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        exclude-patterns:
+          - badge-maker
+        update-types:
+          - patch
+    assignees:
+      - DCjanus
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "09:00"
+      timezone: Asia/Shanghai
+    groups:
+      patch-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - patch
+    assignees:
+      - DCjanus
+    open-pull-requests-limit: 5

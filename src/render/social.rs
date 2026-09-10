@@ -94,8 +94,8 @@ pub(super) fn render_social(params: &RenderParams) -> Result<String, Error> {
         vec![
             attr("stroke", "none"),
             attr("fill", "#fcfcfc"),
-            attr("x", 0.5),
-            attr("y", 0.5),
+            attr("x", ".5"),
+            attr("y", ".5"),
             attr("width", label_rect_width),
             attr("height", internal_height),
             attr("rx", 2),
@@ -110,7 +110,7 @@ pub(super) fn render_social(params: &RenderParams) -> Result<String, Error> {
                 "rect",
                 vec![
                     attr("x", bubble_main_x),
-                    attr("y", 0.5),
+                    attr("y", ".5"),
                     attr("width", message_rect_width),
                     attr("height", internal_height),
                     attr("rx", 2),
@@ -123,7 +123,7 @@ pub(super) fn render_social(params: &RenderParams) -> Result<String, Error> {
                 vec![
                     attr("x", bubble_notch_x),
                     attr("y", 7.5),
-                    attr("width", 0.5),
+                    attr("width", ".5"),
                     attr("height", 5),
                     attr("stroke", "#fafafa"),
                 ],

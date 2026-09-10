@@ -2,7 +2,7 @@ use crate::Error;
 use crate::anafanafo::Font as WidthFont;
 
 use super::color::colors_for_background;
-use super::xml::{Node, fragment};
+use super::xml::Node;
 use super::{
     FONT_FAMILY, FONT_SCALE_DOWN_VALUE, FONT_SCALE_UP_FACTOR, RenderParams, attr,
     create_accessible_text, element, logo_element, preferred_width_of, should_wrap_body_with_link,
@@ -43,9 +43,9 @@ impl BadgeLayout {
             .clone()
             .unwrap_or_else(|| "#555".to_owned());
         if !(has_label || has_logo) {
-            label_color = params.color.clone().unwrap_or_else(|| "#4c1".to_owned());
+            label_color = params.color.clone().unwrap_or_else(|| "#4b0".to_owned());
         }
-        let color = params.color.clone().unwrap_or_else(|| "#4c1".to_owned());
+        let color = params.color.clone().unwrap_or_else(|| "#4b0".to_owned());
 
         let label_margin = total_logo_width + 1;
         let label_width = if params.label.is_empty() {
@@ -115,7 +115,6 @@ impl BadgeLayout {
                     attr("width", self.width),
                     attr("height", self.height),
                     attr("rx", radius),
-                    attr("fill", "#fff"),
                 ],
                 vec![],
             )],
@@ -241,35 +240,57 @@ impl BadgeLayout {
                 + 0.5 * f64::from(text_width)
                 + f64::from(self.horiz_padding));
 
-        let text_node = element(
-            "text",
-            vec![
-                attr("x", x),
-                attr("y", 140 + vertical_margin),
-                attr("transform", FONT_SCALE_DOWN_VALUE),
-                attr("fill", color_pair.text_color),
-                attr("textLength", FONT_SCALE_UP_FACTOR * text_width as i32),
-            ],
-            vec![text(content)],
-        );
+        let y = 140 + vertical_margin;
+        let text_length = FONT_SCALE_UP_FACTOR * text_width as i32;
+        let mut text_attrs = vec![attr("x", x), attr("y", y), attr("textLength", text_length)];
+        if color_pair.text_color != "#fff" {
+            text_attrs.push(attr("fill", color_pair.text_color));
+        }
 
-        let mut nodes = Vec::new();
-        if shadow {
-            nodes.push(element(
-                "text",
+        let text_node = if shadow {
+            let shadow_y = y + 10;
+            let shadow_group = element(
+                "g",
                 vec![
                     attr("aria-hidden", "true"),
-                    attr("x", x),
-                    attr("y", 150 + vertical_margin),
                     attr("fill", color_pair.shadow_color),
-                    attr("fill-opacity", ".3"),
-                    attr("transform", FONT_SCALE_DOWN_VALUE),
-                    attr("textLength", FONT_SCALE_UP_FACTOR * text_width as i32),
                 ],
-                vec![text(content)],
-            ));
-        }
-        nodes.push(text_node);
+                vec![
+                    element(
+                        "text",
+                        vec![
+                            attr("x", x),
+                            attr("y", shadow_y),
+                            attr("fill-opacity", ".8"),
+                            attr("filter", format!("url(#blur{})", self.id_suffix)),
+                            attr("textLength", text_length),
+                        ],
+                        vec![text(content)],
+                    ),
+                    element(
+                        "text",
+                        vec![
+                            attr("x", x),
+                            attr("y", shadow_y),
+                            attr("fill-opacity", ".3"),
+                            attr("textLength", text_length),
+                        ],
+                        vec![text(content)],
+                    ),
+                ],
+            );
+            element(
+                "g",
+                vec![attr("transform", FONT_SCALE_DOWN_VALUE)],
+                vec![
+                    shadow_group,
+                    element("text", text_attrs, vec![text(content)]),
+                ],
+            )
+        } else {
+            text_attrs.push(attr("transform", FONT_SCALE_DOWN_VALUE));
+            element("text", text_attrs, vec![text(content)])
+        };
 
         if let Some(link) = link {
             let rect = element(
@@ -282,17 +303,13 @@ impl BadgeLayout {
                 ],
                 vec![],
             );
-            let mut wrapped_content = vec![rect];
-            wrapped_content.extend(nodes);
             Some(element(
                 "a",
                 vec![attr("target", "_blank"), attr("href", link)],
-                wrapped_content,
+                vec![rect, text_node],
             ))
-        } else if nodes.len() == 1 {
-            nodes.into_iter().next()
         } else {
-            Some(fragment(nodes))
+            Some(text_node)
         }
     }
 }

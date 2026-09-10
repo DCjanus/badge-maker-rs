@@ -12,6 +12,16 @@ with the upstream
 [`badge-maker`](https://github.com/badges/shields/tree/master/badge-maker)
 renderer and enforced by upstream-backed reference tests.
 
+The compatibility target is the renderer used by the deployed Shields.io
+service. The pinned `badge-maker` package is used as a reproducible test fixture
+only after its rendering sources are verified against that upstream version;
+an npm release alone does not define compatibility.
+
+The current baseline is `badge-maker` 6.0.0 from
+[`badges/shields@b6dd9db`](https://github.com/badges/shields/commit/b6dd9db77a37580d6c0f65dc6d88fe2080032cc1).
+Its rendering sources match the latest Shields.io deployment tag checked for
+this update, `server-2026-08-21`.
+
 ## Features
 
 - Built for rendered-output parity with upstream `badge-maker`, with
