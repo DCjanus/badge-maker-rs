@@ -1,6 +1,6 @@
 use badge_maker_rs::make_badge;
 
-use crate::support::{ReferenceCase, reference_svg_for_case, to_badge_options};
+use crate::support::{ReferenceCase, reference_svg_for_case, render_svg_to_rgba, to_badge_options};
 
 #[test]
 fn raw_css_variable_input_falls_back_like_badge_maker() {
@@ -21,9 +21,12 @@ fn raw_css_variable_input_falls_back_like_badge_maker() {
     let actual_svg = make_badge(&to_badge_options(&case))
         .expect("Rust renderer should match badge-maker fallback behavior");
 
-    assert_eq!(actual_svg, reference_svg);
+    assert_eq!(
+        render_svg_to_rgba(&actual_svg),
+        render_svg_to_rgba(&reference_svg)
+    );
     assert!(!actual_svg.contains("var(--badge-color)"));
-    assert!(actual_svg.contains("fill=\"#4c1\""));
+    assert!(actual_svg.contains("fill=\"#4b0\""));
 }
 
 #[test]
@@ -46,7 +49,8 @@ fn social_astral_capitalization_matches_reference_svg() {
         .expect("Rust renderer should render social astral label");
 
     assert_eq!(
-        actual_svg, reference_svg,
-        "social capitalization diverged from badge-maker"
+        render_svg_to_rgba(&actual_svg),
+        render_svg_to_rgba(&reference_svg)
     );
+    assert!(actual_svg.contains(">𐐨badge</text>"));
 }

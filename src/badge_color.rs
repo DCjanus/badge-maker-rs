@@ -113,15 +113,15 @@ impl NamedColor {
 
     pub(crate) const fn to_svg_color(self) -> &'static str {
         match self {
-            Self::Brightgreen | Self::Success => "#4c1",
-            Self::Green => "#97ca00",
-            Self::Yellow => "#dfb317",
-            Self::Yellowgreen => "#a4a61d",
-            Self::Orange | Self::Important => "#fe7d37",
-            Self::Red | Self::Critical => "#e05d44",
+            Self::Brightgreen | Self::Success => "#4b0",
+            Self::Green => "#67ac09",
+            Self::Yellow => "#d8b800",
+            Self::Yellowgreen => "#95991a",
+            Self::Orange | Self::Important => "#ea7233",
+            Self::Red | Self::Critical => "#dd4343",
             Self::Blue | Self::Informational => "#007ec6",
             Self::Grey | Self::Gray => "#555",
-            Self::Lightgrey | Self::Lightgray | Self::Inactive => "#9f9f9f",
+            Self::Lightgrey | Self::Lightgray | Self::Inactive => "#939393",
         }
     }
 }

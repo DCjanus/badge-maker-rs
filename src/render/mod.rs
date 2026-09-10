@@ -13,6 +13,8 @@
 // - `badges/shields/badge-maker/lib/badge-renderers.js`
 // - `badges/shields/badge-maker/lib/color.js`
 // - `badges/shields/badge-maker/lib/xml.js`
+//
+// Current baseline: `badges/shields@b6dd9db77a37580d6c0f65dc6d88fe2080032cc1`.
 
 mod color;
 mod for_the_badge;
@@ -111,6 +113,17 @@ trait BadgeStyleImpl {
         let badge = BadgeLayout::new(params, Self::HEIGHT)?;
         let mut content = Vec::new();
 
+        if Self::SHADOW {
+            content.push(element(
+                "filter",
+                vec![attr("id", "blur")],
+                vec![element(
+                    "feGaussianBlur",
+                    vec![attr("stdDeviation", "16")],
+                    vec![],
+                )],
+            ));
+        }
         if let Some(gradient) = Self::gradient(&badge.id_suffix) {
             content.push(gradient);
         }

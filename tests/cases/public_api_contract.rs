@@ -169,22 +169,22 @@ fn invalid_color_parse_error_is_actionable() {
 #[test]
 fn named_colors_round_trip_and_render_like_documented_svg_colors() {
     let cases = [
-        (NamedColor::Brightgreen, "brightgreen", "#4c1"),
-        (NamedColor::Green, "green", "#97ca00"),
-        (NamedColor::Yellow, "yellow", "#dfb317"),
-        (NamedColor::Yellowgreen, "yellowgreen", "#a4a61d"),
-        (NamedColor::Orange, "orange", "#fe7d37"),
-        (NamedColor::Red, "red", "#e05d44"),
+        (NamedColor::Brightgreen, "brightgreen", "#4b0"),
+        (NamedColor::Green, "green", "#67ac09"),
+        (NamedColor::Yellow, "yellow", "#d8b800"),
+        (NamedColor::Yellowgreen, "yellowgreen", "#95991a"),
+        (NamedColor::Orange, "orange", "#ea7233"),
+        (NamedColor::Red, "red", "#dd4343"),
         (NamedColor::Blue, "blue", "#007ec6"),
         (NamedColor::Grey, "grey", "#555"),
         (NamedColor::Gray, "gray", "#555"),
-        (NamedColor::Lightgrey, "lightgrey", "#9f9f9f"),
-        (NamedColor::Lightgray, "lightgray", "#9f9f9f"),
-        (NamedColor::Success, "success", "#4c1"),
-        (NamedColor::Important, "important", "#fe7d37"),
-        (NamedColor::Critical, "critical", "#e05d44"),
+        (NamedColor::Lightgrey, "lightgrey", "#939393"),
+        (NamedColor::Lightgray, "lightgray", "#939393"),
+        (NamedColor::Success, "success", "#4b0"),
+        (NamedColor::Important, "important", "#ea7233"),
+        (NamedColor::Critical, "critical", "#dd4343"),
         (NamedColor::Informational, "informational", "#007ec6"),
-        (NamedColor::Inactive, "inactive", "#9f9f9f"),
+        (NamedColor::Inactive, "inactive", "#939393"),
     ];
 
     for (named, public_name, expected_svg_color) in cases {

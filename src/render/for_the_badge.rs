@@ -25,7 +25,7 @@ pub(super) fn render_for_the_badge(params: &RenderParams) -> Result<String, Erro
         .label_color
         .clone()
         .unwrap_or_else(|| "#555".to_owned());
-    let color = params.color.clone().unwrap_or_else(|| "#4c1".to_owned());
+    let color = params.color.clone().unwrap_or_else(|| "#4b0".to_owned());
 
     let label_text_width = if label.is_empty() {
         0.0
@@ -94,17 +94,16 @@ pub(super) fn render_for_the_badge(params: &RenderParams) -> Result<String, Erro
     if has_label {
         let color_pair = colors_for_background(&out_label_color);
         let mid_x = label_text_min_x + 0.5 * label_text_width;
-        let label_text = element(
-            "text",
-            vec![
-                attr("transform", FONT_SCALE_DOWN_VALUE),
-                attr("x", FONT_SCALE_UP_FACTOR as f64 * mid_x),
-                attr("y", 175),
-                attr("textLength", FONT_SCALE_UP_FACTOR as f64 * label_text_width),
-                attr("fill", color_pair.text_color),
-            ],
-            vec![text(&label)],
-        );
+        let mut label_text_attrs = vec![
+            attr("transform", FONT_SCALE_DOWN_VALUE),
+            attr("x", FONT_SCALE_UP_FACTOR as f64 * mid_x),
+            attr("y", 175),
+            attr("textLength", FONT_SCALE_UP_FACTOR as f64 * label_text_width),
+        ];
+        if color_pair.text_color != "#fff" {
+            label_text_attrs.push(attr("fill", color_pair.text_color));
+        }
+        let label_text = element("text", label_text_attrs, vec![text(&label)]);
 
         if has_left_link && !should_wrap_body_with_link(&params.links) {
             foreground.push(element(
@@ -133,21 +132,20 @@ pub(super) fn render_for_the_badge(params: &RenderParams) -> Result<String, Erro
 
     let color_pair = colors_for_background(&color);
     let message_mid_x = message_text_min_x + 0.5 * message_text_width;
-    let message_text = element(
-        "text",
-        vec![
-            attr("transform", FONT_SCALE_DOWN_VALUE),
-            attr("x", FONT_SCALE_UP_FACTOR as f64 * message_mid_x),
-            attr("y", 175),
-            attr(
-                "textLength",
-                FONT_SCALE_UP_FACTOR as f64 * message_text_width,
-            ),
-            attr("fill", color_pair.text_color),
-            attr("font-weight", "bold"),
-        ],
-        vec![text(&message)],
-    );
+    let mut message_text_attrs = vec![
+        attr("transform", FONT_SCALE_DOWN_VALUE),
+        attr("x", FONT_SCALE_UP_FACTOR as f64 * message_mid_x),
+        attr("y", 175),
+        attr(
+            "textLength",
+            FONT_SCALE_UP_FACTOR as f64 * message_text_width,
+        ),
+    ];
+    if color_pair.text_color != "#fff" {
+        message_text_attrs.push(attr("fill", color_pair.text_color));
+    }
+    message_text_attrs.push(attr("font-weight", "bold"));
+    let message_text = element("text", message_text_attrs, vec![text(&message)]);
     if has_right_link {
         foreground.push(element(
             "a",
