@@ -6,6 +6,7 @@ use crate::support::{ReferenceCase, reference_error_for_case};
 fn invalid_id_suffix_matches_badge_maker_error() {
     let case = ReferenceCase {
         id: "invalid-id-suffix".to_owned(),
+        group: None,
         label: Some("build".to_owned()),
         message: "passing".to_owned(),
         color: None,

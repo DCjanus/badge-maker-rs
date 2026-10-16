@@ -176,14 +176,14 @@ fn normalize_literal_css_color(value: &str) -> Option<String> {
         return None;
     }
     if trimmed.starts_with('#') {
-        return crate::css_color::normalize_css_color(trimmed);
+        return crate::css_color::normalize_css_color(trimmed).map(|_| value.to_ascii_lowercase());
     }
     if trimmed != trimmed.to_ascii_lowercase() {
         return None;
     }
 
     if crate::css_color::normalize_css_color(trimmed).is_some() {
-        Some(trimmed.to_owned())
+        Some(value.to_owned())
     } else {
         None
     }

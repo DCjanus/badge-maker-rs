@@ -355,7 +355,7 @@ fn preferred_width_of(text: &str, font: WidthFont) -> Result<u32, Error> {
 fn measured_width_floor(text: &str, font: WidthFont) -> Result<f64, Error> {
     let measured = anafanafo::measure(text, MeasureOptions::new(font))
         .map_err(|error| Error::WidthComputation(error.to_string()))?;
-    Ok(f64::from(measured.floor()))
+    Ok(measured.floor())
 }
 
 fn round_up_to_odd(value: u32) -> u32 {

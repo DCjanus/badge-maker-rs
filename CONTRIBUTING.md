@@ -35,7 +35,10 @@ layers instead of many implementation-coupled unit tests.
 - `tests/cases/badge_maker_reference.rs`
   Data-driven upstream reference tests. Cases from
   `tests/data/badge_maker_cases.json` are rendered by both Rust and the
-  upstream `badge-maker` package, then compared by rasterized pixels. This is
+  upstream `badge-maker` package, then compared by rasterized pixels, and the
+  run also writes the comparison report described below. Cases from
+  `tests/data/deps_rs_cases.json` join the same comparison in the optional
+  `deps-rs` group (see [`tests/data/README.md`](tests/data/README.md)). This is
   the default home for cases that can be validated by final rendered output.
 - `tests/cases/svg_text_reference.rs`
   Focused upstream reference tests for cases where exact SVG text matters more
@@ -71,3 +74,42 @@ layers instead of many implementation-coupled unit tests.
 - Reference fixtures should describe behavior, not checked-in generated output.
 - Prefer pixel parity over byte-for-byte SVG parity unless the test is
   explicitly about SVG text semantics.
+- Raster comparisons require identical width, height, and RGBA pixels. They use
+  the bundled DejaVu Sans regular/bold fonts in `tests/data/fonts`, not fonts
+  installed on the host. This verifies both renderers under the same font
+  environment, rather than promising identical pixels across all browsers.
+- Logo fixtures use a self-contained red square with a white cross. The
+  intentionally truncated SVG remains only in explicitly named malformed-logo
+  cases. A separate check requires normal logo fixtures to produce visible pixels.
+- `just test` writes `target/reference-report/index.html`, paired SVG/PNG files
+  and magenta pixel-difference images under `images/`, plus input/results JSON
+  and run metadata next to `index.html`. The PNGs
+  are the actual pixels compared by the test; viewing an SVG in a browser may
+  substitute different fonts. CI uploads this directory as `badge-reference-report`
+  even when comparisons fail. Download and extract the artifact, then open
+  `index.html`. Generated files stay outside version control.
+- `index.html` is a single self-contained page: the comparison PNGs, the SVG
+  sources, and the JSON/lock evidence are embedded, so the report keeps working
+  when it is opened on its own. Raw PNG/SVG files stay in `images/`, with JSON
+  evidence next to `index.html`. Typography falls back to system fonts when the
+  optional Google Fonts stylesheet cannot be loaded.
+- The report shows one compact row per case (`Case`, `Rust`, `Upstream`,
+  `Difference`). Badge previews use the original SVGs at their natural CSS size,
+  as in a README, so the browser renders them sharply on high-density screens.
+  Optional 2x/4x zoom enlarges the previews without rasterizing them; difference
+  PNGs use pixelated scaling. Pixel pass/fail still comes exclusively from the
+  fixed-font PNG comparison, independently of browser preview fonts. Matching
+  rows omit the difference image. Rows are grouped by the
+  optional `group` field of a case: generic fixtures have no group and appear
+  under `Compatibility`, while `"group": "deps-rs"` renders as `deps.rs`. Each
+  group has a collapsible header row, the toolbar selects a group, and
+  `index.html#group=deps-rs` deep-links to one group. Clicking a case id expands
+  that case's input JSON, dimensions, SVGs, and compared PNG downloads; the top-right info
+  button holds provenance (CI run attempt, tested commit, pull request),
+  run metadata, and the embedded evidence downloads. The layout assets live in
+  `tests/support/report/` (`page.html`, `report.css`, `report.js`) and are filled
+  by `tests/support/report.rs`, with provenance derived in
+  `tests/support/report/source.rs`.
+- The `group` field is report metadata only: it is not passed to either renderer
+  and does not relax the zero-tolerance pixel or dimension requirements for the
+  cases in that group.

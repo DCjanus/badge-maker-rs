@@ -14,7 +14,7 @@ struct StylePreviewSpec {
     alt: &'static str,
 }
 
-fn assert_valid_ranges(rows: &[(u32, u32, f32)], file_name: &str) {
+fn assert_valid_ranges(rows: &[(u32, u32, f64)], file_name: &str) {
     for (index, (lower, upper, _)) in rows.iter().copied().enumerate() {
         assert!(
             lower <= upper,
@@ -134,7 +134,7 @@ fn main() {
         println!("cargo:rerun-if-changed={}", path.display());
 
         let raw = fs::read_to_string(&path).expect("failed to read anafanafo width table JSON");
-        let rows: Vec<(u32, u32, f32)> =
+        let rows: Vec<(u32, u32, f64)> =
             serde_json::from_str(&raw).expect("invalid anafanafo width table JSON");
         assert_valid_ranges(&rows, table.file_name);
 

@@ -15,7 +15,7 @@
     "style": "flat",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -25,7 +25,7 @@
     "style": "flat",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "idSuffix": "1",
     "links": []
   },
@@ -53,7 +53,7 @@
     "message": "grown",
     "style": "flat",
     "color": "#b3e",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -63,7 +63,7 @@
     "style": "flat",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -73,7 +73,10 @@
     "style": "flat",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+    "links": [
+      "https://shields.io/",
+      "https://www.google.co.uk/"
+    ]
   },
   {
     "id": "flat-light-label",
@@ -109,7 +112,7 @@
     "style": "flat-square",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -119,7 +122,7 @@
     "style": "flat-square",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "idSuffix": "1",
     "links": []
   },
@@ -147,7 +150,7 @@
     "message": "grown",
     "style": "flat-square",
     "color": "#b3e",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -157,7 +160,7 @@
     "style": "flat-square",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -167,7 +170,10 @@
     "style": "flat-square",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+    "links": [
+      "https://shields.io/",
+      "https://www.google.co.uk/"
+    ]
   },
   {
     "id": "flat-square-light-label",
@@ -203,7 +209,7 @@
     "style": "plastic",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -213,7 +219,7 @@
     "style": "plastic",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "idSuffix": "1",
     "links": []
   },
@@ -241,7 +247,7 @@
     "message": "grown",
     "style": "plastic",
     "color": "#b3e",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -251,7 +257,7 @@
     "style": "plastic",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -261,7 +267,10 @@
     "style": "plastic",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+    "links": [
+      "https://shields.io/",
+      "https://www.google.co.uk/"
+    ]
   },
   {
     "id": "plastic-light-label",
@@ -304,7 +313,7 @@
     "style": "for-the-badge",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -314,7 +323,7 @@
     "style": "for-the-badge",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "idSuffix": "1",
     "links": []
   },
@@ -342,7 +351,7 @@
     "message": "grown",
     "style": "for-the-badge",
     "color": "#b3e",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -352,7 +361,7 @@
     "style": "for-the-badge",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -362,7 +371,10 @@
     "style": "for-the-badge",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+    "links": [
+      "https://shields.io/",
+      "https://www.google.co.uk/"
+    ]
   },
   {
     "id": "for-the-badge-light-label",
@@ -405,7 +417,7 @@
     "style": "social",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -415,7 +427,7 @@
     "style": "social",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "idSuffix": "1",
     "links": []
   },
@@ -443,7 +455,7 @@
     "message": "grown",
     "style": "social",
     "color": "#b3e",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -453,7 +465,7 @@
     "style": "social",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -463,13 +475,16 @@
     "style": "social",
     "color": "#b3e",
     "labelColor": "#0f0",
-    "links": ["https://shields.io/", "https://www.google.co.uk/"]
+    "links": [
+      "https://shields.io/",
+      "https://www.google.co.uk/"
+    ]
   },
   {
     "id": "default-style-with-logo",
     "label": "label",
     "message": "message",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -483,7 +498,7 @@
     "label": "",
     "message": "",
     "style": "flat",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -491,7 +506,7 @@
     "label": "",
     "message": "",
     "style": "flat-square",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -499,7 +514,7 @@
     "label": "",
     "message": "",
     "style": "for-the-badge",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -507,7 +522,7 @@
     "label": "",
     "message": "",
     "style": "social",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -515,7 +530,7 @@
     "label": "",
     "message": "",
     "style": "plastic",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "links": []
   },
   {
@@ -540,7 +555,9 @@
     "message": "open",
     "style": "flat",
     "color": "informational",
-    "links": ["https://example.com/docs"]
+    "links": [
+      "https://example.com/docs"
+    ]
   },
   {
     "id": "flat-right-link-only",
@@ -548,7 +565,10 @@
     "message": "open",
     "style": "flat",
     "color": "informational",
-    "links": ["", "https://example.com/docs"]
+    "links": [
+      "",
+      "https://example.com/docs"
+    ]
   },
   {
     "id": "flat-id-suffix-dash-underscore",
@@ -601,7 +621,9 @@
     "style": "for-the-badge",
     "color": "orange",
     "labelColor": "grey",
-    "links": ["https://example.com/releases"]
+    "links": [
+      "https://example.com/releases"
+    ]
   },
   {
     "id": "social-escape-special-characters",
@@ -615,14 +637,17 @@
     "label": "follow",
     "message": "updates",
     "style": "social",
-    "links": ["", "https://example.com/feed"]
+    "links": [
+      "",
+      "https://example.com/feed"
+    ]
   },
   {
     "id": "social-id-suffix-dash-underscore",
     "label": "follow",
     "message": "updates",
     "style": "social",
-    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIGZpbGw9IiNlMTEiLz48cGF0aCBkPSJNMiA4aDEyTTggMnYxMiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=",
     "idSuffix": "social_preview-1",
     "links": []
   },
@@ -853,6 +878,283 @@
     "message": "hsl-missing-percent",
     "style": "flat",
     "color": "hsl(122, 200, 222%)",
+    "links": []
+  },
+  {
+    "id": "flat-empty",
+    "label": "",
+    "message": "",
+    "style": "flat",
+    "links": []
+  },
+  {
+    "id": "flat-label-only",
+    "label": "build",
+    "message": "",
+    "style": "flat",
+    "links": []
+  },
+  {
+    "id": "flat-long-text",
+    "label": "a very long build label 0123456789",
+    "message": "release candidate 1234567890",
+    "style": "flat",
+    "links": []
+  },
+  {
+    "id": "flat-unicode-text",
+    "label": "Été Ω Ж",
+    "message": "naïve café ✓",
+    "style": "flat",
+    "links": []
+  },
+  {
+    "id": "flat-malformed-logo",
+    "label": "build",
+    "message": "passing",
+    "style": "flat",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-square-empty",
+    "label": "",
+    "message": "",
+    "style": "flat-square",
+    "links": []
+  },
+  {
+    "id": "flat-square-label-only",
+    "label": "build",
+    "message": "",
+    "style": "flat-square",
+    "links": []
+  },
+  {
+    "id": "flat-square-long-text",
+    "label": "a very long build label 0123456789",
+    "message": "release candidate 1234567890",
+    "style": "flat-square",
+    "links": []
+  },
+  {
+    "id": "flat-square-unicode-text",
+    "label": "Été Ω Ж",
+    "message": "naïve café ✓",
+    "style": "flat-square",
+    "links": []
+  },
+  {
+    "id": "flat-square-malformed-logo",
+    "label": "build",
+    "message": "passing",
+    "style": "flat-square",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "plastic-empty",
+    "label": "",
+    "message": "",
+    "style": "plastic",
+    "links": []
+  },
+  {
+    "id": "plastic-label-only",
+    "label": "build",
+    "message": "",
+    "style": "plastic",
+    "links": []
+  },
+  {
+    "id": "plastic-long-text",
+    "label": "a very long build label 0123456789",
+    "message": "release candidate 1234567890",
+    "style": "plastic",
+    "links": []
+  },
+  {
+    "id": "plastic-unicode-text",
+    "label": "Été Ω Ж",
+    "message": "naïve café ✓",
+    "style": "plastic",
+    "links": []
+  },
+  {
+    "id": "plastic-malformed-logo",
+    "label": "build",
+    "message": "passing",
+    "style": "plastic",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-empty",
+    "label": "",
+    "message": "",
+    "style": "for-the-badge",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-label-only",
+    "label": "build",
+    "message": "",
+    "style": "for-the-badge",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-long-text",
+    "label": "a very long build label 0123456789",
+    "message": "release candidate 1234567890",
+    "style": "for-the-badge",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-unicode-text",
+    "label": "Été Ω Ж",
+    "message": "naïve café ✓",
+    "style": "for-the-badge",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-malformed-logo",
+    "label": "build",
+    "message": "passing",
+    "style": "for-the-badge",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "social-empty",
+    "label": "",
+    "message": "",
+    "style": "social",
+    "links": []
+  },
+  {
+    "id": "social-label-only",
+    "label": "build",
+    "message": "",
+    "style": "social",
+    "links": []
+  },
+  {
+    "id": "social-long-text",
+    "label": "a very long build label 0123456789",
+    "message": "release candidate 1234567890",
+    "style": "social",
+    "links": []
+  },
+  {
+    "id": "social-unicode-text",
+    "label": "Été Ω Ж",
+    "message": "naïve café ✓",
+    "style": "social",
+    "links": []
+  },
+  {
+    "id": "social-malformed-logo",
+    "label": "build",
+    "message": "passing",
+    "style": "social",
+    "logoBase64": "data:image/svg+xml;base64,PHN2ZyB4bWxu",
+    "links": []
+  },
+  {
+    "id": "flat-whitespace-hex-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "flat",
+    "labelColor": " #abc ",
+    "color": " #abc ",
+    "links": []
+  },
+  {
+    "id": "flat-whitespace-rgb-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "flat",
+    "labelColor": " rgb(220,220,220) ",
+    "color": " rgb(220,220,220) ",
+    "links": []
+  },
+  {
+    "id": "flat-square-whitespace-hex-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "flat-square",
+    "labelColor": " #abc ",
+    "color": " #abc ",
+    "links": []
+  },
+  {
+    "id": "flat-square-whitespace-rgb-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "flat-square",
+    "labelColor": " rgb(220,220,220) ",
+    "color": " rgb(220,220,220) ",
+    "links": []
+  },
+  {
+    "id": "plastic-whitespace-hex-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "plastic",
+    "labelColor": " #abc ",
+    "color": " #abc ",
+    "links": []
+  },
+  {
+    "id": "plastic-whitespace-rgb-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "plastic",
+    "labelColor": " rgb(220,220,220) ",
+    "color": " rgb(220,220,220) ",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-whitespace-hex-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "for-the-badge",
+    "labelColor": " #abc ",
+    "color": " #abc ",
+    "links": []
+  },
+  {
+    "id": "for-the-badge-whitespace-rgb-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "for-the-badge",
+    "labelColor": " rgb(220,220,220) ",
+    "color": " rgb(220,220,220) ",
+    "links": []
+  },
+  {
+    "id": "social-whitespace-hex-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "social",
+    "labelColor": " #abc ",
+    "color": " #abc ",
+    "links": []
+  },
+  {
+    "id": "social-whitespace-rgb-contrast",
+    "label": "contrast",
+    "message": "passing",
+    "style": "social",
+    "labelColor": " rgb(220,220,220) ",
+    "color": " rgb(220,220,220) ",
+    "links": []
+  },
+  {
+    "id": "social-integer-width-boundary",
+    "label": "Docs & <tools>",
+    "message": "passing",
+    "style": "social",
     "links": []
   }
 ]

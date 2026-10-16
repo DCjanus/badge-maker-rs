@@ -25,6 +25,11 @@ pub(super) fn to_svg_color(color: Option<&Color>) -> Option<String> {
 }
 
 fn brightness(color: &str) -> f64 {
+    // Upstream preserves whitespace in CSS literals, but its brightness parser
+    // does not trim it. Match that fallback independently of SVG color parsing.
+    if color != color.trim() {
+        return 0.0;
+    }
     let Some([r, g, b, _]) = parse_css_color_rgba(color) else {
         return 0.0;
     };
