@@ -30,9 +30,9 @@
 <label class="toggle" title="Show only differing cases."><input type="checkbox" id="differences-only"> Differences only</label>
 <fieldset class="zoom" id="zoom-control">
 <legend class="sr-only">Zoom</legend>
-<label class="zoom-option" title="Native size"><input type="radio" name="zoom" value="1" checked>1×</label>
-<label class="zoom-option" title="2× pixels"><input type="radio" name="zoom" value="2">2×</label>
-<label class="zoom-option" title="4× pixels"><input type="radio" name="zoom" value="4">4×</label>
+<label class="zoom-option" title="Natural SVG size, as in a README; sharp on high-density screens."><input type="radio" name="zoom" value="1" checked>1×</label>
+<label class="zoom-option" title="Enlarge the preview and difference image to 2×."><input type="radio" name="zoom" value="2">2×</label>
+<label class="zoom-option" title="Enlarge the preview and difference image to 4×."><input type="radio" name="zoom" value="4">4×</label>
 </fieldset>
 <span class="count" data-visible-count hidden></span>
 </div>
@@ -41,8 +41,8 @@
 <thead>
 <tr>
 <th class="col-case" scope="col">Case</th>
-<th scope="col">Rust</th>
-<th scope="col">Upstream</th>
+<th scope="col" title="Original SVG preview. Case details include the PNG pixels compared by the test.">Rust</th>
+<th scope="col" title="Original SVG preview. Case details include the PNG pixels compared by the test.">Upstream</th>
 <th class="col-diff" scope="col">Difference<span class="tip tip--end" tabindex="0" role="note" data-tip="Magenta marks differing pixels.">?</span></th>
 </tr>
 </thead>

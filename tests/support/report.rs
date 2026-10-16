@@ -2,8 +2,8 @@
 //!
 //! `finish` writes a self-contained `index.html` (comparison PNGs, SVG sources,
 //! metadata, results, and dependency locks embedded as data URLs) next to the
-//! raw per-case PNG/SVG evidence and the JSON result files. The page layout,
-//! styling, and script live in `tests/support/report/` and are filled from the
+//! raw per-case PNG/SVG evidence in `images/` and the JSON result files. The page
+//! layout, styling, and script live in `tests/support/report/` and are filled from the
 //! real comparison results; see `CONTRIBUTING.md`.
 
 use std::{
@@ -135,7 +135,8 @@ impl ReferenceReport {
         if directory.exists() {
             fs::remove_dir_all(&directory).expect("failed to clear previous reference report");
         }
-        fs::create_dir_all(&directory).expect("failed to create reference report directory");
+        fs::create_dir_all(directory.join("images"))
+            .expect("failed to create reference report images directory");
         Self {
             directory,
             rows: Vec::new(),
@@ -182,12 +183,16 @@ impl ReferenceReport {
             ("diff", &diff),
         ] {
             image
-                .save_png(self.directory.join(format!("{}-{suffix}.png", case.id)))
+                .save_png(
+                    self.directory
+                        .join(format!("images/{}-{suffix}.png", case.id)),
+                )
                 .unwrap();
         }
         for (suffix, svg) in [("rust", actual_svg), ("upstream", reference_svg)] {
             fs::write(
-                self.directory.join(format!("{}-{suffix}.svg", case.id)),
+                self.directory
+                    .join(format!("images/{}-{suffix}.svg", case.id)),
                 svg,
             )
             .unwrap();
@@ -267,7 +272,7 @@ impl ReferenceReport {
 
     fn badge_cell(&self, id: &str, suffix: &str, size: (u32, u32), alt: &str) -> String {
         let (width, height) = size;
-        let image = match self.data_uri(&format!("{id}-{suffix}.png"), "image/png") {
+        let image = match self.data_uri(&format!("images/{id}-{suffix}.svg"), "image/svg+xml") {
             Some(url) => format!(
                 "<img class=\"badge\" src=\"{url}\" alt=\"{}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" decoding=\"async\" style=\"--badge-width:{width}px\">",
                 escape_html(alt)
@@ -312,7 +317,7 @@ impl ReferenceReport {
                 } else {
                     let diff_width = rust.0.max(upstream.0);
                     let diff_height = rust.1.max(upstream.1);
-                    let image = match self.data_uri(&format!("{id}-diff.png"), "image/png") {
+                    let image = match self.data_uri(&format!("images/{id}-diff.png"), "image/png") {
                         Some(url) => format!(
                             "<img class=\"badge badge--diff\" src=\"{url}\" alt=\"Difference image for {escaped_id}; magenta marks differing pixels\" width=\"{diff_width}\" height=\"{diff_height}\" loading=\"lazy\" decoding=\"async\" style=\"--badge-width:{diff_width}px\">"
                         ),
@@ -325,11 +330,17 @@ impl ReferenceReport {
 
                 let mut links = String::new();
                 for (suffix, label) in [("rust", "Rust"), ("upstream", "Upstream")] {
-                    if let Some(url) = self.data_uri(&format!("{id}-{suffix}.svg"), "image/svg+xml")
-                    {
-                        links.push_str(&format!(
-                            "<a href=\"{url}\" download=\"{escaped_id}-{suffix}.svg\" title=\"Download {label} SVG.\">{label} SVG</a>"
-                        ));
+                    for (extension, mime, description) in [
+                        ("svg", "image/svg+xml", "SVG"),
+                        ("png", "image/png", "compared PNG"),
+                    ] {
+                        if let Some(url) =
+                            self.data_uri(&format!("images/{id}-{suffix}.{extension}"), mime)
+                        {
+                            links.push_str(&format!(
+                                "<a href=\"{url}\" download=\"{escaped_id}-{suffix}.{extension}\" title=\"Download {label} {description}.\">{label} {description}</a>"
+                            ));
+                        }
                     }
                 }
                 if links.is_empty() {
@@ -456,6 +467,10 @@ impl ReferenceReport {
                 format!("<code>{}</code>", escape_html(git_ref)),
             ));
         }
+        rows.push((
+            "Preview".to_owned(),
+            "Original SVG · browser fonts · native size at 1×".to_owned(),
+        ));
         rows.push((
             "Comparison".to_owned(),
             "Exact RGBA · zero tolerance · resvg".to_owned(),
@@ -834,7 +849,7 @@ fn mismatch_report_preserves_all_cases_and_marks_pixel_and_dimension_differences
         "target/reference-report-smoke-{}",
         std::process::id()
     ));
-    fs::create_dir_all(&directory).unwrap();
+    fs::create_dir_all(directory.join("images")).unwrap();
     let mut report = ReferenceReport {
         directory: directory.clone(),
         rows: Vec::new(),
@@ -875,7 +890,7 @@ fn mismatch_report_preserves_all_cases_and_marks_pixel_and_dimension_differences
             "generic fixture cases carry no group"
         );
     }
-    let diff = Pixmap::load_png(directory.join("different-shape-diff.png")).unwrap();
+    let diff = Pixmap::load_png(directory.join("images/different-shape-diff.png")).unwrap();
     assert_eq!((diff.width(), diff.height()), (2, 2));
     let magenta = PremultipliedColorU8::from_rgba(255, 0, 255, 255);
     assert_eq!(diff.pixel(1, 0), magenta);

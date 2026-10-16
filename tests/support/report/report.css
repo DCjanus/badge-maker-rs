@@ -68,7 +68,7 @@ code,pre{font-family:var(--font-mono)}
 .scroll{display:flex;align-items:center;height:calc(var(--zoom,1) * 28px + 1px);overflow-x:auto;overflow-y:hidden}
 .badge{flex:none;max-width:none;display:block;image-rendering:auto;width:calc(var(--badge-width,120px) * var(--zoom,1));height:auto}
 .badge--diff{background-image:repeating-conic-gradient(#eef1f4 0deg 90deg,#fff 90deg 180deg);background-size:calc(8px * var(--zoom,1)) calc(8px * var(--zoom,1))}
-html[data-zoom="2"] .badge,html[data-zoom="4"] .badge{image-rendering:pixelated}
+.badge--diff{image-rendering:pixelated}
 .cell-diff{font-size:.72rem}
 .diff-fail{display:flex;align-items:center;gap:8px;min-width:0}
 .diff-fail .scroll{min-width:0}

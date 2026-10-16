@@ -81,25 +81,30 @@ layers instead of many implementation-coupled unit tests.
 - Logo fixtures use a self-contained red square with a white cross. The
   intentionally truncated SVG remains only in explicitly named malformed-logo
   cases. A separate check requires normal logo fixtures to produce visible pixels.
-- `just test` writes `target/reference-report/index.html`, paired SVG/PNG files,
-  magenta pixel-difference images, input/results JSON, and run metadata. The PNGs
+- `just test` writes `target/reference-report/index.html`, paired SVG/PNG files
+  and magenta pixel-difference images under `images/`, plus input/results JSON
+  and run metadata next to `index.html`. The PNGs
   are the actual pixels compared by the test; viewing an SVG in a browser may
   substitute different fonts. CI uploads this directory as `badge-reference-report`
   even when comparisons fail. Download and extract the artifact, then open
   `index.html`. Generated files stay outside version control.
 - `index.html` is a single self-contained page: the comparison PNGs, the SVG
   sources, and the JSON/lock evidence are embedded, so the report keeps working
-  when it is opened on its own. The raw PNG/SVG/JSON files above stay next to it
-  as machine-readable evidence. Typography falls back to system fonts when the
+  when it is opened on its own. Raw PNG/SVG files stay in `images/`, with JSON
+  evidence next to `index.html`. Typography falls back to system fonts when the
   optional Google Fonts stylesheet cannot be loaded.
 - The report shows one compact row per case (`Case`, `Rust`, `Upstream`,
-  `Difference`); badges render at native size with optional 1x/2x/4x pixelated
-  zoom, and matching rows omit the difference image. Rows are grouped by the
+  `Difference`). Badge previews use the original SVGs at their natural CSS size,
+  as in a README, so the browser renders them sharply on high-density screens.
+  Optional 2x/4x zoom enlarges the previews without rasterizing them; difference
+  PNGs use pixelated scaling. Pixel pass/fail still comes exclusively from the
+  fixed-font PNG comparison, independently of browser preview fonts. Matching
+  rows omit the difference image. Rows are grouped by the
   optional `group` field of a case: generic fixtures have no group and appear
   under `Compatibility`, while `"group": "deps-rs"` renders as `deps.rs`. Each
   group has a collapsible header row, the toolbar selects a group, and
   `index.html#group=deps-rs` deep-links to one group. Clicking a case id expands
-  that case's input JSON, dimensions, and SVG downloads; the top-right info
+  that case's input JSON, dimensions, SVGs, and compared PNG downloads; the top-right info
   button holds provenance (CI run attempt, tested commit, pull request),
   run metadata, and the embedded evidence downloads. The layout assets live in
   `tests/support/report/` (`page.html`, `report.css`, `report.js`) and are filled
