@@ -653,7 +653,9 @@ fn group_counts(rows: &[CaseRow]) -> Vec<GroupCount> {
             entry.failures += 1;
         }
     }
-    counts.into_values().collect()
+    let mut groups: Vec<_> = counts.into_values().collect();
+    groups.sort_by_key(|group| group.value != "deps-rs");
+    groups
 }
 
 fn style_counts(rows: &[CaseRow]) -> Vec<(String, usize)> {
