@@ -78,3 +78,9 @@ layers instead of many implementation-coupled unit tests.
 - Logo fixtures use a self-contained red square with a white cross. The
   intentionally truncated SVG remains only in explicitly named malformed-logo
   cases. A separate check requires normal logo fixtures to produce visible pixels.
+- `just test` writes `target/reference-report/index.html`, paired SVG/PNG files,
+  magenta pixel-difference images, input/results JSON, and run metadata. The PNGs
+  are the actual pixels compared by the test; viewing an SVG in a browser may
+  substitute different fonts. CI uploads this directory as `badge-reference-report`
+  even when comparisons fail. Download and extract the artifact, then open
+  `index.html`. Generated files stay outside version control.

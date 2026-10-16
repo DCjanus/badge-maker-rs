@@ -53,6 +53,14 @@ jobs:
       - name: Run doc tests
         run: cargo test --doc --quiet
 
+      - name: Upload reference comparison report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: badge-reference-report
+          path: target/reference-report/
+          if-no-files-found: warn
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
         with:

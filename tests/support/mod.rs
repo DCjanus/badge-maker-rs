@@ -13,6 +13,9 @@ use resvg::{
 };
 use serde::{Deserialize, Serialize};
 
+mod report;
+pub use report::ReferenceReport;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReferenceCase {
     pub id: String,

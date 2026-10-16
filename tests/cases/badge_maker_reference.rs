@@ -1,5 +1,6 @@
 use crate::support::{
-    ReferenceResult, load_cases, render_svg_to_rgba, run_reference_batch, to_badge_options,
+    ReferenceReport, ReferenceResult, load_cases, render_svg_to_rgba, run_reference_batch,
+    to_badge_options,
 };
 
 #[test]
@@ -80,6 +81,7 @@ fn badge_maker_matches_reference_cases() {
     let cases = load_cases();
     let reference_results = run_reference_batch(&cases);
     assert_eq!(cases.len(), reference_results.len());
+    let mut report = ReferenceReport::new();
 
     for (case, reference) in cases.iter().zip(reference_results.iter()) {
         let actual = badge_maker_rs::make_badge(&to_badge_options(case));
@@ -96,24 +98,12 @@ fn badge_maker_matches_reference_cases() {
                 assert_eq!(id, &case.id);
                 let actual_pixels = render_svg_to_rgba(&actual_output);
                 let expected_pixels = render_svg_to_rgba(expected_output);
-                assert_eq!(
-                    (actual_pixels.width, actual_pixels.height),
-                    (expected_pixels.width, expected_pixels.height),
-                    "rasterized dimensions mismatch for case `{}`",
-                    case.id
-                );
-                assert!(
-                    actual_pixels.pixels == expected_pixels.pixels,
-                    "rasterized pixel mismatch for case `{}` ({} differing pixels)",
-                    case.id,
-                    actual_pixels
-                        .pixels
-                        .as_chunks::<4>()
-                        .0
-                        .iter()
-                        .zip(expected_pixels.pixels.as_chunks::<4>().0.iter())
-                        .filter(|(actual, expected)| actual != expected)
-                        .count()
+                report.record_render(
+                    case,
+                    &actual_output,
+                    expected_output,
+                    &actual_pixels,
+                    &expected_pixels,
                 );
             }
             (
@@ -126,9 +116,10 @@ fn badge_maker_matches_reference_cases() {
                 },
             ) => {
                 assert_eq!(id, &case.id);
-                assert_eq!(error.to_string(), *expected_error);
+                report.record_error(case, &error.to_string(), expected_error);
             }
             (_, other) => panic!("unexpected result for case `{}`: {other:?}", case.id),
         }
     }
+    report.finish();
 }
