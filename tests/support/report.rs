@@ -6,7 +6,12 @@
 //! styling, and script live in `tests/support/report/` and are filled from the
 //! real comparison results; see `CONTRIBUTING.md`.
 
-use std::{collections::BTreeMap, env, fs, path::PathBuf, process::Command};
+use std::{
+    collections::BTreeMap,
+    env, fs,
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 use base64::{Engine as _, engine::general_purpose::STANDARD};
 use resvg::tiny_skia::{Pixmap, PremultipliedColorU8};
@@ -696,8 +701,7 @@ fn source_input() -> SourceInput {
         .unwrap_or_else(|| "unknown".to_owned());
     let dirty = command_stdout("git", &["status", "--porcelain"])
         .is_some_and(|output| !output.trim().is_empty());
-    let merge_commit = command_stdout("git", &["rev-list", "--parents", "-n", "1", "HEAD"])
-        .is_some_and(|output| output.split_whitespace().count() > 2);
+    let merge_commit = checkout_is_merge(repo_root());
     SourceInput {
         server_url: env_value("GITHUB_SERVER_URL"),
         repository: env_value("GITHUB_REPOSITORY"),
@@ -714,6 +718,114 @@ fn source_input() -> SourceInput {
             merge_commit,
         },
     }
+}
+
+fn checkout_is_merge(directory: &Path) -> bool {
+    Command::new("git")
+        // Read the stored headers: revision traversal hides parents at a
+        // shallow boundary, including GitHub's default PR checkout.
+        .args(["cat-file", "-p", "HEAD"])
+        .current_dir(directory)
+        .output()
+        .ok()
+        .filter(|output| output.status.success())
+        .is_some_and(|output| {
+            String::from_utf8_lossy(&output.stdout)
+                .lines()
+                .take_while(|line| !line.is_empty())
+                .filter(|line| line.starts_with("parent "))
+                .count()
+                > 1
+        })
+}
+
+#[test]
+fn shallow_checkout_preserves_tested_merge_commit_identity() {
+    let directory = repo_root().join(format!(
+        "target/report-shallow-checkout-{}",
+        std::process::id()
+    ));
+    fs::create_dir_all(&directory).unwrap();
+    let git = |root: &Path, args: &[&str]| {
+        let output = Command::new("git")
+            .args(args)
+            .current_dir(root)
+            .env("GIT_AUTHOR_NAME", "Report fixture")
+            .env("GIT_COMMITTER_NAME", "Report fixture")
+            .env("GIT_AUTHOR_EMAIL", "report@example.invalid")
+            .env("GIT_COMMITTER_EMAIL", "report@example.invalid")
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "git fixture failed: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        String::from_utf8(output.stdout).unwrap().trim().to_owned()
+    };
+    git(
+        &directory,
+        &["init", "--quiet", "--initial-branch=main", "source"],
+    );
+    let source = directory.join("source");
+    let tree = git(&source, &["mktree"]);
+    let first = git(
+        &source,
+        &[
+            "-c",
+            "commit.gpgsign=false",
+            "commit-tree",
+            &tree,
+            "-m",
+            "first",
+        ],
+    );
+    let second = git(
+        &source,
+        &[
+            "-c",
+            "commit.gpgsign=false",
+            "commit-tree",
+            &tree,
+            "-p",
+            &first,
+            "-m",
+            "second",
+        ],
+    );
+    let merge = git(
+        &source,
+        &[
+            "-c",
+            "commit.gpgsign=false",
+            "commit-tree",
+            &tree,
+            "-p",
+            &first,
+            "-p",
+            &second,
+            "-m",
+            "merge",
+        ],
+    );
+    git(&source, &["update-ref", "refs/heads/main", &merge]);
+    assert!(checkout_is_merge(&source));
+    let url = format!("file://{}", source.display());
+    git(
+        &directory,
+        &["clone", "--quiet", "--depth=1", &url, "shallow"],
+    );
+    let shallow = directory.join("shallow");
+    assert_eq!(
+        git(&shallow, &["rev-parse", "--is-shallow-repository"]),
+        "true"
+    );
+    let detected = checkout_is_merge(&shallow);
+    fs::remove_dir_all(directory).unwrap();
+    assert!(
+        detected,
+        "CI's shallow checkout still contains the merge commit's parent headers"
+    );
 }
 
 #[test]
