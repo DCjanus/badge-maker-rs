@@ -3,6 +3,7 @@ use std::{
     io::Write,
     path::{Path, PathBuf},
     process::{Command, Stdio},
+    sync::OnceLock,
 };
 
 use badge_maker_rs::{BadgeOptions, Color, Style};
@@ -139,12 +140,33 @@ pub fn load_cases() -> Vec<ReferenceCase> {
     serde_json::from_str(&text).expect("failed to parse badge-maker cases")
 }
 
-pub fn render_svg_to_rgba(svg: &str) -> Vec<u8> {
-    let tree = Tree::from_str(svg, &Options::default()).expect("failed to parse SVG with usvg");
+#[derive(Debug, PartialEq, Eq)]
+pub struct RasterizedSvg {
+    pub width: u32,
+    pub height: u32,
+    pub pixels: Vec<u8>,
+}
+
+pub fn render_svg_to_rgba(svg: &str) -> RasterizedSvg {
+    static OPTIONS: OnceLock<Options<'static>> = OnceLock::new();
+    let options = OPTIONS.get_or_init(|| {
+        let mut options = Options::default();
+        let fonts = options.fontdb_mut();
+        fonts.load_font_data(include_bytes!("../data/fonts/DejaVuSans.ttf").to_vec());
+        fonts.load_font_data(include_bytes!("../data/fonts/DejaVuSans-Bold.ttf").to_vec());
+        fonts.set_sans_serif_family("DejaVu Sans");
+        fonts.set_serif_family("DejaVu Sans");
+        options
+    });
+    let tree = Tree::from_str(svg, options).expect("failed to parse SVG with usvg");
     let size = tree.size().to_int_size();
     let mut pixmap = Pixmap::new(size.width(), size.height()).expect("failed to create pixmap");
     resvg::render(&tree, Transform::default(), &mut pixmap.as_mut());
-    pixmap.data().to_vec()
+    RasterizedSvg {
+        width: size.width(),
+        height: size.height(),
+        pixels: pixmap.data().to_vec(),
+    }
 }
 
 fn parse_style(style: Option<&str>) -> Style {

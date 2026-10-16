@@ -3,6 +3,59 @@ use crate::support::{
 };
 
 #[test]
+fn pixel_comparison_detects_text() {
+    let blank = r#"<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"/>"#;
+    for family in [
+        "Verdana,Geneva,DejaVu Sans,sans-serif",
+        "Helvetica Neue,Helvetica,Arial,sans-serif",
+    ] {
+        for weight in ["normal", "bold"] {
+            let with_text = format!(
+                r##"<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><text x="2" y="15" font-family="{family}" font-weight="{weight}" font-size="11" fill="#fff">passing</text></svg>"##
+            );
+            assert_ne!(render_svg_to_rgba(&with_text), render_svg_to_rgba(blank));
+        }
+    }
+}
+
+#[test]
+fn pixel_comparison_detects_different_dimensions_with_equal_pixel_counts() {
+    let wide = r#"<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"/>"#;
+    let tall = r#"<svg xmlns="http://www.w3.org/2000/svg" width="80" height="25"/>"#;
+    assert_ne!(render_svg_to_rgba(wide), render_svg_to_rgba(tall));
+}
+
+#[test]
+fn reference_logo_fixtures_render_visible_pixels() {
+    for case in load_cases() {
+        if case.id.ends_with("-malformed-logo") {
+            continue;
+        }
+        let Some(logo) = case
+            .logo_data_url
+            .as_deref()
+            .filter(|logo| !logo.is_empty())
+        else {
+            continue;
+        };
+        let svg = format!(
+            r#"<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><image width="16" height="16" href="{logo}"/></svg>"#
+        );
+        let image = render_svg_to_rgba(&svg);
+        assert!(
+            image
+                .pixels
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .any(|pixel| pixel[3] != 0),
+            "logo fixture must render visible pixels for `{}`",
+            case.id
+        );
+    }
+}
+
+#[test]
 fn badge_maker_seed_cases_are_not_empty() {
     assert!(!load_cases().is_empty());
 }
@@ -44,9 +97,23 @@ fn badge_maker_matches_reference_cases() {
                 let actual_pixels = render_svg_to_rgba(&actual_output);
                 let expected_pixels = render_svg_to_rgba(expected_output);
                 assert_eq!(
-                    actual_pixels, expected_pixels,
-                    "rasterized pixel mismatch for case `{}`",
+                    (actual_pixels.width, actual_pixels.height),
+                    (expected_pixels.width, expected_pixels.height),
+                    "rasterized dimensions mismatch for case `{}`",
                     case.id
+                );
+                assert!(
+                    actual_pixels.pixels == expected_pixels.pixels,
+                    "rasterized pixel mismatch for case `{}` ({} differing pixels)",
+                    case.id,
+                    actual_pixels
+                        .pixels
+                        .as_chunks::<4>()
+                        .0
+                        .iter()
+                        .zip(expected_pixels.pixels.as_chunks::<4>().0.iter())
+                        .filter(|(actual, expected)| actual != expected)
+                        .count()
                 );
             }
             (

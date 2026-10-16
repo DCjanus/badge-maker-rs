@@ -71,3 +71,10 @@ layers instead of many implementation-coupled unit tests.
 - Reference fixtures should describe behavior, not checked-in generated output.
 - Prefer pixel parity over byte-for-byte SVG parity unless the test is
   explicitly about SVG text semantics.
+- Raster comparisons require identical width, height, and RGBA pixels. They use
+  the bundled DejaVu Sans regular/bold fonts in `tests/data/fonts`, not fonts
+  installed on the host. This verifies both renderers under the same font
+  environment, rather than promising identical pixels across all browsers.
+- Logo fixtures use a self-contained red square with a white cross. The
+  intentionally truncated SVG remains only in explicitly named malformed-logo
+  cases. A separate check requires normal logo fixtures to produce visible pixels.
