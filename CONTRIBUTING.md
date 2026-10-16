@@ -35,7 +35,10 @@ layers instead of many implementation-coupled unit tests.
 - `tests/cases/badge_maker_reference.rs`
   Data-driven upstream reference tests. Cases from
   `tests/data/badge_maker_cases.json` are rendered by both Rust and the
-  upstream `badge-maker` package, then compared by rasterized pixels. This is
+  upstream `badge-maker` package, then compared by rasterized pixels, and the
+  run also writes the comparison report described below. Cases from
+  `tests/data/deps_rs_cases.json` join the same comparison in the optional
+  `deps-rs` group (see [`tests/data/README.md`](tests/data/README.md)). This is
   the default home for cases that can be validated by final rendered output.
 - `tests/cases/svg_text_reference.rs`
   Focused upstream reference tests for cases where exact SVG text matters more
@@ -84,3 +87,24 @@ layers instead of many implementation-coupled unit tests.
   substitute different fonts. CI uploads this directory as `badge-reference-report`
   even when comparisons fail. Download and extract the artifact, then open
   `index.html`. Generated files stay outside version control.
+- `index.html` is a single self-contained page: the comparison PNGs, the SVG
+  sources, and the JSON/lock evidence are embedded, so the report keeps working
+  when it is opened on its own. The raw PNG/SVG/JSON files above stay next to it
+  as machine-readable evidence. Typography falls back to system fonts when the
+  optional Google Fonts stylesheet cannot be loaded.
+- The report shows one compact row per case (`Case`, `Rust`, `Upstream`,
+  `Difference`); badges render at native size with optional 1x/2x/4x pixelated
+  zoom, and matching rows omit the difference image. Rows are grouped by the
+  optional `group` field of a case: generic fixtures have no group and appear
+  under `Compatibility`, while `"group": "deps-rs"` renders as `deps.rs`. Each
+  group has a collapsible header row, the toolbar selects a group, and
+  `index.html#group=deps-rs` deep-links to one group. Clicking a case id expands
+  that case's input JSON, dimensions, and SVG downloads; the top-right info
+  button holds provenance (CI run attempt, tested commit, pull request),
+  run metadata, and the embedded evidence downloads. The layout assets live in
+  `tests/support/report/` (`page.html`, `report.css`, `report.js`) and are filled
+  by `tests/support/report.rs`, with provenance derived in
+  `tests/support/report/source.rs`.
+- The `group` field is report metadata only: it is not passed to either renderer
+  and does not relax the zero-tolerance pixel or dimension requirements for the
+  cases in that group.

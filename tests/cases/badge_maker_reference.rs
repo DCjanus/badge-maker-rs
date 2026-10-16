@@ -1,6 +1,8 @@
+use std::collections::BTreeSet;
+
 use crate::support::{
-    ReferenceReport, ReferenceResult, load_cases, render_svg_to_rgba, run_reference_batch,
-    to_badge_options,
+    ReferenceReport, ReferenceResult, group_filter_value, group_name, load_cases,
+    render_svg_to_rgba, run_reference_batch, to_badge_options,
 };
 
 #[test]
@@ -74,6 +76,127 @@ fn badge_maker_case_ids_are_unique() {
             case.id
         );
     }
+}
+
+#[test]
+fn case_group_helpers_render_product_names() {
+    assert_eq!(group_name(None), "Compatibility");
+    assert_eq!(group_name(Some("deps-rs")), "deps.rs");
+    assert_eq!(group_name(Some("future-group")), "future-group");
+    assert_eq!(group_filter_value(None), "compatibility");
+    assert_eq!(group_filter_value(Some("deps-rs")), "deps-rs");
+}
+
+#[test]
+fn fixture_cases_declare_usable_groups() {
+    let cases = load_cases();
+    for case in &cases {
+        if let Some(group) = &case.group {
+            assert!(
+                !group.trim().is_empty(),
+                "case `{}` declares a blank group",
+                case.id
+            );
+            assert!(
+                !group_name(case.group.as_deref()).is_empty(),
+                "case `{}` has no display name for its group",
+                case.id
+            );
+        }
+    }
+    assert!(
+        cases.iter().any(|case| case.group.is_none()),
+        "the generic badge-maker fixture is the Compatibility group"
+    );
+}
+
+#[test]
+fn deps_rs_showcase_fixture_covers_typical_states() {
+    let cases = load_cases();
+    let grouped = cases
+        .iter()
+        .filter(|case| case.group.as_deref() == Some("deps-rs"))
+        .collect::<Vec<_>>();
+    assert!(
+        !grouped.is_empty(),
+        "tests/data/deps_rs_cases.json must load a deps.rs showcase"
+    );
+    assert!(
+        grouped.len() <= 20,
+        "the deps.rs group is a quick visual showcase, not a full matrix: {} cases",
+        grouped.len()
+    );
+    for case in &grouped {
+        assert!(
+            case.id.starts_with("deps-rs-"),
+            "deps.rs case ids carry the group prefix: {}",
+            case.id
+        );
+        assert!(
+            case.style.is_some(),
+            "deps.rs cases name a style: {}",
+            case.id
+        );
+    }
+
+    // The showcase is scanned by eye, so it keeps one example per typical state
+    // instead of expanding every state/style combination.
+    let messages = grouped
+        .iter()
+        .map(|case| case.message.as_str())
+        .collect::<BTreeSet<_>>();
+    for state in [
+        "unknown",
+        "none",
+        "up to date",
+        "insecure",
+        "maybe insecure",
+        "3 of 18 outdated",
+    ] {
+        assert!(
+            messages.contains(state),
+            "deps.rs showcase covers the `{state}` state"
+        );
+    }
+
+    let colors = grouped
+        .iter()
+        .filter_map(|case| case.color.as_deref())
+        .collect::<BTreeSet<_>>();
+    for color in ["#4c1", "#dfb317", "#e05d44"] {
+        assert!(
+            colors.contains(color),
+            "deps.rs showcase covers the `{color}` status color"
+        );
+    }
+
+    let flat_default = grouped
+        .iter()
+        .filter(|case| {
+            case.style.as_deref() == Some("flat") && case.label.as_deref() == Some("dependencies")
+        })
+        .count();
+    assert_eq!(flat_default, 6, "six default flat states");
+    let compact = grouped
+        .iter()
+        .filter(|case| case.label.as_deref() == Some("deps"))
+        .count();
+    assert_eq!(compact, 2, "two compact `deps` subjects");
+    let other_styles = grouped
+        .iter()
+        .filter(|case| case.style.as_deref() != Some("flat"))
+        .count();
+    assert_eq!(other_styles, 4, "one up-to-date badge per remaining style");
+
+    let styles = grouped
+        .iter()
+        .filter_map(|case| case.style.as_deref())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        styles,
+        BTreeSet::from(["flat", "flat-square", "plastic", "for-the-badge", "social"]),
+        "the deps.rs fixture covers every badge style"
+    );
 }
 
 #[test]

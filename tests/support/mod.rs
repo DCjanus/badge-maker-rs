@@ -19,6 +19,10 @@ pub use report::ReferenceReport;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReferenceCase {
     pub id: String,
+    /// Case group. Generic fixture cases omit it and report as `Compatibility`;
+    /// named groups such as `deps-rs` are rendered with their product name.
+    #[serde(default)]
+    pub group: Option<String>,
     pub label: Option<String>,
     pub message: String,
     pub color: Option<String>,
@@ -138,9 +142,35 @@ pub fn reference_error_for_case(case: &ReferenceCase) -> String {
 }
 
 pub fn load_cases() -> Vec<ReferenceCase> {
-    let text = fs::read_to_string(repo_root().join("tests/data/badge_maker_cases.json"))
-        .expect("failed to read badge-maker cases");
-    serde_json::from_str(&text).expect("failed to parse badge-maker cases")
+    let mut cases = load_case_file("badge_maker_cases.json");
+    cases.extend(load_case_file("deps_rs_cases.json"));
+    cases
+}
+
+/// Reads one case fixture file. Every fixture in `tests/data` is tracked, so an
+/// unreadable or malformed file fails the suite instead of silently dropping
+/// coverage.
+fn load_case_file(file_name: &str) -> Vec<ReferenceCase> {
+    let path = repo_root().join("tests/data").join(file_name);
+    let text = fs::read_to_string(&path)
+        .unwrap_or_else(|error| panic!("failed to read {}: {error}", path.display()));
+    serde_json::from_str(&text)
+        .unwrap_or_else(|error| panic!("failed to parse {}: {error}", path.display()))
+}
+
+/// Display name for a case group. Absent group means the generic compatibility
+/// suite; unknown groups display their own identifier.
+pub fn group_name(group: Option<&str>) -> &str {
+    match group {
+        None => "Compatibility",
+        Some("deps-rs") => "deps.rs",
+        Some(other) => other,
+    }
+}
+
+/// Value used by the report group selector for a case group.
+pub fn group_filter_value(group: Option<&str>) -> &str {
+    group.unwrap_or("compatibility")
 }
 
 #[derive(Debug, PartialEq, Eq)]

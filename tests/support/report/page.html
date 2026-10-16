@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+{{STYLESHEET}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#grid">Skip to cases</a>
+<main class="page">
+<header class="bar">
+<h1>badge-maker-rs reference comparisons</h1>
+{{AGGREGATE}}
+<span class="bar-spacer"></span>
+<button type="button" class="info-button" id="info-button" popovertarget="report-info" aria-expanded="false" aria-label="Report info" title="Report info">
+<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.9" r=".95" fill="currentColor"/><rect x="7.15" y="6.9" width="1.7" height="4.8" rx=".85" fill="currentColor"/></svg>
+</button>
+</header>
+{{INFO_PANEL}}
+<div class="toolbar" id="report-controls">
+<input id="case-search" type="search" placeholder="Search cases" title="Search case ID, text, or color." autocomplete="off" spellcheck="false">
+<select id="group-filter" title="Filter by case group.">{{GROUP_OPTIONS}}</select>
+<select id="style-filter" title="Filter by style.">{{STYLE_OPTIONS}}</select>
+<label class="toggle" title="Show only differing cases."><input type="checkbox" id="differences-only"> Differences only</label>
+<fieldset class="zoom" id="zoom-control">
+<legend class="sr-only">Zoom</legend>
+<label class="zoom-option" title="Native size"><input type="radio" name="zoom" value="1" checked>1×</label>
+<label class="zoom-option" title="2× pixels"><input type="radio" name="zoom" value="2">2×</label>
+<label class="zoom-option" title="4× pixels"><input type="radio" name="zoom" value="4">4×</label>
+</fieldset>
+<span class="count" data-visible-count hidden></span>
+</div>
+<p class="empty" id="no-results" hidden>No cases match the current filters.</p>
+<table class="grid" id="grid">
+<thead>
+<tr>
+<th class="col-case" scope="col">Case</th>
+<th scope="col">Rust</th>
+<th scope="col">Upstream</th>
+<th class="col-diff" scope="col">Difference<span class="tip tip--end" tabindex="0" role="note" data-tip="Magenta marks differing pixels.">?</span></th>
+</tr>
+</thead>
+<tbody>{{ROWS}}</tbody>
+</table>
+</main>
+<script>
+{{SCRIPT}}
+</script>
+</body>
+</html>

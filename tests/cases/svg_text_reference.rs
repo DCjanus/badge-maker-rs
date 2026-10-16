@@ -6,6 +6,7 @@ use crate::support::{ReferenceCase, reference_svg_for_case, render_svg_to_rgba, 
 fn raw_css_variable_input_falls_back_like_badge_maker() {
     let case = ReferenceCase {
         id: "css-variable-fallback".to_owned(),
+        group: None,
         label: Some("theme".to_owned()),
         message: "token".to_owned(),
         color: Some("var(--badge-color)".to_owned()),
@@ -33,6 +34,7 @@ fn raw_css_variable_input_falls_back_like_badge_maker() {
 fn social_astral_capitalization_matches_reference_svg() {
     let case = ReferenceCase {
         id: "social-astral-capitalize".to_owned(),
+        group: None,
         label: Some("𐐨badge".to_owned()),
         message: "ok".to_owned(),
         color: None,
