@@ -57,15 +57,15 @@ impl std::error::Error for Error {}
 #[derive(Clone, Debug)]
 pub struct CharWidthTableConsumer {
     data: &'static [WidthTableRange],
-    em_width: f32,
+    em_width: f64,
 }
 
 impl CharWidthTableConsumer {
-    pub const fn new_static(data: &'static [WidthTableRange], em_width: f32) -> Self {
+    pub const fn new_static(data: &'static [WidthTableRange], em_width: f64) -> Self {
         Self { data, em_width }
     }
 
-    pub fn width_of(&self, text: &str, options: WidthOfOptions) -> Result<f32, Error> {
+    pub fn width_of(&self, text: &str, options: WidthOfOptions) -> Result<f64, Error> {
         text.chars().try_fold(0.0, |accum_width, ch| {
             let char_code = ch as u32;
             match self.width_of_char_code(char_code) {
@@ -76,7 +76,7 @@ impl CharWidthTableConsumer {
         })
     }
 
-    pub fn width_of_char_code(&self, char_code: u32) -> Option<f32> {
+    pub fn width_of_char_code(&self, char_code: u32) -> Option<f64> {
         if is_control_char(char_code) {
             return Some(0.0);
         }
@@ -114,11 +114,11 @@ impl Default for WidthOfOptions {
 pub struct WidthTableRange {
     pub lower: u32,
     pub upper: u32,
-    pub width: f32,
+    pub width: f64,
 }
 
 impl WidthTableRange {
-    pub const fn new(lower: u32, upper: u32, width: f32) -> Self {
+    pub const fn new(lower: u32, upper: u32, width: f64) -> Self {
         Self {
             lower,
             upper,
@@ -135,7 +135,7 @@ impl WidthTableRange {
 ///
 /// This is the Rust-side wrapper around upstream
 /// `anafanafo(text, { font, guess })`.
-pub fn measure(text: &str, options: MeasureOptions) -> Result<f32, Error> {
+pub fn measure(text: &str, options: MeasureOptions) -> Result<f64, Error> {
     builtin_consumer(options.font).width_of(
         text,
         WidthOfOptions {
@@ -194,7 +194,7 @@ mod tests {
     struct ReferenceResult {
         id: String,
         ok: bool,
-        width: Option<f32>,
+        width: Option<f64>,
         error: Option<String>,
     }
 

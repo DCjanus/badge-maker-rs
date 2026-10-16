@@ -1149,5 +1149,12 @@
     "labelColor": " rgb(220,220,220) ",
     "color": " rgb(220,220,220) ",
     "links": []
+  },
+  {
+    "id": "social-integer-width-boundary",
+    "label": "Docs & <tools>",
+    "message": "passing",
+    "style": "social",
+    "links": []
   }
 ]
